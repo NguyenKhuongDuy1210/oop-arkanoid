@@ -26,7 +26,7 @@ public class GameManager {
     // Khởi tạo game
     public void initGame() {
         paddle = new Paddle(340, 550, 120, 30, 5);
-        ball = new Ball(350, 530, 20, 20, 4, 1, -1);
+        ball = new Ball(350, 530, 20, 20, 6, 1, -1);
 
         bricks = new ArrayList<>();
         createBricks();

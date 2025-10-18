@@ -67,11 +67,13 @@ public class Ball extends MovableObject {
                 x + width >= paddle.getX() &&
                 x <= paddle.getX() + paddle.getWidth()) {
 
-            dY = -Math.abs(dY); // bật lên
+            dY = -Math.abs(dY); // chỉ đảo hướng, giữ nguyên speed
             double hitPos = (x + width/2 - paddle.getX()) / paddle.getWidth(); // trung tâm bóng
-            dX = (float)(6 * (hitPos - 0.5)); // dx=-3..3
-            y = paddle.getY() - height - 1; // tránh dính
+            dX = (float)(hitPos - 0.5f); // chỉ đổi hướng, không đổi tốc độ
+            y = paddle.getY() - height - 1; // tránh bị dính
         }
+
+
     }
 
     public boolean checkCollision(Brick brick) {
