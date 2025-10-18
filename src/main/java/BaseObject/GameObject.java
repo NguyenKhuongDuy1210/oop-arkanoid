@@ -15,7 +15,6 @@ public abstract class GameObject {
 
     // Phương thức trừu tượng
     public abstract void update();
-    public abstract void render(Graphics g);
 
     // Getter & Setter
     public boolean isVisible()

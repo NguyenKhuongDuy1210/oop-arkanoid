@@ -4,11 +4,12 @@ import items.Ball;
 import items.Brick;
 import items.Paddle;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameManager {
+
     private Ball ball;
     private Paddle paddle;
     private List<Brick> bricks;
@@ -24,11 +25,9 @@ public class GameManager {
 
     // Khởi tạo game
     public void initGame() {
-        // tạo paddle và ball
-        paddle = new Paddle(300, 550, 100, 15,4 );
-        ball = new Ball(340, 530, 15, 15, 5, 1, -1);
+        paddle = new Paddle(340, 550, 120, 30, 5);
+        ball = new Ball(350, 530, 20, 20, 4, 1, -1);
 
-        // danh sách gạch
         bricks = new ArrayList<>();
         createBricks();
 
@@ -40,37 +39,48 @@ public class GameManager {
 
     // Tạo các viên gạch
     private void createBricks() {
-        int rows = 5;
-        int cols = 10;
-        int brickWidth = 60;
-        int brickHeight = 20;
-        int startX = 40;
-        int startY = 50;
+        int rows = 3;
+        int cols = 6;
+        int brickWidth = 80;
+        int brickHeight = 25;
+        int gap = 10;
+
+        int totalWidth = cols * (brickWidth + gap) - gap;
+        int startX = (800 - totalWidth) / 2;
+        int startY = 80;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                bricks.add(new Brick(startX + c * brickWidth, startY + r * brickHeight, brickWidth, brickHeight,1));
+                int x = startX + c * (brickWidth + gap);
+                int y = startY + r * (brickHeight + gap);
+                bricks.add(new Brick(x, y, brickWidth, brickHeight, 1));
             }
         }
     }
 
-    // Cập nhật logic game
+    // Cập nhật game
     public void update() {
         if (isPaused || isGameOver) return;
 
-        ball.update();
+        ball.update(paddle);
         paddle.update();
 
-         //Va chạm paddle
-        ball.checkCollision(paddle); // xử lý va chạm thông minh
 
         // Va chạm gạch
-        for (Brick brick : bricks) {
-            ball.checkCollision(brick);
+        Iterator<Brick> it = bricks.iterator();
+        while(it.hasNext()) {
+            Brick brick = it.next();
+            brick.update();
+            if(ball.checkCollision(brick) && !brick.isDestroyed()) {
+                brick.takeHit();
+                score += 10;
+            }
+            if(brick.isDestroyed()) it.remove();
         }
 
-        // Kiểm tra bóng ra khỏi màn
-        if (ball.getdY() > 600) { // ví dụ chiều cao khung hình = 600
+
+        // Kiểm tra bóng ra ngoài
+        if (ball.getdY() >= 600) {
             lives--;
             if (lives <= 0) {
                 isGameOver = true;
@@ -78,29 +88,16 @@ public class GameManager {
                 resetRound();
             }
         }
-    }
 
-    // Vẽ toàn bộ đối tượng
-    public void render(Graphics g) {
-        ball.render(g);
-        paddle.render(g);
-
-        for (Brick brick : bricks) {
-            if (brick.isVisible()) brick.render(g);
-        }
-
-        g.drawString("Score: " + score, 20, 20);
-        g.drawString("Lives: " + lives, 520, 20);
-
-        if (isGameOver) {
-            g.drawString("GAME OVER!", 300, 300);
+        // Kiểm tra thắng game
+        if (bricks.isEmpty()) {
+            isGameOver = true; // Hoặc initGame() để restart
         }
     }
 
-    // Reset bóng và thanh khi mất mạng
     private void resetRound() {
-        ball = new Ball(340, 530, 15, 15, 5, 1, -1);
-        paddle = new Paddle(300, 550, 100, 15,-1);
+        ball = new Ball(350, 530, 20, 20, 4, 1, -1);
+        paddle = new Paddle(340, 550, 120, 30, 5);
     }
 
     // Điều khiển paddle
@@ -112,12 +109,15 @@ public class GameManager {
         paddle.moveRight();
     }
 
-    // Dừng / tiếp tục game
     public void togglePause() {
         isPaused = !isPaused;
     }
 
-    public boolean isGameOver() {
-        return isGameOver;
-    }
+    // Getters
+    public Ball getBall() { return ball; }
+    public Paddle getPaddle() { return paddle; }
+    public List<Brick> getBricks() { return bricks; }
+    public int getScore() { return score; }
+    public int getLives() { return lives; }
+    public boolean isGameOver() { return isGameOver; }
 }

@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/brick1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/brick1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/BaseObject/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BaseObject/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Brick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/BrickAnimation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Paddle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,18 +31,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "DoanDuck9"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;DoanDuck9&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/NguyenKhuongDuy1210/oop-arkanoid.git",
-    "accountId": "5b53eb2b-5ae0-45db-b2c3-63caebe7f5b5"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/NguyenKhuongDuy1210/oop-arkanoid.git&quot;,
+    &quot;accountId&quot;: &quot;5b53eb2b-5ae0-45db-b2c3-63caebe7f5b5&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -49,6 +57,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",

@@ -15,6 +15,10 @@ public class Paddle extends MovableObject {
     public void move() {
         x += dx;
         y += dy;
+        if(x<0)
+            x=0;
+        if(x>800-width)
+            x=800-width;
     }
 
     public void moveLeft() {
@@ -35,11 +39,7 @@ public class Paddle extends MovableObject {
 
     @Override
     public void update() {
-        // có thể xử lý logic paddle ở đây
+
     }
 
-    @Override
-    public void render(java.awt.Graphics g) {
-        g.fillRect((int)x, (int)y, width, height);
-    }
 }

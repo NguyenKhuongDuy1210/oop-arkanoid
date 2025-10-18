@@ -51,58 +51,73 @@ public class Ball extends MovableObject {
         dy = dY * speed;
     }
 
-    public void checkCollision(GameObject other) {
-        Rectangle ballRect = new Rectangle((int)x, (int)y, width, height);
-        Rectangle otherRect = new Rectangle((int)other.getX(), (int)other.getY(), other.getWidth(), other.getHeight());
+    public void update(Paddle paddle) {
+        // di chuyển bóng
+        x += dX * speed;
+        y += dY * speed;
 
-        if (ballRect.intersects(otherRect)) {
+        // va chạm tường
+        if(x <= 0) { x = 0; dX = -dX; }
+        if(x + width >= 800) { x = 800 - width; dX = -dX; }
+        if(y <= 0) { y = 0; dY = -dY; }
 
-            // Tính hướng va chạm
-            float overlapLeft   = (x + width) - other.getX();
-            float overlapRight  = (other.getX() + other.getWidth()) - x;
-            float overlapTop    = (y + height) - other.getY();
-            float overlapBottom = (other.getY() + other.getHeight()) - y;
+        // va chạm paddle kiểu Breakout
+        if(y + height >= paddle.getY() &&
+                y + height <= paddle.getY() + paddle.getHeight() &&
+                x + width >= paddle.getX() &&
+                x <= paddle.getX() + paddle.getWidth()) {
 
-            boolean ballFromLeft   = overlapLeft < overlapRight;
-            boolean ballFromTop    = overlapTop < overlapBottom;
-
-            float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
-            float minOverlapY = ballFromTop  ? overlapTop  : overlapBottom;
-
-
-            if (minOverlapX < minOverlapY) {
-                bounceX();
-            }
-            else {
-                bounceY();
-            }
-
-            if (other instanceof Brick brick) {
-                brick.takeHit();
-            }
+            dY = -Math.abs(dY); // bật lên
+            double hitPos = (x + width/2 - paddle.getX()) / paddle.getWidth(); // trung tâm bóng
+            dX = (float)(6 * (hitPos - 0.5)); // dx=-3..3
+            y = paddle.getY() - height - 1; // tránh dính
         }
     }
 
+    public boolean checkCollision(Brick brick) {
+        Rectangle ballRect = new Rectangle((int)x,(int)y,width,height);
+        Rectangle brickRect = new Rectangle((int)brick.getX(),(int)brick.getY(),brick.getWidth(),brick.getHeight());
+
+        if(ballRect.intersects(brickRect)) {
+            float overlapLeft = (x+width) - brick.getX();
+            float overlapRight = (brick.getX()+brick.getWidth()) - x;
+            float overlapTop = (y+height) - brick.getY();
+            float overlapBottom = (brick.getY()+brick.getHeight()) - y;
+
+            boolean ballFromLeft = overlapLeft < overlapRight;
+            boolean ballFromTop = overlapTop < overlapBottom;
+
+            float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
+            float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
+
+            if(minOverlapX < minOverlapY) dX = -dX;
+            else dY = -dY;
+
+            brick.takeHit();
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void update() {
         move();
 
-        // ⚡ Va chạm biên màn hình (ví dụ: 800x600)
-        if (x <= 0 || x + width >= 800) bounceX();
-        if (y <= 0) bounceY();
+        // Va chạm tường ngang
+        if (x <= 0) {
+            x = 0;
+            bounceX();
+        }
+        if (x + width >= 800) {
+            x = 800 - width;
+            bounceX();
+        }
 
-        // ⚠ Nếu rơi ra ngoài màn hình, ẩn bóng
-        if (y > 600) setVisible(false);
+        // Va chạm tường trên
+        if (y <= 0) {
+            y = 0;
+            bounceY();
+        }
     }
 
-    @Override
-    public void render(Graphics g) {
-        if (!isVisible()) return;
-
-        g.setColor(Color.WHITE);
-        g.fillOval((int)x, (int)y, width, height);
-        g.setColor(Color.GRAY);
-        g.drawOval((int)x, (int)y, width, height);
-    }
 }
