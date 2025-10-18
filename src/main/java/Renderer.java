@@ -20,7 +20,7 @@ public class Renderer {
     public void render(GraphicsContext gc, double ballX, double ballY,
                        double paddleX, double paddleY) {
 
-        gc.drawImage(backgroundImg, 0, 0, 600, 600);
+        gc.drawImage(backgroundImg, 0, 0, 800, 600);
 
         int brickWidth = 80;
         int brickHeight = 25;
@@ -35,12 +35,12 @@ public class Renderer {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                float x = startX + col * (brickWidth + gap);
-                float y = startY + row * (brickHeight + gap);
-                bricks.add(new Brick(x, y, brickWidth, brickHeight, 1));
+                int x = startX + col * (brickWidth + gap);
+                int y = startY + row * (brickHeight + gap);
+                gc.drawImage(brickImg,x, y, brickWidth, brickHeight);
             }
         }
-        gc.drawImage(brickImg, 100, 100, 80, 30);
+        //brickImg, 100, 100, 80, 30);
 
         gc.drawImage(paddleImg, paddleX, paddleY, 120, 30);
 
