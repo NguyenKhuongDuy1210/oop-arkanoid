@@ -25,8 +25,8 @@ public class GameManager {
 
     // Khởi tạo game
     public void initGame() {
-        paddle = new Paddle(340, 550, 120, 30, 5);
-        ball = new Ball(350, 530, 20, 20, 6, 1, -1);
+        paddle = new Paddle(280, 600, 120, 20, 5);
+        ball = new Ball(350, 530, 15, 15, 2, 1, -1);
 
         bricks = new ArrayList<>();
         createBricks();
@@ -40,13 +40,13 @@ public class GameManager {
     // Tạo các viên gạch
     private void createBricks() {
         int rows = 3;
-        int cols = 6;
-        int brickWidth = 80;
-        int brickHeight = 25;
-        int gap = 10;
+        int cols = 8;
+        int brickWidth = 60;
+        int brickHeight = 30;
+        int gap = 4;
 
         int totalWidth = cols * (brickWidth + gap) - gap;
-        int startX = (800 - totalWidth) / 2;
+        int startX = (600 - totalWidth) / 2;
         int startY = 80;
 
         for (int r = 0; r < rows; r++) {
@@ -72,7 +72,7 @@ public class GameManager {
             Brick brick = it.next();
             brick.update();
             if(ball.checkCollision(brick) && !brick.isDestroyed()) {
-                brick.takeHit();
+                brick.setOnHit(true);
                 score += 10;
             }
             if(brick.isDestroyed()) it.remove();
@@ -96,8 +96,8 @@ public class GameManager {
     }
 
     private void resetRound() {
-        ball = new Ball(350, 530, 20, 20, 4, 1, -1);
-        paddle = new Paddle(340, 550, 120, 30, 5);
+        paddle = new Paddle(280, 600, 120, 20, 5);
+        ball = new Ball(350, 530, 15, 15, 2, 1, -1);
     }
 
     // Điều khiển paddle

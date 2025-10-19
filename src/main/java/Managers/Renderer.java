@@ -11,35 +11,39 @@ import java.util.List;
 public class Renderer {
 
     private Image backgroundImg, ballImg, paddleImg, brickImg;
-    private Image[] brickImgs = new Image[4];
 
     public Renderer() {
         backgroundImg = new Image("file:assets/background.png");
         ballImg       = new Image("file:assets/ball.png");
         paddleImg     = new Image("file:assets/paddle.png");
-        brickImg      = new Image("file:assets/normal brick2.png");
-        brickImgs[0] = new Image("file:assets/brick1.png");
-        brickImgs[1] = new Image("file:assets/brick2.png");
-        brickImgs[2] = new Image("file:assets/brick3.png");
-        brickImgs[3] = new Image("file:assets/brick4.png");
-
+        brickImg      = new Image("file:assets/brick.png");
     }
 
     public void render(GraphicsContext gc, GameManager gameManager) {
-        gc.clearRect(0, 0, 800, 600);
+        gc.clearRect(0, 0, 600, 750);
 
         // Vẽ background
-        gc.drawImage(backgroundImg, 0, 0, 800, 600);
+        gc.drawImage(backgroundImg, 0, 0, 600, 750);
 
         // Vẽ gạch
-        for(Brick brick : gameManager.getBricks()) {
-            brick.update();    // cập nhật frame nếu brick đang bị hit
-            int idx = brick.getFrameIndex();
-            gc.drawImage(brickImgs[idx], brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
+        for (Brick brick : gameManager.getBricks()) {
+            brick.update();
+
+            if (brick.isOnHit()) {
+                int[] clip = brick.getCurrentClip();
+                gc.drawImage(
+                        brickImg,
+                        clip[0], clip[1], clip[2], clip[3], // source rectangle
+                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight() // destination
+                );
+            } else {
+                gc.drawImage(
+                        brickImg,
+                        0, 0, brick.getWidth(), brick.getHeight(), // mặc định frame đầu
+                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight()
+                );
+            }
         }
-
-
-
 
         // Vẽ paddle
         Paddle paddle = gameManager.getPaddle();

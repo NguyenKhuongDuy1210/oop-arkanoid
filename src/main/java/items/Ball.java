@@ -58,7 +58,7 @@ public class Ball extends MovableObject {
 
         // va chạm tường
         if(x <= 0) { x = 0; dX = -dX; }
-        if(x + width >= 800) { x = 800 - width; dX = -dX; }
+        if(x + width >= 600) { x = 600 - width; dX = -dX; }
         if(y <= 0) { y = 0; dY = -dY; }
 
         // va chạm paddle kiểu Breakout
@@ -95,7 +95,7 @@ public class Ball extends MovableObject {
             if(minOverlapX < minOverlapY) dX = -dX;
             else dY = -dY;
 
-            brick.takeHit();
+            brick.setOnHit(true);
             return true;
         }
         return false;
@@ -110,8 +110,8 @@ public class Ball extends MovableObject {
             x = 0;
             bounceX();
         }
-        if (x + width >= 800) {
-            x = 800 - width;
+        if (x + width >= 600) {
+            x = 600 - width;
             bounceX();
         }
 

@@ -22,7 +22,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        Canvas canvas = new Canvas(800, 600);
+        Canvas canvas = new Canvas(600, 750);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Khởi tạo game và renderer
