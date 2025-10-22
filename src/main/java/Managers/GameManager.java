@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// GameState
+
 public class GameManager {
 
     private Ball ball;
@@ -16,7 +18,8 @@ public class GameManager {
     private int score;
     private int lives;
     private boolean isPaused;
-    private boolean isGameOver;
+    private GameState current_GameState;
+    private boolean playerWin;
 
     // Constructor
     public GameManager() {
@@ -32,9 +35,11 @@ public class GameManager {
         createBricks();
 
         score = 0;
-        lives = 3;
+        lives = 1;
         isPaused = false;
-        isGameOver = false;
+        playerWin = false;
+
+        current_GameState = GameState.Menu;
     }
 
     // Tạo các viên gạch
@@ -60,7 +65,7 @@ public class GameManager {
 
     // Cập nhật game
     public void update() {
-        if (isPaused || isGameOver) return;
+        if (current_GameState != GameState.Playing || isPaused) return;
 
         ball.update(paddle);
         paddle.update();
@@ -80,10 +85,11 @@ public class GameManager {
 
 
         // Kiểm tra bóng ra ngoài
-        if (ball.getdY() >= 600) {
+        if (ball.getY() >= 750) {
             lives--;
             if (lives <= 0) {
-                isGameOver = true;
+                playerWin = false;
+                current_GameState = GameState.GameOver;
             } else {
                 resetRound();
             }
@@ -91,7 +97,8 @@ public class GameManager {
 
         // Kiểm tra thắng game
         if (bricks.isEmpty()) {
-            isGameOver = true; // Hoặc initGame() để restart
+            playerWin = true;
+            current_GameState = GameState.GameOver;
         }
     }
 
@@ -119,5 +126,7 @@ public class GameManager {
     public List<Brick> getBricks() { return bricks; }
     public int getScore() { return score; }
     public int getLives() { return lives; }
-    public boolean isGameOver() { return isGameOver; }
+    public GameState getCurrent_GameState() { return current_GameState; }
+    public void setCurrent_GameState(GameState state) { this.current_GameState = state; }
+    public boolean getPlayerWin() { return playerWin; }
 }
