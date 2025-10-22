@@ -1,5 +1,7 @@
 import Managers.GameManager;
+import Managers.GameState;
 import Managers.Renderer;
+import Managers.Menu;
 import items.Ball;
 import items.Paddle;
 import javafx.animation.AnimationTimer;
@@ -34,13 +36,40 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.LEFT) leftPressed = true;
-            if (e.getCode() == KeyCode.RIGHT) rightPressed = true;
+            switch (gameManager.getCurrent_GameState()) {
+                case Menu:
+                    if (e.getCode() == KeyCode.UP) {
+                        renderer.getMenu().navigateUp();
+                    } else if (e.getCode() == KeyCode.DOWN) {
+                        renderer.getMenu().navigateDown();
+                    } else if (e.getCode() == KeyCode.ENTER) {
+                        int selected = renderer.getMenu().getSelectedItemIndex();
+                        if (selected == 0) { // Start Game
+                            gameManager.setCurrent_GameState(GameState.Playing);
+                        } else if (selected == 1) { // Exit
+                            stage.close();
+                        }
+                    }
+                    break;
+                case Playing:
+                    if (e.getCode() == KeyCode.LEFT) leftPressed = true;
+                    if (e.getCode() == KeyCode.RIGHT) rightPressed = true;
+                    // Bạn có thể thêm nút Pause (ví dụ: P) ở đây
+                    // if (e.getCode() == KeyCode.P) gameManager.togglePause();
+                    break;
+                case GameOver:
+                    if (e.getCode() == KeyCode.ENTER) {
+                        gameManager.initGame(); // Quay về trạng thái ban đầu (Menu)
+                    }
+                    break;
+            }
         });
 
         scene.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.LEFT) leftPressed = false;
-            if (e.getCode() == KeyCode.RIGHT) rightPressed = false;
+            if (gameManager.getCurrent_GameState() == GameState.Playing) {
+                if (e.getCode() == KeyCode.LEFT) leftPressed = false;
+                if (e.getCode() == KeyCode.RIGHT) rightPressed = false;
+            }
         });
 
         stage.setScene(scene);
@@ -52,10 +81,15 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
 
+//                Paddle paddle = gameManager.getPaddle();
+//                if (leftPressed) paddle.moveLeft();
+//                if (rightPressed) paddle.moveRight();
+
                 // Di chuyển paddle
-                Paddle paddle = gameManager.getPaddle();
-                if (leftPressed) paddle.moveLeft();
-                if (rightPressed) paddle.moveRight();
+                if (gameManager.getCurrent_GameState() == GameState.Playing) {
+                    if (leftPressed) gameManager.movePaddleLeft();
+                    if (rightPressed) gameManager.movePaddleRight();
+                }
 
                 // Cập nhật game logic
                 gameManager.update();
