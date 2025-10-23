@@ -14,16 +14,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        // --- KHỞI TẠO CÁC THÀNH PHẦN CƠ BẢN ---
+
         Canvas canvas = new Canvas(600, 750);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         StackPane root = new StackPane(canvas);
         Scene scene = new Scene(root);
 
-        // --- KHỞI TẠO CÁC TRÌNH QUẢN LÝ ---
         GameManager gameManager = new GameManager();
         Renderer renderer = new Renderer();
-        // InputHandler cần biết về gameManager, menu và stage để hoạt động
+        // InputHandler cần biết về gameManager, menu và stage để hoạ t động
         InputHandler inputHandler = new InputHandler(gameManager, renderer.getMenu(), stage);
         inputHandler.attach(scene); // Gắn trình xử lý input vào scene
 
