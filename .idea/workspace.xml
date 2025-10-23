@@ -4,20 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Managers/GameConfig/GameConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/items/effects/Animation.java" afterDir="false" />
+    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="Feat: Menu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/brick.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/MenuManager/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/MenuManager/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/MenuManager/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/items/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Ball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/items/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Brick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/items/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Paddle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fireball.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +21,24 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Lta" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
@@ -43,10 +50,13 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/NguyenKhuongDuy1210/oop-arkanoid.git&quot;,
-    &quot;accountId&quot;: &quot;501a65d0-8de9-41ad-8309-e5d69b46d5fd&quot;
+    &quot;url&quot;: &quot;https://github.com/NguyenKhuongDuy1210/oop-arkanoid&quot;,
+    &quot;accountId&quot;: &quot;3a8f1eac-c4c6-4589-a001-09fb0c38a955&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -81,7 +91,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Run JAVAFX" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="24" />
+      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../Setting/jdk-25" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="untitled" />
@@ -89,7 +99,7 @@
       <selectedOptions>
         <option name="environmentVariables" visible="false" />
       </selectedOptions>
-      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-25\lib&quot; --add-modules javafx.controls,javafx.fxml --enable-native-access=javafx.graphics" />
+      <option name="VM_PARAMETERS" value="--module-path D:\A_HOC_TAP\Java\Setting\javafx-sdk-25\lib --add-modules javafx.controls,javafx.fxml --enable-native-access=javafx.graphics" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -103,6 +113,39 @@
       <option name="presentableId" value="Default" />
       <updated>1760706298257</updated>
     </task>
+    <task id="LOCAL-00001" summary="Sửa Menu">
+      <option name="closed" value="true" />
+      <created>1761095592288</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1761095592288</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Sửa Menu">
+      <option name="closed" value="true" />
+      <created>1761096557476</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1761096557476</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Feat: Menu">
+      <option name="closed" value="true" />
+      <created>1761150012127</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1761150012127</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Feat: Menu">
+      <option name="closed" value="true" />
+      <created>1761150631865</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1761150631865</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,5 +158,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Sửa Menu" />
+    <MESSAGE value="Feat: Menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: Menu" />
   </component>
 </project>
