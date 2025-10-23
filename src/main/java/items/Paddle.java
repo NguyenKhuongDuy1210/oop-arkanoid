@@ -1,6 +1,7 @@
 package items;
 
 import BaseObject.MovableObject;
+import Managers.GameConfig.GameConfig;
 
 public class Paddle extends MovableObject {
     private float speed;
@@ -17,8 +18,8 @@ public class Paddle extends MovableObject {
         y += dy;
         if(x<0)
             x=0;
-        if(x>800-width)
-            x=800-width;
+        if(x> GameConfig.SCREEN_WIDTH - width)
+            x = GameConfig.SCREEN_WIDTH - width;
     }
 
     public void moveLeft() {

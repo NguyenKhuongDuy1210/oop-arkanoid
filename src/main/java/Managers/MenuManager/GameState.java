@@ -1,4 +1,4 @@
-package Managers;
+package Managers.MenuManager;
 
 public enum GameState {
     Menu,

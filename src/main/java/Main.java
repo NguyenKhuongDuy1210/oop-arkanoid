@@ -1,9 +1,6 @@
 import Managers.GameManager;
-import Managers.GameState;
+import Managers.MenuManager.GameState;
 import Managers.Renderer;
-import Managers.Menu;
-import items.Ball;
-import items.Paddle;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -1,0 +1,123 @@
+Index: src/main/java/Managers/Renderer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Managers;\r\n\r\nimport items.Ball;\r\nimport items.Brick;\r\nimport items.Paddle;\r\nimport javafx.geometry.VPos;\r\nimport javafx.scene.canvas.GraphicsContext;\r\nimport javafx.scene.image.Image;\r\nimport javafx.scene.paint.Color;\r\nimport javafx.scene.text.Font;\r\nimport javafx.scene.text.TextAlignment;\r\n\r\nimport java.awt.*;\r\nimport java.util.List;\r\n\r\npublic class Renderer {\r\n\r\n    private Image backgroundImg, ballImg, paddleImg, brickImg;\r\n    private Menu menu;\r\n\r\n    public Renderer() {\r\n        backgroundImg = new Image(\"file:assets/background.png\");\r\n        ballImg       = new Image(\"file:assets/ball.png\");\r\n        paddleImg     = new Image(\"file:assets/paddle.png\");\r\n        brickImg      = new Image(\"file:assets/brick.png\");\r\n        menu          = new Menu();\r\n    }\r\n\r\n    public void render(GraphicsContext gc, GameManager gameManager) {\r\n        gc.clearRect(0, 0, 600, 750);\r\n\r\n        // Vẽ background\r\n        gc.drawImage(backgroundImg, 0, 0, 600, 750);\r\n\r\n        switch(gameManager.getCurrent_GameState()) {\r\n            case Menu:\r\n                menu.render(gc);\r\n                break;\r\n            case Playing:\r\n                renderGame(gc, gameManager);\r\n                break;\r\n            case GameOver:\r\n                renderGame(gc, gameManager);\r\n                renderGameOver(gc, gameManager);\r\n                break;\r\n        }\r\n    }\r\n\r\n    private void renderGame(GraphicsContext gc, GameManager gameManager) {\r\n        // Vẽ gạch\r\n        for (Brick brick : gameManager.getBricks()) {\r\n            brick.update();\r\n\r\n            if (brick.isOnHit()) {\r\n                int[] clip = brick.getCurrentClip();\r\n                gc.drawImage(\r\n                        brickImg,\r\n                        clip[0], clip[1], clip[2], clip[3], // source rectangle\r\n                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight() // destination\r\n                );\r\n            } else {\r\n                gc.drawImage(\r\n                        brickImg,\r\n                        0, 0, brick.getWidth(), brick.getHeight(), // mặc định frame đầu\r\n                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight()\r\n                );\r\n            }\r\n        }\r\n\r\n        // Vẽ paddle\r\n        Paddle paddle = gameManager.getPaddle();\r\n        gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());\r\n\r\n        // Vẽ ball\r\n        Ball ball = gameManager.getBall();\r\n        gc.drawImage(ballImg, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());\r\n\r\n        // Vẽ UI\r\n        gc.fillText(\"Score: \" + gameManager.getScore(), 20, 20);\r\n        gc.fillText(\"Lives: \" + gameManager.getLives(), 700, 20);\r\n    }\r\n\r\n    private void renderGameOver(GraphicsContext gc, GameManager gameManager) {\r\n\r\n        gc.setTextAlign(TextAlignment.CENTER);\r\n        gc.setTextBaseline(VPos.CENTER);\r\n\r\n        // Kiểm tra xem người chơi thắng hay thua\r\n        if (gameManager.getPlayerWin()) {\r\n            gc.setFill(Color.LIMEGREEN);\r\n            gc.setFont(new Font(\"Arial\", 70));\r\n            gc.fillText(\"YOU WIN!\", 300, 300);\r\n        } else {\r\n            gc.setFill(Color.RED);\r\n            gc.setFont(new Font(\"Arial\", 70));\r\n            gc.fillText(\"GAME OVER\", 300, 300);\r\n        }\r\n\r\n        // Hiển thị điểm số cuối cùng\r\n        gc.setFill(Color.WHITE);\r\n        gc.setFont(new Font(\"Arial\", 30));\r\n        gc.fillText(\"Final Score: \" + gameManager.getScore(), 300, 360);\r\n\r\n        // Hướng dẫn người chơi\r\n        gc.setFont(new Font(\"Arial\", 20));\r\n        gc.fillText(\"Press Enter to Return to Menu\", 300, 420);\r\n    }\r\n\r\n    public Menu getMenu() {\r\n        return menu;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Managers/Renderer.java b/src/main/java/Managers/Renderer.java
+--- a/src/main/java/Managers/Renderer.java	(revision 591a0db7ca1be4cf55d413afca75b44d11d8bc22)
++++ b/src/main/java/Managers/Renderer.java	(date 1761148824466)
+@@ -19,7 +19,7 @@
+     private Menu menu;
+ 
+     public Renderer() {
+-        backgroundImg = new Image("file:assets/background.png");
++        backgroundImg = new Image("file:assets/background1.png");
+         ballImg       = new Image("file:assets/ball.png");
+         paddleImg     = new Image("file:assets/paddle.png");
+         brickImg      = new Image("file:assets/brick.png");
+Index: src/main/java/Managers/GameManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Managers;\r\n\r\nimport items.Ball;\r\nimport items.Brick;\r\nimport items.Paddle;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Iterator;\r\nimport java.util.List;\r\n\r\n// GameState\r\n\r\npublic class GameManager {\r\n\r\n    private Ball ball;\r\n    private Paddle paddle;\r\n    private List<Brick> bricks;\r\n    private int score;\r\n    private int lives;\r\n    private boolean isPaused;\r\n    private GameState current_GameState;\r\n    private boolean playerWin;\r\n\r\n    // Constructor\r\n    public GameManager() {\r\n        initGame();\r\n    }\r\n\r\n    // Khởi tạo game\r\n    public void initGame() {\r\n        paddle = new Paddle(280, 600, 120, 20, 5);\r\n        ball = new Ball(350, 530, 15, 15, 2, 1, -1);\r\n\r\n        bricks = new ArrayList<>();\r\n        createBricks();\r\n\r\n        score = 0;\r\n        lives = 1;\r\n        isPaused = false;\r\n        playerWin = false;\r\n\r\n        current_GameState = GameState.Menu;\r\n    }\r\n\r\n    // Tạo các viên gạch\r\n    private void createBricks() {\r\n        int rows = 3;\r\n        int cols = 8;\r\n        int brickWidth = 60;\r\n        int brickHeight = 30;\r\n        int gap = 4;\r\n\r\n        int totalWidth = cols * (brickWidth + gap) - gap;\r\n        int startX = (600 - totalWidth) / 2;\r\n        int startY = 80;\r\n\r\n        for (int r = 0; r < rows; r++) {\r\n            for (int c = 0; c < cols; c++) {\r\n                int x = startX + c * (brickWidth + gap);\r\n                int y = startY + r * (brickHeight + gap);\r\n                bricks.add(new Brick(x, y, brickWidth, brickHeight, 1));\r\n            }\r\n        }\r\n    }\r\n\r\n    // Cập nhật game\r\n    public void update() {\r\n        if (current_GameState != GameState.Playing || isPaused) return;\r\n\r\n        ball.update(paddle);\r\n        paddle.update();\r\n\r\n\r\n        // Va chạm gạch\r\n        Iterator<Brick> it = bricks.iterator();\r\n        while(it.hasNext()) {\r\n            Brick brick = it.next();\r\n            brick.update();\r\n            if(ball.checkCollision(brick) && !brick.isDestroyed()) {\r\n                brick.setOnHit(true);\r\n                score += 10;\r\n            }\r\n            if(brick.isDestroyed()) it.remove();\r\n        }\r\n\r\n\r\n        // Kiểm tra bóng ra ngoài\r\n        if (ball.getY() >= 750) {\r\n            lives--;\r\n            if (lives <= 0) {\r\n                playerWin = false;\r\n                current_GameState = GameState.GameOver;\r\n            } else {\r\n                resetRound();\r\n            }\r\n        }\r\n\r\n        // Kiểm tra thắng game\r\n        if (bricks.isEmpty()) {\r\n            playerWin = true;\r\n            current_GameState = GameState.GameOver;\r\n        }\r\n    }\r\n\r\n    private void resetRound() {\r\n        paddle = new Paddle(280, 600, 120, 20, 5);\r\n        ball = new Ball(350, 530, 15, 15, 2, 1, -1);\r\n    }\r\n\r\n    // Điều khiển paddle\r\n    public void movePaddleLeft() {\r\n        paddle.moveLeft();\r\n    }\r\n\r\n    public void movePaddleRight() {\r\n        paddle.moveRight();\r\n    }\r\n\r\n    public void togglePause() {\r\n        isPaused = !isPaused;\r\n    }\r\n\r\n    // Getters\r\n    public Ball getBall() { return ball; }\r\n    public Paddle getPaddle() { return paddle; }\r\n    public List<Brick> getBricks() { return bricks; }\r\n    public int getScore() { return score; }\r\n    public int getLives() { return lives; }\r\n    public GameState getCurrent_GameState() { return current_GameState; }\r\n    public void setCurrent_GameState(GameState state) { this.current_GameState = state; }\r\n    public boolean getPlayerWin() { return playerWin; }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Managers/GameManager.java b/src/main/java/Managers/GameManager.java
+--- a/src/main/java/Managers/GameManager.java	(revision 591a0db7ca1be4cf55d413afca75b44d11d8bc22)
++++ b/src/main/java/Managers/GameManager.java	(date 1761148824479)
+@@ -29,7 +29,7 @@
+     // Khởi tạo game
+     public void initGame() {
+         paddle = new Paddle(280, 600, 120, 20, 5);
+-        ball = new Ball(350, 530, 15, 15, 2, 1, -1);
++        ball = new Ball(350, 530, 15, 15, 3, 1, -1);
+ 
+         bricks = new ArrayList<>();
+         createBricks();
+Index: src/main/java/items/effects/Animation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/items/effects/Animation.java b/src/main/java/items/effects/Animation.java
+new file mode 100644
+--- /dev/null	(date 1761148945249)
++++ b/src/main/java/items/effects/Animation.java	(date 1761148945249)
+@@ -0,0 +1,4 @@
++package items.effects;
++
++public class Animation {
++}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"7e591036-7e1f-49c4-a97c-f3c61a438a46\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/Managers/GameState.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Main.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Managers/GameManager.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Managers/GameManager.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Managers/Renderer.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Managers/Renderer.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"ROOT_SYNC\" value=\"SYNC\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;DoanDuck9&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/NguyenKhuongDuy1210/oop-arkanoid.git&quot;,\r\n    &quot;accountId&quot;: &quot;501a65d0-8de9-41ad-8309-e5d69b46d5fd&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 5\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"34C8fbY6TXfa9JuiWeKmGZDQWMT\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.Run JAVAFX.executor&quot;: &quot;Run&quot;,\r\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/A_HOC_TAP/Java/Game_Oop/oop-arkanoid&quot;,\r\n    &quot;onboarding.tips.debug.path&quot;: &quot;D:/OOP/Arkanoid/src/main/java/org/example/Main.java&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveClassesOrPackagesDialog.RECENTS_KEY\">\r\n      <recent name=\"\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Run JAVAFX\" type=\"Application\" factoryName=\"Application\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"$PROJECT_DIR$/../../Setting/jdk-25\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Main\" />\r\n      <module name=\"untitled\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"--module-path D:\\A_HOC_TAP\\Java\\Setting\\javafx-sdk-25\\lib --add-modules javafx.controls,javafx.fxml\" />\r\n      <selectedOptions>\r\n        <option name=\"environmentVariables\" visible=\"false\" />\r\n      </selectedOptions>\r\n      <option name=\"VM_PARAMETERS\" value=\"--module-path D:\\A_HOC_TAP\\Java\\Setting\\javafx-sdk-25\\lib --add-modules javafx.controls,javafx.fxml --enable-native-access=javafx.graphics\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"7e591036-7e1f-49c4-a97c-f3c61a438a46\" name=\"Changes\" comment=\"\" />\r\n      <created>1760706298257</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1760706298257</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 591a0db7ca1be4cf55d413afca75b44d11d8bc22)
++++ b/.idea/workspace.xml	(date 1761149398874)
+@@ -5,12 +5,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/Managers/GameState.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/items/effects/Animation.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" afterDir="false" />
+     </list>
+@@ -56,16 +52,14 @@
+     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;D:/A_HOC_TAP/Java/Game_Oop/oop-arkanoid&quot;,
++    &quot;last_opened_file_path&quot;: &quot;D:/Arkanoid/oop-arkanoid-main&quot;,
+     &quot;onboarding.tips.debug.path&quot;: &quot;D:/OOP/Arkanoid/src/main/java/org/example/Main.java&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+     &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+   }
+ }</component>
+@@ -76,19 +70,20 @@
+   </component>
+   <component name="RunManager">
+     <configuration name="Run JAVAFX" type="Application" factoryName="Application">
+-      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../Setting/jdk-25" />
+-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+       <option name="MAIN_CLASS_NAME" value="Main" />
+       <module name="untitled" />
+-      <option name="PROGRAM_PARAMETERS" value="--module-path D:\A_HOC_TAP\Java\Setting\javafx-sdk-25\lib --add-modules javafx.controls,javafx.fxml" />
+-      <selectedOptions>
+-        <option name="environmentVariables" visible="false" />
+-      </selectedOptions>
+-      <option name="VM_PARAMETERS" value="--module-path D:\A_HOC_TAP\Java\Setting\javafx-sdk-25\lib --add-modules javafx.controls,javafx.fxml --enable-native-access=javafx.graphics" />
++      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-25\lib&quot; --add-modules javafx.controls,javafx.fxml" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
++  </component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
++      </set>
++    </attachedChunks>
+   </component>
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">

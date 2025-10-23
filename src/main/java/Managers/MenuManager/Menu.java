@@ -1,5 +1,5 @@
 // Trong Managers/Menu.java
-package Managers;
+package Managers.MenuManager;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;

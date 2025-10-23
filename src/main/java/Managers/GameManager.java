@@ -1,5 +1,7 @@
 package Managers;
 
+import Managers.GameConfig.GameConfig;
+import Managers.MenuManager.GameState;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
@@ -28,8 +30,8 @@ public class GameManager {
 
     // Khởi tạo game
     public void initGame() {
-        paddle = new Paddle(280, 600, 120, 20, 5);
-        ball = new Ball(350, 530, 15, 15, 2, 1, -1);
+        paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT, GameConfig.PADDLE_SPEED);
+        ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);
 
         bricks = new ArrayList<>();
         createBricks();
@@ -46,19 +48,16 @@ public class GameManager {
     private void createBricks() {
         int rows = 3;
         int cols = 8;
-        int brickWidth = 60;
-        int brickHeight = 30;
-        int gap = 4;
 
-        int totalWidth = cols * (brickWidth + gap) - gap;
+        int totalWidth = cols * (GameConfig.BRICK_WIDTH + GameConfig.BRICK_GAP) - GameConfig.BRICK_GAP;
         int startX = (600 - totalWidth) / 2;
         int startY = 80;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                int x = startX + c * (brickWidth + gap);
-                int y = startY + r * (brickHeight + gap);
-                bricks.add(new Brick(x, y, brickWidth, brickHeight, 1));
+                int x = startX + c * (GameConfig.BRICK_WIDTH + GameConfig.BRICK_GAP);
+                int y = startY + r * (GameConfig.BRICK_HEIGHT + GameConfig.BRICK_GAP);
+                bricks.add(new Brick(x, y, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 1));
             }
         }
     }

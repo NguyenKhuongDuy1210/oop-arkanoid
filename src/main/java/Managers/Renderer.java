@@ -1,5 +1,7 @@
 package Managers;
 
+import Managers.GameConfig.GameConfig;
+import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
@@ -8,10 +10,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-
-import java.awt.*;
-import java.util.List;
 
 public class Renderer {
 
@@ -19,7 +19,7 @@ public class Renderer {
     private Menu menu;
 
     public Renderer() {
-        backgroundImg = new Image("file:assets/background.png");
+        backgroundImg = new Image("file:assets/background1.png");
         ballImg       = new Image("file:assets/ball.png");
         paddleImg     = new Image("file:assets/paddle.png");
         brickImg      = new Image("file:assets/brick.png");
@@ -27,10 +27,10 @@ public class Renderer {
     }
 
     public void render(GraphicsContext gc, GameManager gameManager) {
-        gc.clearRect(0, 0, 600, 750);
+        gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         // Vẽ background
-        gc.drawImage(backgroundImg, 0, 0, 600, 750);
+        gc.drawImage(backgroundImg, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         switch(gameManager.getCurrent_GameState()) {
             case Menu:
@@ -76,8 +76,10 @@ public class Renderer {
         gc.drawImage(ballImg, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());
 
         // Vẽ UI
-        gc.fillText("Score: " + gameManager.getScore(), 20, 20);
-        gc.fillText("Lives: " + gameManager.getLives(), 700, 20);
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        gc.setFill(Color.WHITE);
+        gc.fillText("Score: " + gameManager.getScore(), 50, 20);
+        gc.fillText("Lives: " + gameManager.getLives(), 550, 20);
     }
 
     private void renderGameOver(GraphicsContext gc, GameManager gameManager) {

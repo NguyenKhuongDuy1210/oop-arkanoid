@@ -2,6 +2,8 @@ package items;
 
 import BaseObject.GameObject;
 import BaseObject.MovableObject;
+import Managers.GameConfig.GameConfig;
+
 import java.awt.*;
 
 import static com.sun.glass.ui.Cursor.setVisible;
@@ -58,7 +60,7 @@ public class Ball extends MovableObject {
 
         // va chạm tường
         if(x <= 0) { x = 0; dX = -dX; }
-        if(x + width >= 600) { x = 600 - width; dX = -dX; }
+        if(x + width >= GameConfig.SCREEN_WIDTH) { x = GameConfig.SCREEN_WIDTH - width; dX = -dX; }
         if(y <= 0) { y = 0; dY = -dY; }
 
         // va chạm paddle kiểu Breakout
@@ -110,8 +112,8 @@ public class Ball extends MovableObject {
             x = 0;
             bounceX();
         }
-        if (x + width >= 600) {
-            x = 600 - width;
+        if (x + width >= GameConfig.SCREEN_WIDTH) {
+            x = GameConfig.SCREEN_WIDTH - width;
             bounceX();
         }
 
