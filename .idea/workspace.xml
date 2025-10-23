@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="feat: thêm animation cho ball">
+    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="fix: sửa lỗi nhấn enter khi thua chưa reset game">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/Background1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Background1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/BaseObject/MovableObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameConfig/GameConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameConfig/GameConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/MenuManager/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/MenuManager/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/items/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Paddle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761231918868</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix: sửa lỗi nhấn enter khi thua chưa reset game">
+      <option name="closed" value="true" />
+      <created>1761233223729</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1761233223729</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -171,6 +186,7 @@
     <MESSAGE value="Sửa Menu" />
     <MESSAGE value="Feat: Menu" />
     <MESSAGE value="feat: thêm animation cho ball" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: thêm animation cho ball" />
+    <MESSAGE value="fix: sửa lỗi nhấn enter khi thua chưa reset game" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: sửa lỗi nhấn enter khi thua chưa reset game" />
   </component>
 </project>

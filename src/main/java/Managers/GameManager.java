@@ -33,13 +33,13 @@ public class GameManager {
      * Thiết lập lại trò chơi về trạng thái ban đầu
      */
     public void initGame() {
-        paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT, GameConfig.PADDLE_SPEED);
+        paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth()/2 - GameConfig.BALL_WIDTH/2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
-        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);        bricks = new ArrayList<>();
+        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);        bricks = new ArrayList<>();
         createBricks();
         score = 0;
-        lives = 2;
+        lives = 3;
         playerWin = false;
         currentGameState = GameState.Menu;
         ballAttachedToPaddle = true;
@@ -89,11 +89,9 @@ public class GameManager {
         }
     }
 
-    /** Hàm gọi khi nhấn SPACE để bắn bóng */
     public void releaseBall() {
         if (ballAttachedToPaddle) {
             ballAttachedToPaddle = false;
-            // giữ nguyên velocity hiện tại của ball
         }
     }
 
@@ -125,7 +123,7 @@ public class GameManager {
     }
 
     private void resetRound() {
-        ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);
+        ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);
         ballAttachedToPaddle = true;
     }
 
