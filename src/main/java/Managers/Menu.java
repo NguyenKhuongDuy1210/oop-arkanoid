@@ -21,6 +21,7 @@ public class Menu {
     private Image selectorIcon;
     private Font titleFont;
     private Font itemFont;
+    private int A;
 
     private double selectorCurrentY;
     private double selectorTargetY;
