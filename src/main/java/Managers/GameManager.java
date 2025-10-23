@@ -1,4 +1,3 @@
-// In Managers/GameManager.java
 package Managers;
 
 import Managers.GameConfig.GameConfig;
@@ -17,54 +16,50 @@ import java.util.List;
  */
 public class GameManager {
 
-    // ... (Các thuộc tính ball, paddle, bricks, score, lives giữ nguyên) ...
     private Ball ball;
     private Paddle paddle;
     private List<Brick> bricks;
     private int score;
     private int lives;
-    private GameState currentGameState; // Đổi tên theo quy ước camelCase
+    private GameState currentGameState;
     private boolean playerWin;
-
-    // Trạng thái di chuyển của paddle, được quản lý bởi InputHandler
-    private boolean paddleMovingLeft = false;
-    private boolean paddleMovingRight = false;
+    private boolean ballAttachedToPaddle = true; // bóng dính paddle chờ bắn
 
     public GameManager() {
         initGame();
     }
 
     /**
-     * Thiết lập lại trò chơi về trạng thái ban đầu (nhưng vẫn giữ ở màn hình menu).
+     * Thiết lập lại trò chơi về trạng thái ban đầu
      */
     public void initGame() {
         paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT, GameConfig.PADDLE_SPEED);
-        ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);
-        bricks = new ArrayList<>();
+        float ballX = paddle.getX() + paddle.getWidth()/2 - GameConfig.BALL_WIDTH/2;
+        float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
+        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);        bricks = new ArrayList<>();
         createBricks();
         score = 0;
         lives = 2;
         playerWin = false;
-        paddleMovingLeft = false;
-        paddleMovingRight = false;
         currentGameState = GameState.Menu;
+        ballAttachedToPaddle = true;
     }
 
     /**
      * Cập nhật logic của game mỗi frame.
      */
     public void update() {
-        // Chỉ cập nhật logic khi đang chơi
         if (currentGameState != GameState.Playing) return;
-
-        // Cập nhật vị trí paddle dựa trên trạng thái di chuyển
-        if (paddleMovingLeft) paddle.moveLeft();
-        if (paddleMovingRight) paddle.moveRight();
-
-        ball.update(paddle);
         paddle.update();
+        // Cập nhật bóng
+        if (ballAttachedToPaddle) {
+            ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
+            ball.setY(paddle.getY() - ball.getHeight());
+        } else {
+            ball.update(paddle);
+        }
 
-        // Va chạm gạch
+        // Va chạm với gạch
         Iterator<Brick> it = bricks.iterator();
         while (it.hasNext()) {
             Brick brick = it.next();
@@ -93,8 +88,25 @@ public class GameManager {
             currentGameState = GameState.GameOver;
         }
     }
-    
-    // ... (createBricks, resetRound giữ nguyên) ...
+
+    /** Hàm gọi khi nhấn SPACE để bắn bóng */
+    public void releaseBall() {
+        if (ballAttachedToPaddle) {
+            ballAttachedToPaddle = false;
+            // giữ nguyên velocity hiện tại của ball
+        }
+    }
+
+    /** Cập nhật vị trí paddle theo chuột */
+    public void updatePaddlePosition(double mouseX) {
+        float newX = (float) (mouseX - paddle.getWidth() / 2);
+        if (newX < 0) newX = 0;
+        if (newX > GameConfig.SCREEN_WIDTH - paddle.getWidth())
+            newX = GameConfig.SCREEN_WIDTH - paddle.getWidth();
+        paddle.setX(newX);
+    }
+
+    /** Tạo gạch */
     private void createBricks() {
         int rows = 3;
         int cols = 8;
@@ -113,28 +125,19 @@ public class GameManager {
     }
 
     private void resetRound() {
-        paddle = new Paddle(280, 600, 120, 20, 5);
-        ball = new Ball(350, 530, 15, 15, 2, 1, -1);
+        ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 1, -1);
+        ballAttachedToPaddle = true;
     }
 
-    // --- Getters và Setters ---
-
-    public void setPaddleMovingLeft(boolean moving) {
-        this.paddleMovingLeft = moving;
-    }
-
-    public void setPaddleMovingRight(boolean moving) {
-        this.paddleMovingRight = moving;
-    }
 
     public GameState getCurrentGameState() { return currentGameState; }
     public void setCurrentGameState(GameState state) { this.currentGameState = state; }
-    
-    // ... (các getter khác giữ nguyên) ...
+
     public Ball getBall() { return ball; }
     public Paddle getPaddle() { return paddle; }
     public List<Brick> getBricks() { return bricks; }
     public int getScore() { return score; }
     public int getLives() { return lives; }
     public boolean getPlayerWin() { return playerWin; }
+    public boolean isBallAttachedToPaddle() { return ballAttachedToPaddle; }
 }

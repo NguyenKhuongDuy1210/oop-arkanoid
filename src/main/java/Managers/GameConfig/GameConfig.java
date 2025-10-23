@@ -9,11 +9,11 @@ public class GameConfig {
     // KÍCH THƯỚC VÀ TỐC ĐỘ PADDLE
     public static final int PADDLE_WIDTH = 120;
     public static final int PADDLE_HEIGHT = 20;
-    public static final int PADDLE_SPEED = 7;
+    public static final int PADDLE_SPEED = 8;
     // KÍCH THƯỚC VÀ TỐC ĐỘ BÓNG
     public static final int BALL_WIDTH = 15;
     public static final int BALL_HEIGHT = 15;
-    public static final float BALL_SPEED = 2;
+    public static final float BALL_SPEED = 6;
     // KÍCH THƯỚC VÀ KHOẢNG CÁCH GẠCH
     public static final int BRICK_WIDTH = 50;
     public static final int BRICK_HEIGHT = 25;

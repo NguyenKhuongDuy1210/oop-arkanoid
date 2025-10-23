@@ -8,8 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 /**
- * Lớp chuyên xử lý tất cả các đầu vào từ người dùng (bàn phím, chuột).
- * Lớp này giúp tách biệt logic xử lý input ra khỏi lớp Main, làm cho code sạch sẽ hơn.
+ * Lớp xử lý đầu vào từ chuột cho game.
  */
 public class InputHandler {
 
@@ -25,63 +24,38 @@ public class InputHandler {
 
     /**
      * Gắn các bộ lắng nghe sự kiện vào Scene chính của game.
-     * @param scene Scene của trò chơi.
      */
     public void attach(Scene scene) {
-        // --- XỬ LÝ SỰ KIỆN BÀN PHÍM ---
-        scene.setOnKeyPressed(e -> handleKeyPress(e.getCode()));
-        scene.setOnKeyReleased(e -> handleKeyRelease(e.getCode()));
 
         // --- XỬ LÝ SỰ KIỆN CHUỘT ---
         scene.setOnMouseMoved(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu) {
                 menu.handleMouseMove(e.getX(), e.getY());
+            } else if (gameManager.getCurrentGameState() == GameState.Playing) {
+                gameManager.updatePaddlePosition(e.getX());
+            }
+        });
+        scene.setOnKeyPressed(e -> {
+            if (gameManager.getCurrentGameState() == GameState.GameOver) {
+                if (e.getCode() == KeyCode.ENTER) {
+                    gameManager.setCurrentGameState(GameState.Menu); // quay về menu
+                }
             }
         });
 
-        scene.setOnMouseClicked(e -> {
+        scene.setOnMousePressed(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu) {
                 handleMenuSelection();
+            } else if (gameManager.getCurrentGameState() == GameState.Playing) {
+                if (e.isPrimaryButtonDown()) { // Chuột trái bắn bóng
+                    gameManager.releaseBall();
+                }
             }
         });
     }
 
     /**
-     * Xử lý khi một phím được nhấn.
-     * @param code Mã của phím được nhấn.
-     */
-    private void handleKeyPress(KeyCode code) {
-        switch (gameManager.getCurrentGameState()) {
-            case Menu:
-                if (code == KeyCode.UP) menu.navigateUp();
-                if (code == KeyCode.DOWN) menu.navigateDown();
-                if (code == KeyCode.ENTER) handleMenuSelection();
-                break;
-            case Playing:
-                if (code == KeyCode.LEFT) gameManager.setPaddleMovingLeft(true);
-                if (code == KeyCode.RIGHT) gameManager.setPaddleMovingRight(true);
-                // Ví dụ: thêm nút Pause
-                // if (code == KeyCode.P) gameManager.togglePause();
-                break;
-            case GameOver:
-                if (code == KeyCode.ENTER) gameManager.initGame();
-                break;
-        }
-    }
-
-    /**
-     * Xử lý khi một phím được nhả ra.
-     * @param code Mã của phím được nhả.
-     */
-    private void handleKeyRelease(KeyCode code) {
-        if (gameManager.getCurrentGameState() == GameState.Playing) {
-            if (code == KeyCode.LEFT) gameManager.setPaddleMovingLeft(false);
-            if (code == KeyCode.RIGHT) gameManager.setPaddleMovingRight(false);
-        }
-    }
-
-    /**
-     * Xử lý hành động khi một mục trong menu được chọn (bằng Enter hoặc chuột).
+     * Xử lý khi một mục trong menu được chọn (bằng chuột).
      */
     private void handleMenuSelection() {
         int selectedIndex = menu.getSelectedItemIndex();
