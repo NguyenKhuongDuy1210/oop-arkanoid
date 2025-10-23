@@ -32,7 +32,7 @@ public class Renderer {
         // Vẽ background
         gc.drawImage(backgroundImg, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
-        switch(gameManager.getCurrent_GameState()) {
+        switch(gameManager.getCurrentGameState()) {
             case Menu:
                 menu.render(gc);
                 break;
