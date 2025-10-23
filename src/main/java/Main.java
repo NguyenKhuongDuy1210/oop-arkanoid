@@ -10,10 +10,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/**
- * Lớp chính của ứng dụng, chịu trách nhiệm khởi tạo cửa sổ,
- * các trình quản lý (Managers) và vòng lặp game chính (AnimationTimer).
- */
 public class Main extends Application {
 
     @Override
@@ -31,13 +27,11 @@ public class Main extends Application {
         InputHandler inputHandler = new InputHandler(gameManager, renderer.getMenu(), stage);
         inputHandler.attach(scene); // Gắn trình xử lý input vào scene
 
-        // --- CÀI ĐẶT CỬA SỔ (STAGE) ---
         stage.setScene(scene);
         stage.setTitle("Arkanoid");
         stage.setResizable(false);
         stage.show();
 
-        // --- VÒNG LẶP GAME CHÍNH ---
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
