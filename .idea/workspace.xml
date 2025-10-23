@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="">
+    <list default="true" id="7e591036-7e1f-49c4-a97c-f3c61a438a46" name="Changes" comment="feat: thêm animation cho ball">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/BaseObject/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BaseObject/GameObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameConfig/GameConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameConfig/GameConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/items/effects/Animation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/effects/Animation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761150631865</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: thêm animation cho ball">
+      <option name="closed" value="true" />
+      <created>1761231918868</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1761231918868</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,6 +170,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Sửa Menu" />
     <MESSAGE value="Feat: Menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: Menu" />
+    <MESSAGE value="feat: thêm animation cho ball" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: thêm animation cho ball" />
   </component>
 </project>
