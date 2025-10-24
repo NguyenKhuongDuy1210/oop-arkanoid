@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fde51708-8b6d-4026-a4fc-a24db7fa9563" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Managers/MapManager/MapGame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/items/factory/FactoryBrick.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/items/factory/NormalBrick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/brick1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/InputHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/items/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/items/Brick.java" afterDir="false" />
-    </list>
+    <list default="true" id="fde51708-8b6d-4026-a4fc-a24db7fa9563" name="Changes" comment="fix: set hướng bóng khi vừa vào game&#10;refactor: xóa class MoveableObject" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,15 +24,15 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
-    "Application.Run JAVA.executor": "Debug",
+    "Application.Run JAVA.executor": "Run",
     "git-widget-placeholder": "main"
   }
 }]]></component>
   <component name="RunManager">
     <configuration name="Run JAVA" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="untitled" />
-      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-25\lib&quot; --add-modules javafx.controls,javafx.fxml" />
+      <module name="oop-arkanoid" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\javafx-sdk-25\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
