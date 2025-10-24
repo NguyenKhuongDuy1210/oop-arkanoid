@@ -36,7 +36,8 @@ public class GameManager {
         paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth()/2 - GameConfig.BALL_WIDTH/2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
-        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);        bricks = new ArrayList<>();
+        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);
+        bricks = new ArrayList<>();
         createBricks();
         score = 0;
         lives = 3;
