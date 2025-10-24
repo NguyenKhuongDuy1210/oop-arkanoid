@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Managers.GameConfig.GameConfig;
+
 public class Menu {
 
     private List<MenuItem> menuItems;
@@ -99,7 +101,10 @@ public class Menu {
         selectorCurrentY += (selectorTargetY - selectorCurrentY) * LERP_SPEED;
     }
 
-    public void render(GraphicsContext gc) {
+    public void render(GraphicsContext gc, Image backgroundMenu) {
+
+        gc.drawImage(backgroundMenu, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
 
@@ -109,7 +114,7 @@ public class Menu {
 
         gc.setFont(itemFont);
         for (MenuItem item : menuItems) {
-            gc.setFill(Color.web("#1E3A8A"));
+            gc.setFill(Color.web("#0008ffff"));
             gc.fillText(item.getText(), item.getX(), item.getY());
         }
 

@@ -15,11 +15,11 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.List;  
 
 public class Renderer {
 
-    private Image backgroundImg, ballImg, paddleImg, brickImg;
+    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, brickImg;
     private Menu menu;
 
     // --- BALL TRAIL EFFECT ---
@@ -38,7 +38,8 @@ public class Renderer {
     private final double SIZE_SHRINK = 0.92;
 
     public Renderer() {
-        backgroundImg = new Image("file:assets/background1.png");
+        backgroundPlaying = new Image("file:assets/background.png");
+        backgroundMenu= new Image("file:assets/background1.png");
         ballImg       = new Image("file:assets/ball.png");
         paddleImg     = new Image("file:assets/paddle.png");
         brickImg      = new Image("file:assets/brick.png");
@@ -47,10 +48,9 @@ public class Renderer {
 
     public void render(GraphicsContext gc, GameManager gameManager) {
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        gc.drawImage(backgroundImg, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         switch (gameManager.getCurrentGameState()) {
-            case Menu -> menu.render(gc);
+            case Menu -> menu.render(gc, backgroundMenu);
             case Playing -> renderGame(gc, gameManager);
             case GameOver -> {
                 renderGame(gc, gameManager);
@@ -60,6 +60,9 @@ public class Renderer {
     }
 
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
+
+        gc.drawImage(backgroundPlaying, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.isOnHit()) {
