@@ -110,11 +110,11 @@ public class Menu {
 
         gc.setFont(titleFont);
         gc.setFill(Color.WHITE);
-        //gc.fillText("ARKANOID", TITLE_X, TITLE_Y);
+        gc.fillText("ARKANOID", TITLE_X, TITLE_Y);
 
         gc.setFont(itemFont);
         for (MenuItem item : menuItems) {
-            gc.setFill(Color.web("#0008ffff"));
+            gc.setFill(Color.web("#ffffffff"));
             gc.fillText(item.getText(), item.getX(), item.getY());
         }
 
