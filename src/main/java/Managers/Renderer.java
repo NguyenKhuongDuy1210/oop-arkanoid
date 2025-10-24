@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Renderer {
 
-    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, brickImg;
+    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg;
     private Menu menu;
 
     // --- BALL TRAIL EFFECT ---
@@ -42,7 +42,6 @@ public class Renderer {
         backgroundMenu= new Image("file:assets/background1.png");
         ballImg       = new Image("file:assets/ball.png");
         paddleImg     = new Image("file:assets/paddle.png");
-        brickImg      = new Image("file:assets/brick.png");
         menu          = new Menu();
     }
 
@@ -67,10 +66,10 @@ public class Renderer {
             brick.update();
             if (brick.isOnHit()) {
                 int[] clip = brick.getCurrentClip();
-                gc.drawImage(brickImg, clip[0], clip[1], clip[2], clip[3],
+                gc.drawImage(brick.getBrickImg(), clip[0], clip[1], clip[2], clip[3],
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             } else {
-                gc.drawImage(brickImg, 0, 0, brick.getWidth(), brick.getHeight(),
+                gc.drawImage(brick.getBrickImg(), 0, 0, brick.getWidth(), brick.getHeight(),
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             }
         }

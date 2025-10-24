@@ -1,12 +1,12 @@
 package Managers;
 
 import Managers.GameConfig.GameConfig;
+import Managers.MapManager.MapGame;
 import Managers.MenuManager.GameState;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,26 +18,27 @@ public class GameManager {
 
     private Ball ball;
     private Paddle paddle;
-    private List<Brick> bricks;
+    private MapGame mapBrick;
     private int score;
     private int lives;
     private GameState currentGameState;
     private boolean playerWin;
     private boolean ballAttachedToPaddle = true; // bóng dính paddle chờ bắn
 
-    public GameManager() {
+    public GameManager() throws Exception {
         initGame();
     }
 
     /**
      * Thiết lập lại trò chơi về trạng thái ban đầu
      */
-    public void initGame() {
+    public void initGame() throws Exception {
         paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth()/2 - GameConfig.BALL_WIDTH/2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
-        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);        bricks = new ArrayList<>();
-        createBricks();
+        ball = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);
+        mapBrick = new MapGame();
+        mapBrick.createMapBricks();
         score = 0;
         lives = 3;
         playerWin = false;
@@ -60,7 +61,7 @@ public class GameManager {
         }
 
         // Va chạm với gạch
-        Iterator<Brick> it = bricks.iterator();
+        Iterator<Brick> it = mapBrick.getMapBricks().iterator();
         while (it.hasNext()) {
             Brick brick = it.next();
             brick.update();
@@ -83,7 +84,7 @@ public class GameManager {
         }
 
         // Kiểm tra thắng game
-        if (bricks.isEmpty()) {
+        if (mapBrick.getMapBricks().isEmpty()) {
             playerWin = true;
             currentGameState = GameState.GameOver;
         }
@@ -104,24 +105,6 @@ public class GameManager {
         paddle.setX(newX);
     }
 
-    /** Tạo gạch */
-    private void createBricks() {
-        int rows = 3;
-        int cols = 8;
-
-        int totalWidth = cols * (GameConfig.BRICK_WIDTH + GameConfig.BRICK_GAP) - GameConfig.BRICK_GAP;
-        int startX = (600 - totalWidth) / 2;
-        int startY = 80;
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                int x = startX + c * (GameConfig.BRICK_WIDTH + GameConfig.BRICK_GAP);
-                int y = startY + r * (GameConfig.BRICK_HEIGHT + GameConfig.BRICK_GAP);
-                bricks.add(new Brick(x, y, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 1));
-            }
-        }
-    }
-
     private void resetRound() {
         ball = new Ball(350, 530, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT, GameConfig.BALL_SPEED, 0f, -1f);
         ballAttachedToPaddle = true;
@@ -133,7 +116,7 @@ public class GameManager {
 
     public Ball getBall() { return ball; }
     public Paddle getPaddle() { return paddle; }
-    public List<Brick> getBricks() { return bricks; }
+    public List<Brick> getBricks() { return this.mapBrick.getMapBricks(); }
     public int getScore() { return score; }
     public int getLives() { return lives; }
     public boolean getPlayerWin() { return playerWin; }

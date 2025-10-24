@@ -3,6 +3,7 @@ package items;
 import BaseObject.GameObject;
 import Managers.GameConfig.GameConfig;
 import items.effects.Animation;
+import javafx.scene.image.Image;
 
 import java.awt.*;
 
@@ -15,12 +16,14 @@ public class Brick extends GameObject {
     private long lastFrameTime = 0;
     private long frameDelay = 100_000_00 ;
 
+    private Image brickImg;
     private int hitPoints;
     private boolean onHit = false;   // đếm frame animation
     private boolean destroyed = false;
 
-    public Brick(float x, float y, int width, int height, int hitPoints) {
+    public Brick(Image brickImg,float x, float y, int width, int height, int hitPoints) {
         super(x, y, width, height);
+        this.brickImg = brickImg;
         this.hitPoints = hitPoints;
         this.brick_animation = new Animation();
         brick_animation.createFrame_clips(10, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT);
@@ -41,6 +44,9 @@ public class Brick extends GameObject {
         }
     }
 
+    public Image getBrickImg() {
+        return brickImg;
+    }
     public boolean isDestroyed() { return destroyed; }
     public void setOnHit(boolean onHit) { this.onHit = onHit; }
     public boolean isOnHit() { return onHit; }

@@ -1,4 +1,5 @@
 // In Main.java
+import Managers.GameConfig.GameConfig;
 import Managers.GameManager;
 import Managers.InputHandler;
 import Managers.Renderer;
@@ -13,9 +14,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
 
-        Canvas canvas = new Canvas(600, 750);
+        Canvas canvas = new Canvas(GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         StackPane root = new StackPane(canvas);
         Scene scene = new Scene(root);
