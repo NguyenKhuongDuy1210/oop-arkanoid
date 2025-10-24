@@ -38,7 +38,11 @@ public class InputHandler {
         scene.setOnKeyPressed(e -> {
             if (gameManager.getCurrentGameState() == GameState.GameOver) {
                 if (e.getCode() == KeyCode.ENTER) {
-                    gameManager.initGame();
+                    try {
+                        gameManager.initGame();
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                     gameManager.setCurrentGameState(GameState.Menu); // quay về menu
                 }
             }
