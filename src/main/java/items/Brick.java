@@ -3,6 +3,7 @@ package items;
 import BaseObject.GameObject;
 import Managers.GameConfig.GameConfig;
 import items.effects.Animation;
+import items.factory.MovingBrick;
 import javafx.scene.image.Image;
 
 import java.awt.*;
@@ -50,8 +51,8 @@ public class Brick extends GameObject {
             else {
                 onHit = true;
             }
-
         }
+
     }
 
     public Image getBrickImg() {

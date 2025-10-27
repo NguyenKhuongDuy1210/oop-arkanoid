@@ -5,6 +5,7 @@ import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
+import items.factory.MovingBrick;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

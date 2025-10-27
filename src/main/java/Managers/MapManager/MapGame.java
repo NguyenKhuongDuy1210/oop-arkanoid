@@ -3,6 +3,7 @@ package Managers.MapManager;
 import Managers.GameConfig.GameConfig;
 import items.Brick;
 import items.factory.FactoryBrick;
+import items.factory.MovingBrick;
 import items.factory.NormalBrick;
 import items.factory.StrongBrick;
 
@@ -33,12 +34,20 @@ public class MapGame {
                             Brick brick2 = Fbrick2.createBrick(x * GameConfig.BRICK_WIDTH, y * GameConfig.BRICK_HEIGHT);
                             bricks.add(brick2);
                             break;
+                        case '3':
+                            FactoryBrick Fbrick3 = new MovingBrick();
+                            Brick brick3 = Fbrick3.createBrick(x * GameConfig.BRICK_WIDTH, y * GameConfig.BRICK_HEIGHT);
+                            bricks.add(brick3);
+                            break;
+                        default:
+                            break;
 
                     }
                 }
                 y++;
             }
             reader.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,6 +55,8 @@ public class MapGame {
 
     public void createMapBricks() throws Exception {
         this.ReadFileMap("Map/map1.txt");
+
+
     }
 
     public List<Brick> getMapBricks() {
