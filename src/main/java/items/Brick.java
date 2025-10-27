@@ -34,13 +34,23 @@ public class Brick extends GameObject {
         if (onHit && !destroyed) {
             long currentTime = System.nanoTime();
             if (currentTime - lastFrameTime >= frameDelay) {
-                frameIndex++;
+                if (gethitPoints() > 0){
+                    frameIndex+=3;
+                } else {
+                    frameIndex++;
+                }
                 lastFrameTime = currentTime;
                 if (frameIndex >= brick_animation.getFrame_clips().length) {
                     destroyed = true;
-                    visible = false;
                 }
             }
+            if (hitPoints > 0) {
+                onHit = false;
+            }
+            else {
+                onHit = true;
+            }
+
         }
     }
 
@@ -48,13 +58,16 @@ public class Brick extends GameObject {
         return brickImg;
     }
     public boolean isDestroyed() { return destroyed; }
+    public void setDestroyed(boolean destroyed) { this.destroyed = destroyed; }
     public void setOnHit(boolean onHit) { this.onHit = onHit; }
     public boolean isOnHit() { return onHit; }
+    public void sethitPoints(int hitPoints) { this.hitPoints = hitPoints; }
+    public int gethitPoints() { return hitPoints; }
     public int getFrameIndex() {
         return frameIndex;
     }
     public int[] getCurrentClip() {
-        return brick_animation.getFrame_clips()[frameIndex];
+        return brick_animation.getFrame_clips()[getFrameIndex()];
     }
 
 }

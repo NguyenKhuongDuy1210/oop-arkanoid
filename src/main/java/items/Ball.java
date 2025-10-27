@@ -65,7 +65,7 @@ public class Ball extends GameObject {
 
             if (minOverlapX < minOverlapY) dX = -dX;
             else dY = -dY;
-
+            brick.sethitPoints(brick.gethitPoints() - 1);
             brick.setOnHit(true);
             return true;
         }

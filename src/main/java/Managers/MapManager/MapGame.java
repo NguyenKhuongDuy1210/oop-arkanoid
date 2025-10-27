@@ -4,6 +4,7 @@ import Managers.GameConfig.GameConfig;
 import items.Brick;
 import items.factory.FactoryBrick;
 import items.factory.NormalBrick;
+import items.factory.StrongBrick;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,15 +19,21 @@ public class MapGame {
             String line;
             int y = 0;
             while ((line = reader.readLine()) != null) {
-                System.out.println("Dòng đọc được: " + line);
-
                 for (int i = 0; i < line.length(); i++) {
                     int x = i;
                     char digit = line.charAt(i);
-                    if (digit == '1') {
-                        FactoryBrick Fbrick = new NormalBrick();
-                        Brick brick = Fbrick.createBrick(x * GameConfig.BRICK_WIDTH, y * GameConfig.BRICK_HEIGHT);
-                        bricks.add(brick);
+                    switch (digit) {
+                        case '1':
+                            FactoryBrick Fbrick1 = new NormalBrick();
+                            Brick brick1 = Fbrick1.createBrick(x * GameConfig.BRICK_WIDTH, y * GameConfig.BRICK_HEIGHT);
+                            bricks.add(brick1);
+                            break;
+                        case '2':
+                            FactoryBrick Fbrick2 = new StrongBrick();
+                            Brick brick2 = Fbrick2.createBrick(x * GameConfig.BRICK_WIDTH, y * GameConfig.BRICK_HEIGHT);
+                            bricks.add(brick2);
+                            break;
+
                     }
                 }
                 y++;
