@@ -78,14 +78,15 @@ public class Renderer {
 
         Paddle paddle = gameManager.getPaddle();
         gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
-
         Ball ball = gameManager.getBall();
 
         // ------ TRAIL ADD ------
-        if (trails.size() >= MAX_TRAIL) trails.remove(0);
-        double cx = ball.getX() + ball.getWidth() / 2;
-        double cy = ball.getY() + ball.getHeight() / 2;
-        trails.add(new Trail(cx, cy, ball.getWidth()));
+        if (!gameManager.isBallAttachedToPaddle()) {
+            if (trails.size() >= MAX_TRAIL) trails.remove(0);
+            double cx = ball.getX() + ball.getWidth() / 2;
+            double cy = ball.getY() + ball.getHeight() / 2;
+            trails.add(new Trail(cx, cy, ball.getWidth()));
+        }
 
         // ------ DRAW TRAIL BEFORE MAIN BALL ------
         Iterator<Trail> it = trails.iterator();
