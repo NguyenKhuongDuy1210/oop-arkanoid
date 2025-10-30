@@ -12,16 +12,36 @@ public class Ball extends GameObject {
         this.speed = speed;
         this.dX = dX;
         this.dY = dY;
+        normalizeDirection();
     }
 
+    // --- Chuẩn hóa hướng (đảm bảo vector vận tốc có độ dài = 1) ---
+    private void normalizeDirection() {
+        float len = (float) Math.sqrt(dX * dX + dY * dY);
+        if (len != 0) {
+            dX /= len;
+            dY /= len;
+        }
+    }
+
+    // --- Cập nhật bóng theo paddle ---
     public void update(Paddle paddle) {
         x += dX * speed;
         y += dY * speed;
 
         // Va chạm tường
-        if (x <= 0) { x = 0; dX = Math.abs(dX); }
-        if (x + width >= GameConfig.SCREEN_WIDTH) { x = GameConfig.SCREEN_WIDTH - width; dX = -Math.abs(dX); }
-        if (y <= 0) { y = 0; dY = Math.abs(dY); }
+        if (x <= 0) {
+            x = 0;
+            dX = Math.abs(dX);
+        }
+        if (x + width >= GameConfig.SCREEN_WIDTH) {
+            x = GameConfig.SCREEN_WIDTH - width;
+            dX = -Math.abs(dX);
+        }
+        if (y <= 0) {
+            y = 0;
+            dY = Math.abs(dY);
+        }
 
         // Va chạm paddle
         if (y + height >= paddle.getY() &&
@@ -29,15 +49,22 @@ public class Ball extends GameObject {
                 x + width >= paddle.getX() &&
                 x <= paddle.getX() + paddle.getWidth()) {
 
-            dY = -Math.abs(dY);
-            double hitPos = (x + width/2 - paddle.getX()) / paddle.getWidth();
-            dX = (float)(hitPos - 0.5f);
-            y = paddle.getY() - height - 1;
+            // Tính vị trí chạm trên paddle (0.0 = trái, 1.0 = phải)
+            float hitPos = (x + width / 2 - paddle.getX()) / paddle.getWidth();
+
+            // Góc phản xạ: lệch từ -60° đến +60° tùy vị trí chạm
+            float angle = (float) Math.toRadians(-60 + hitPos * 120);
+
+            dX = (float) Math.sin(angle);
+            dY = (float) -Math.cos(angle);
+
+            normalizeDirection();
+            y = paddle.getY() - height - 1; // tránh kẹt paddle
         }
     }
 
     public boolean checkCollision(Brick brick) {
-        float margin = 2.0f;
+        float margin = 1.5f;
         float ballLeft = x + margin;
         float ballRight = x + width - margin;
         float ballTop = y + margin;
@@ -51,26 +78,51 @@ public class Ball extends GameObject {
         if (ballRight > brickLeft && ballLeft < brickRight &&
                 ballBottom > brickTop && ballTop < brickBottom) {
 
-            // Tính hướng va chạm dựa trên khoảng overlap
+            // Tính độ chồng lấn
             float overlapLeft = ballRight - brickLeft;
             float overlapRight = brickRight - ballLeft;
             float overlapTop = ballBottom - brickTop;
             float overlapBottom = brickBottom - ballTop;
 
-            boolean ballFromLeft = overlapLeft < overlapRight;
-            boolean ballFromTop = overlapTop < overlapBottom;
+            float minOverlapX = Math.min(overlapLeft, overlapRight);
+            float minOverlapY = Math.min(overlapTop, overlapBottom);
 
-            float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
-            float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
+            // Xác định hướng va chạm
+            if (minOverlapX < minOverlapY) {
+                // Va chạm theo trục X
+                if (overlapLeft < overlapRight) {
+                    // từ trái sang
+                    x -= minOverlapX;
+                } else {
+                    // từ phải sang
+                    x += minOverlapX;
+                }
+                dX = -dX;
+            } else {
+                // Va chạm theo trục Y
+                if (overlapTop < overlapBottom) {
+                    // từ trên xuống
+                    y -= minOverlapY;
+                } else {
+                    // từ dưới lên
+                    y += minOverlapY;
+                }
+                dY = -dY;
+            }
 
-            if (minOverlapX < minOverlapY) dX = -dX;
-            else dY = -dY;
-            brick.sethitPoints(brick.gethitPoints() - 1);
-            brick.setOnHit(true);
+            normalizeDirection();
+
+            // Gây sát thương 1 lần duy nhất
+            if (brick.gethitPoints() > 0) {
+                brick.sethitPoints(brick.gethitPoints() - 1);
+                brick.setOnHit(true);
+            }
+
             return true;
         }
         return false;
     }
+
 
     @Override
     public void update() {
@@ -80,26 +132,17 @@ public class Ball extends GameObject {
         if (x <= 0) { x = 0; dX = Math.abs(dX); }
         if (x + width >= GameConfig.SCREEN_WIDTH) { x = GameConfig.SCREEN_WIDTH - width; dX = -Math.abs(dX); }
         if (y <= 0) { y = 0; dY = Math.abs(dY); }
+
+        normalizeDirection();
     }
 
-    public float getdX()
-    {
-        return dX;
-    }
-    public void setdX(float dX)
-    {
-        this.dX=dX;
-    }
-    public float getdY()
-    {
-        return dY;
-    }
-    public void setdY(float dY)
-    {
-        this.dY=dY;
-    }
-    public float getSpeed()
-    {
-        return speed;
-    }
+    // --- Getter / Setter ---
+    public float getdX() { return dX; }
+    public void setdX(float dX) { this.dX = dX; normalizeDirection(); }
+
+    public float getdY() { return dY; }
+    public void setdY(float dY) { this.dY = dY; normalizeDirection(); }
+
+    public float getSpeed() { return speed; }
+    public void setSpeed(float speed) { this.speed = speed; }
 }

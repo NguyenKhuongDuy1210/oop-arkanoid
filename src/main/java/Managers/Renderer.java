@@ -102,7 +102,6 @@ public class Renderer {
         }
         gc.setGlobalAlpha(1.0);
 
-        // ---------- DRAW REAL BALL (CLEAR + STRONG) ----------
         gc.drawImage(ballImg, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());
 
         gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
