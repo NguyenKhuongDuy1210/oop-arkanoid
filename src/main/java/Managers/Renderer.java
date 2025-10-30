@@ -5,6 +5,7 @@ import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
+import items.factory.MovingBrick;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -64,11 +65,12 @@ public class Renderer {
 
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
-            if (brick.isOnHit()) {
+            if (brick.gethitPoints() >= 0) {
                 int[] clip = brick.getCurrentClip();
                 gc.drawImage(brick.getBrickImg(), clip[0], clip[1], clip[2], clip[3],
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
-            } else {
+            }
+            else {
                 gc.drawImage(brick.getBrickImg(), 0, 0, brick.getWidth(), brick.getHeight(),
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             }

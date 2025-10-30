@@ -5,7 +5,6 @@ import java.awt.Graphics;
 public abstract class GameObject {
     protected float x, y;
     protected int width, height;
-    protected boolean visible = true;
     public GameObject(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -17,14 +16,6 @@ public abstract class GameObject {
     public abstract void update();
 
     // Getter & Setter
-    public boolean isVisible()
-    {
-        return visible;
-    }
-    public void setVisible(boolean visible)
-    {
-        this.visible=visible;
-    }
     public void setX(float x) { this.x=x; }
     public void setY(float y) { this.y=y; }
     public float getX() { return x; }
