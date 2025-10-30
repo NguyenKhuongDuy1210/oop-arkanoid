@@ -23,7 +23,7 @@ public class GameManager {
     private int lives;
     private GameState currentGameState;
     private boolean playerWin;
-    private boolean ballAttachedToPaddle = true; // bóng dính paddle chờ bắn
+    private boolean ballAttachedToPaddle = true;
 
     public GameManager() throws Exception {
         initGame();
@@ -66,6 +66,7 @@ public class GameManager {
             Brick brick = it.next();
             brick.update();
             if (ball.checkCollision(brick) && !brick.isDestroyed()) {
+
                 brick.setOnHit(true);
                 score += 10;
             }
