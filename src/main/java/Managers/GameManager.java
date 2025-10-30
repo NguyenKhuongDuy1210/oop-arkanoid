@@ -103,6 +103,7 @@ public class GameManager {
         if (newX < 0) newX = 0;
         if (newX > GameConfig.SCREEN_WIDTH - paddle.getWidth())
             newX = GameConfig.SCREEN_WIDTH - paddle.getWidth();
+        paddle.setdX(newX - paddle.getX());
         paddle.setX(newX);
     }
 

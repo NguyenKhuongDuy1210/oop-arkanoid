@@ -12,7 +12,7 @@ public class Ball extends GameObject {
         this.speed = speed;
         this.dX = dX;
         this.dY = dY;
-        normalizeDirection();
+        //normalizeDirection();
     }
 
     // --- Chuẩn hóa hướng (đảm bảo vector vận tốc có độ dài = 1) ---

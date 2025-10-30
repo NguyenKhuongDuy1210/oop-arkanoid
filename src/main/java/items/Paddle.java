@@ -5,7 +5,7 @@ import Managers.GameConfig.GameConfig;
 
 public class Paddle extends GameObject {
     private String currentPowerUp;
-
+    private float dX;
     public Paddle(float x, float y, int width, int height) {
         super(x, y, width, height);
     }
@@ -20,6 +20,13 @@ public class Paddle extends GameObject {
         this.currentPowerUp = powerUp;
     }
 
+    public float getdX() {
+        return dX;
+    }
+    public void setdX(float dX)
+    {
+        this.dX=dX;
+    }
     @Override
     public void update() {
 
