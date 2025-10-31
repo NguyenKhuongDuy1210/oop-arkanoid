@@ -22,4 +22,13 @@ public abstract class GameObject {
     public float getY() { return y; }
     public int getWidth() { return width; }
     public int getHeight() { return height; }
+    public void setWidth(int Width)
+    {
+        this.width=Width;
+    }
+    public void setHeight(int H)
+    {
+        this.height=H;
+    }
+
 }

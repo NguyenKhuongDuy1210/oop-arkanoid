@@ -12,10 +12,9 @@ public class Ball extends GameObject {
         this.speed = speed;
         this.dX = dX;
         this.dY = dY;
-        //normalizeDirection();
+        normalizeDirection();
     }
 
-    // --- Chuẩn hóa hướng (đảm bảo vector vận tốc có độ dài = 1) ---
     private void normalizeDirection() {
         float len = (float) Math.sqrt(dX * dX + dY * dY);
         if (len != 0) {
@@ -24,7 +23,6 @@ public class Ball extends GameObject {
         }
     }
 
-    // --- Cập nhật bóng theo paddle ---
     public void update(Paddle paddle) {
         x += dX * speed;
         y += dY * speed;
@@ -59,7 +57,7 @@ public class Ball extends GameObject {
             dY = (float) -Math.cos(angle);
 
             normalizeDirection();
-            y = paddle.getY() - height - 1; // tránh kẹt paddle
+            y = paddle.getY() - height - 1;
         }
     }
 
@@ -112,7 +110,6 @@ public class Ball extends GameObject {
 
             normalizeDirection();
 
-            // Gây sát thương 1 lần duy nhất
             if (brick.gethitPoints() > 0) {
                 brick.sethitPoints(brick.gethitPoints() - 1);
                 brick.setOnHit(true);

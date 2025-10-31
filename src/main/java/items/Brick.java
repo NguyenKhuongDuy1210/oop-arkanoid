@@ -6,9 +6,6 @@ import items.effects.Animation;
 import items.factory.MovingBrick;
 import javafx.scene.image.Image;
 
-import java.awt.*;
-
-import static com.sun.glass.ui.Cursor.setVisible;
 
 public class Brick extends GameObject {
     // animation brick
@@ -34,25 +31,21 @@ public class Brick extends GameObject {
     public void update() {
         if (onHit && !destroyed) {
             long currentTime = System.nanoTime();
+
             if (currentTime - lastFrameTime >= frameDelay) {
-                if (gethitPoints() > 0){
-                    frameIndex+=3;
-                } else {
-                    frameIndex++;
-                }
+                frameIndex++;
                 lastFrameTime = currentTime;
+
+                // Khi animation chạy hết -> reset hoặc destroy
                 if (frameIndex >= brick_animation.getFrame_clips().length) {
-                    destroyed = true;
+                    if (hitPoints <= 0) {
+                        destroyed = true; // Brick vỡ hẳn
+                    }
+                    frameIndex = 0; // reset animation hit
+                    onHit = false;
                 }
-            }
-            if (hitPoints > 0) {
-                onHit = false;
-            }
-            else {
-                onHit = true;
             }
         }
-
     }
 
     public Image getBrickImg() {

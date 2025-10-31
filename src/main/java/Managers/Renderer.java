@@ -5,6 +5,7 @@ import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
+import items.PowerUp;
 import items.factory.MovingBrick;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -62,7 +63,9 @@ public class Renderer {
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
 
         gc.drawImage(backgroundPlaying, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-
+        for (PowerUp p : gameManager.getPowerUps()) {
+            p.render(gc);
+        }
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.gethitPoints() >= 0) {
@@ -78,32 +81,9 @@ public class Renderer {
 
         Paddle paddle = gameManager.getPaddle();
         gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
-        Ball ball = gameManager.getBall();
-
-        // ------ TRAIL ADD ------
-        if (!gameManager.isBallAttachedToPaddle()) {
-            if (trails.size() >= MAX_TRAIL) trails.remove(0);
-            double cx = ball.getX() + ball.getWidth() / 2;
-            double cy = ball.getY() + ball.getHeight() / 2;
-            trails.add(new Trail(cx, cy, ball.getWidth()));
+        for (Ball b : gameManager.getBalls()) {
+            gc.drawImage(ballImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
         }
-
-        // ------ DRAW TRAIL BEFORE MAIN BALL ------
-        Iterator<Trail> it = trails.iterator();
-        while (it.hasNext()) {
-            Trail t = it.next();
-            t.life -= LIFE_DECREASE;
-            t.size *= SIZE_SHRINK;
-            if (t.life <= 0 || t.size <= 0) { it.remove(); continue; }
-
-            gc.setGlobalAlpha(t.life * 0.6);
-            double drawX = t.cx - t.size / 2;
-            double drawY = t.cy - t.size / 2;
-            gc.drawImage(ballImg, drawX, drawY, t.size, t.size);
-        }
-        gc.setGlobalAlpha(1.0);
-
-        gc.drawImage(ballImg, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());
 
         gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         gc.setFill(Color.WHITE);
