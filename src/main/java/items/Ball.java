@@ -109,12 +109,6 @@ public class Ball extends GameObject {
             }
 
             normalizeDirection();
-
-            if (brick.gethitPoints() > 0) {
-                brick.sethitPoints(brick.gethitPoints() - 1);
-                brick.setOnHit(true);
-            }
-
             return true;
         }
         return false;

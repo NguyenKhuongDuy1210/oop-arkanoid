@@ -1,6 +1,7 @@
 package Managers;
 
 import Managers.GameConfig.GameConfig;
+import Managers.MapManager.MapGame;
 import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
@@ -47,7 +48,7 @@ public class Renderer {
         menu          = new Menu();
     }
 
-    public void render(GraphicsContext gc, GameManager gameManager) {
+    public void render(GraphicsContext gc, GameManager gameManager) throws Exception {
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         switch (gameManager.getCurrentGameState()) {
@@ -71,10 +72,6 @@ public class Renderer {
             if (brick.gethitPoints() >= 0) {
                 int[] clip = brick.getCurrentClip();
                 gc.drawImage(brick.getBrickImg(), clip[0], clip[1], clip[2], clip[3],
-                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
-            }
-            else {
-                gc.drawImage(brick.getBrickImg(), 0, 0, brick.getWidth(), brick.getHeight(),
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             }
         }

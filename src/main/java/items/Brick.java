@@ -12,7 +12,7 @@ public class Brick extends GameObject {
     private Animation brick_animation;
     private int frameIndex = 0;
     private long lastFrameTime = 0;
-    private long frameDelay = 100_000_00 ;
+    private long frameDelay = 10000000 ;
 
     private Image brickImg;
     private int hitPoints;
@@ -35,14 +35,13 @@ public class Brick extends GameObject {
             if (currentTime - lastFrameTime >= frameDelay) {
                 frameIndex++;
                 lastFrameTime = currentTime;
-
                 // Khi animation chạy hết -> reset hoặc destroy
+
                 if (frameIndex >= brick_animation.getFrame_clips().length) {
-                    if (hitPoints <= 0) {
-                        destroyed = true; // Brick vỡ hẳn
-                    }
-                    frameIndex = 0; // reset animation hit
-                    onHit = false;
+                    setDestroyed(true);
+                }
+                if (hitPoints > 0) {
+                    setOnHit(false);
                 }
             }
         }
