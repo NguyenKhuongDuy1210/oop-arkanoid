@@ -78,8 +78,6 @@ public class GameManager {
                     if (brick.gethitPoints() <= 0) {
                         brick.setOnHit(true);
                         score += 10;
-
-                        // Random tạo power-up
                         if (Math.random() < 0.2) { // 20% tỉ lệ
                             PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
                             powerUps.add(new PowerUp(type,
