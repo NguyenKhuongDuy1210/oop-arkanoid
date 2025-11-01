@@ -1,6 +1,7 @@
 package Managers;
 
 import Managers.GameConfig.GameConfig;
+import Managers.MapManager.MapGame;
 import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
@@ -47,7 +48,7 @@ public class Renderer {
         menu          = new Menu();
     }
 
-    public void render(GraphicsContext gc, GameManager gameManager) {
+    public void render(GraphicsContext gc, GameManager gameManager) throws Exception {
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         switch (gameManager.getCurrentGameState()) {

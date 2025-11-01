@@ -40,7 +40,11 @@ public class Main extends Application {
                 renderer.getMenu().update(); // Cập nhật hiệu ứng cho menu
 
                 // 2. Vẽ mọi thứ lên màn hình
-                renderer.render(gc, gameManager);
+                try {
+                    renderer.render(gc, gameManager);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         gameLoop.start();

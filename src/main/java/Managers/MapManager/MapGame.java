@@ -54,6 +54,7 @@ public class MapGame {
     }
 
     public void createMapBricks() throws Exception {
+
         this.ReadFileMap("Map/map1.txt");
 
 

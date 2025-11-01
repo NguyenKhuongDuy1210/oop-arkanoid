@@ -39,10 +39,11 @@ public class Brick extends GameObject {
                 // Khi animation chạy hết -> reset hoặc destroy
                 if (frameIndex >= brick_animation.getFrame_clips().length) {
                     if (hitPoints <= 0) {
-                        destroyed = true; // Brick vỡ hẳn
+                        setDestroyed(true);// Brick vỡ hẳn
                     }
-                    frameIndex = 0; // reset animation hit
-                    onHit = false;
+                }
+                if (hitPoints > 0) {
+                    setOnHit(false);
                 }
             }
         }

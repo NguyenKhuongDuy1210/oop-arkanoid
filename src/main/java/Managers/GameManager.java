@@ -72,13 +72,12 @@ public class GameManager {
                 if (b.checkCollision(brick) && !brick.isDestroyed()) {
                     if (brick.gethitPoints() > 0) {
                         brick.sethitPoints(brick.gethitPoints() - 1);
+                        brick.setOnHit(true);
                     }
 
                     // Nếu máu còn lại sau khi trừ = 0 → viên gạch bị phá hủy
                     if (brick.gethitPoints() <= 0) {
-                        brick.setOnHit(true);
                         score += 10;
-
                         // Random tạo power-up
                         if (Math.random() < 0.2) { // 20% tỉ lệ
                             PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
@@ -88,9 +87,7 @@ public class GameManager {
                         }
                     }
                 }
-
             }
-
             if (brick.isDestroyed()) it.remove();
         }
 
