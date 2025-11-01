@@ -74,10 +74,6 @@ public class Renderer {
                 gc.drawImage(brick.getBrickImg(), clip[0], clip[1], clip[2], clip[3],
                         brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             }
-            else {
-                gc.drawImage(brick.getBrickImg(), 0, 0, brick.getWidth(), brick.getHeight(),
-                        brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
-            }
         }
 
         Paddle paddle = gameManager.getPaddle();
