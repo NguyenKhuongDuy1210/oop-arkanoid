@@ -168,20 +168,28 @@ public class GameManager {
                 break;
 
             case MULTI_BALL:
-                if (balls.size() < 3) {
-                    List<Ball> newBalls = new ArrayList<>();
+                if (!balls.isEmpty() && balls.size() < 10) {
+                    Ball baseBall = balls.get(0);
                     for (Ball b : balls) {
-                        Ball left = new Ball(b.getX(), b.getY(), b.getWidth(), b.getHeight(),
-                                b.getSpeed(), -Math.abs(b.getdX()), -Math.abs(b.getdY()));
-                        Ball right = new Ball(b.getX(), b.getY(), b.getWidth(), b.getHeight(),
-                                b.getSpeed(), Math.abs(b.getdX()), -Math.abs(b.getdY()));
-                        newBalls.add(left);
-                        newBalls.add(right);
+                        if (b.getY() < baseBall.getY()) baseBall = b;
                     }
-                    balls.addAll(newBalls);
+                    float baseX = baseBall.getX();
+                    float baseY = baseBall.getY();
+                    float speed = baseBall.getSpeed();
+                    float dirX = baseBall.getdX();
+                    float dirY = baseBall.getdY();
+                    double angle = Math.atan2(dirY, dirX);
+                    double angleLeft = angle - Math.toRadians(15);
+                    double angleRight = angle + Math.toRadians(15);
+                    Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
+                            speed, (float)Math.cos(angleLeft), (float)Math.sin(angleLeft));
+                    Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
+                            speed, (float)Math.cos(angleRight), (float)Math.sin(angleRight));
+
+                    balls.add(left);
+                    balls.add(right);
                 }
                 break;
-
             case LIVE:
                 lives=min(lives+1,3);
                 break;
