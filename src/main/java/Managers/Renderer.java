@@ -28,7 +28,7 @@ public class Renderer {
     public Renderer() {
         backgroundPlaying = new Image("file:assets/background/background.png");
         backgroundMenu= new Image("file:assets/background/background1.png");
-        ballImg       = new Image("file:assets/ball/ball.png");
+        ballImg       = new Image("file:assets/ball/normal_ball.png");
         paddleImg     = new Image("file:assets/paddle/paddle.png");
         menu          = new Menu();
     }
