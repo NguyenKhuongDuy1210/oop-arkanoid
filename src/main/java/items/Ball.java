@@ -6,6 +6,8 @@ import Managers.GameConfig.GameConfig;
 public class Ball extends GameObject {
     private float speed;
     private float dX, dY;
+    private boolean isFireBall = false;
+    private long fireBallEndTime = 0;
 
     public Ball(float x, float y, int width, int height, float speed, float dX, float dY) {
         super(x, y, width, height);
@@ -76,39 +78,26 @@ public class Ball extends GameObject {
         if (ballRight > brickLeft && ballLeft < brickRight &&
                 ballBottom > brickTop && ballTop < brickBottom) {
 
-            // Tính độ chồng lấn
-            float overlapLeft = ballRight - brickLeft;
-            float overlapRight = brickRight - ballLeft;
-            float overlapTop = ballBottom - brickTop;
-            float overlapBottom = brickBottom - ballTop;
+            if (!isFireBall) {
+                float overlapLeft = ballRight - brickLeft;
+                float overlapRight = brickRight - ballLeft;
+                float overlapTop = ballBottom - brickTop;
+                float overlapBottom = brickBottom - ballTop;
 
-            float minOverlapX = Math.min(overlapLeft, overlapRight);
-            float minOverlapY = Math.min(overlapTop, overlapBottom);
+                float minOverlapX = Math.min(overlapLeft, overlapRight);
+                float minOverlapY = Math.min(overlapTop, overlapBottom);
 
-            // Xác định hướng va chạm
-            if (minOverlapX < minOverlapY) {
-                // Va chạm theo trục X
-                if (overlapLeft < overlapRight) {
-                    // từ trái sang
-                    x -= minOverlapX;
+                if (minOverlapX < minOverlapY) {
+                    if (overlapLeft < overlapRight) x -= minOverlapX;
+                    else x += minOverlapX;
+                    dX = -dX;
                 } else {
-                    // từ phải sang
-                    x += minOverlapX;
+                    if (overlapTop < overlapBottom) y -= minOverlapY;
+                    else y += minOverlapY;
+                    dY = -dY;
                 }
-                dX = -dX;
-            } else {
-                // Va chạm theo trục Y
-                if (overlapTop < overlapBottom) {
-                    // từ trên xuống
-                    y -= minOverlapY;
-                } else {
-                    // từ dưới lên
-                    y += minOverlapY;
-                }
-                dY = -dY;
+                normalizeDirection();
             }
-
-            normalizeDirection();
             return true;
         }
         return false;
@@ -126,8 +115,20 @@ public class Ball extends GameObject {
 
         normalizeDirection();
     }
+    public void activateFireBall(long durationMillis) {
+        isFireBall = true;
+        fireBallEndTime = System.currentTimeMillis() + durationMillis;
+    }
 
-    // --- Getter / Setter ---
+    public void updateFireBallStatus() {
+        if (isFireBall && System.currentTimeMillis() > fireBallEndTime) {
+            isFireBall = false;
+        }
+    }
+
+    public boolean isFireBall() {
+        return isFireBall;
+    }
     public float getdX() { return dX; }
     public void setdX(float dX) { this.dX = dX; normalizeDirection(); }
 

@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class GameManager {
 
     private List<Ball> balls = new ArrayList<>();
@@ -74,21 +77,17 @@ public class GameManager {
                         brick.sethitPoints(brick.gethitPoints() - 1);
                         brick.setOnHit(true);
                     }
-
-                    // Nếu máu còn lại sau khi trừ = 0 → viên gạch bị phá hủy
-                    if (brick.gethitPoints() == 0) {
-                        // Random tạo power-up
-                        if (Math.random() < 0.2) { // 20% tỉ lệ
-                            PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
-                            powerUps.add(new PowerUp(type,
-                                    brick.getX() + brick.getWidth()/2 - 16,
-                                    brick.getY() + brick.getHeight()/2));
-                        }
-                    }
                 }
+                b.updateFireBallStatus();
             }
             if (brick.isDestroyed()) {
                 score += 10;
+                if (Math.random() < 1) {
+                    PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
+                    powerUps.add(new PowerUp(type,
+                            brick.getX() + brick.getWidth()/2 - 16,
+                            brick.getY() + brick.getHeight()/2));
+                }
                 it.remove();
             }
         }
@@ -163,11 +162,11 @@ public class GameManager {
     private void activatePowerUp(PowerUp.Type type) {
         switch (type) {
             case EXPAND_PADDLE:
-                paddle.setWidth(Math.min(paddle.getWidth() + 30, 180));
+                paddle.setWidth(min(paddle.getWidth() + 30, 180));
                 break;
 
             case SHRINK_PADDLE:
-                paddle.setWidth(Math.max(paddle.getWidth() - 30, 80));
+                paddle.setWidth(max(paddle.getWidth() - 30, 80));
                 break;
 
             case MULTI_BALL:
@@ -184,6 +183,30 @@ public class GameManager {
                     balls.addAll(newBalls);
                 }
                 break;
+
+            case LIVE:
+                lives=min(lives+1,3);
+                break;
+
+            case SCORE_1:
+                score+=10;
+                break;
+
+            case SCORE_2:
+                score+=20;
+                break;
+
+            case SCORE_3:
+                score+=50;
+                break;
+
+            case BALL_FIRE:
+                for (Ball b : balls) {
+                    b.activateFireBall(1000);
+                }
+                break;
+
+
         }
     }
 

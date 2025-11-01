@@ -12,7 +12,7 @@ public class MovingBrick extends Brick implements FactoryBrick {
     }
 
     public MovingBrick() {
-        super(new Image("file:assets/brick3.png"), 0, 0, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 3);
+        super(new Image("file:assets/bricks/brick3.png"), 0, 0, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 3);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MovingBrick extends Brick implements FactoryBrick {
 
     @Override
     public Brick createBrick(int x, int y) {
-        Image brickImg = new Image("file:assets/brick3.png");
+        Image brickImg = new Image("file:assets/bricks/brick3.png");
         return new MovingBrick(brickImg, x, y, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 3);
     }
 

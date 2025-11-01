@@ -25,26 +25,11 @@ public class Renderer {
     private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg;
     private Menu menu;
 
-    // --- BALL TRAIL EFFECT ---
-    private static class Trail {
-        double cx, cy;    // tâm
-        double size;
-        double life = 1.0;
-        Trail(double cx, double cy, double size) {
-            this.cx = cx; this.cy = cy; this.size = size;
-        }
-    }
-
-    private final List<Trail> trails = new ArrayList<>();
-    private final int MAX_TRAIL = 10;
-    private final double LIFE_DECREASE = 0.05;
-    private final double SIZE_SHRINK = 0.92;
-
     public Renderer() {
-        backgroundPlaying = new Image("file:assets/background.png");
-        backgroundMenu= new Image("file:assets/background1.png");
-        ballImg       = new Image("file:assets/ball.png");
-        paddleImg     = new Image("file:assets/paddle.png");
+        backgroundPlaying = new Image("file:assets/background/background.png");
+        backgroundMenu= new Image("file:assets/background/background1.png");
+        ballImg       = new Image("file:assets/ball/ball.png");
+        paddleImg     = new Image("file:assets/paddle/paddle.png");
         menu          = new Menu();
     }
 
@@ -64,9 +49,6 @@ public class Renderer {
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
 
         gc.drawImage(backgroundPlaying, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        for (PowerUp p : gameManager.getPowerUps()) {
-            p.render(gc);
-        }
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.gethitPoints() >= 0) {
@@ -80,6 +62,10 @@ public class Renderer {
         gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
         for (Ball b : gameManager.getBalls()) {
             gc.drawImage(ballImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
+        }
+
+        for (PowerUp p : gameManager.getPowerUps()) {
+            p.render(gc);
         }
 
         gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));

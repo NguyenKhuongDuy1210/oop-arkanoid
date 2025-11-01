@@ -1,18 +1,39 @@
 package items;
 
 import Managers.GameConfig.GameConfig;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PowerUp {
     public enum Type { EXPAND_PADDLE,
         SHRINK_PADDLE,
-        EXTRA_LIFE,
-        MULTI_BALL
+        MULTI_BALL,
+        LIVE,
+        BALL_FIRE,
+        SCORE_1,
+        SCORE_2,
+        SCORE_3
+    }
+    private static final Map<Type, Image> powerUpImages = new HashMap<>();
+
+    static {
+        powerUpImages.put(Type.MULTI_BALL, new Image("file:assets/power_up/ball_add.png"));
+        powerUpImages.put(Type.BALL_FIRE, new Image("file:assets/power_up/ball_fire.png"));
+        powerUpImages.put(Type.SHRINK_PADDLE, new Image("file:assets/power_up/paddle_small.png"));
+        powerUpImages.put(Type.EXPAND_PADDLE, new Image("file:assets/power_up/paddle_large.png"));
+        powerUpImages.put(Type.LIVE, new Image("file:assets/power_up/live.png"));
+        powerUpImages.put(Type.SCORE_1, new Image("file:assets/power_up/score1.png"));
+        powerUpImages.put(Type.SCORE_2, new Image("file:assets/power_up/score2.png"));
+        powerUpImages.put(Type.SCORE_3, new Image("file:assets/power_up/score3.png"));
     }
 
     private Type type;
     private double x, y;
     private double speed = 3;
-    private double width = 32, height = 32;
+    private double width = 40, height = 16;
     private boolean active = true;
 
     public PowerUp(Type type, double x, double y) {
@@ -33,10 +54,13 @@ public class PowerUp {
                 y + height > paddle.getY();
     }
 
-    public void render(javafx.scene.canvas.GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.GOLD);
-        gc.fillOval(x, y, width, height);
+    public void render(GraphicsContext gc) {
+        Image img = powerUpImages.get(type);
+        if (img != null) {
+            gc.drawImage(img, x, y, width, height);
+        }
     }
+
 
     // getter / setter
     public boolean isActive() { return active; }
