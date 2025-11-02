@@ -48,7 +48,7 @@ public class GameManager {
         currentGameState = GameState.Menu;
         ballAttachedToPaddle = true;
     }
-
+    
     /** Cập nhật logic của game mỗi frame. */
     public void update() {
         if (currentGameState != GameState.Playing) return;
@@ -127,6 +127,37 @@ public class GameManager {
         if (mapBrick.getMapBricks().isEmpty()) {
             playerWin = true;
             currentGameState = GameState.GameOver;
+        }
+    }
+
+    public void handleMenuSelection(String itemString) throws Exception {
+        if (currentGameState == GameState.Menu) {
+            switch (itemString) {
+                case "START" -> {
+                    initGame();
+                    currentGameState = GameState.Playing;
+                    resetRound();
+                }
+                case "OPTIONS" -> currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
+                case "EXIT" -> {}
+            }
+        } else if (currentGameState == GameState.Option) { // Pause Menu
+            switch (itemString) {
+                case "RESUME" -> currentGameState = GameState.Playing;
+                case "RESTART" -> {
+                    initGame(); // Reset    
+                    currentGameState = GameState.Playing;
+                    resetRound();
+                }    
+                case "BACK TO MENU" -> initGame(); // Reset toàn bộ game
+            }
+        } else if (currentGameState == GameState.Setting) { // Setting Menu
+            switch (itemString) {
+                case "SOUND" -> {
+                    System.out.println("Đang code...");
+                }
+                case "BACK TO MENU" -> currentGameState = GameState.Menu; // Reset toàn bộ game
+            }
         }
     }
 

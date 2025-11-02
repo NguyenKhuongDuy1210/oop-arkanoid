@@ -19,6 +19,9 @@ import Managers.GameConfig.GameConfig;
 public class Menu {
 
     private List<MenuItem> menuItems;
+    private List<MenuItem> mainMenu;
+    private List<MenuItem> pauseMenu;
+    private List<MenuItem> settingsMenu;
     private int selectedItemIndex;
 
     private Image selectorIcon;
@@ -52,10 +55,15 @@ public class Menu {
             itemFont = new Font("Arial", 32);
         }
 
-        menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("START", (int)MENU_START_X, (int)(MENU_START_Y)));
-        menuItems.add(new MenuItem("OPTION", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING)));
-        menuItems.add(new MenuItem("EXIT", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING * 2)));
+        mainMenu = new ArrayList<>();
+        mainMenu.add(new MenuItem("START", (int)MENU_START_X, (int)(MENU_START_Y)));
+        mainMenu.add(new MenuItem("SETTINGS", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING)));
+        mainMenu.add(new MenuItem("EXIT", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING * 2)));
+
+        createPauseMenu();
+        createSettingMenu();
+
+        menuItems = mainMenu;
         
         selectedItemIndex = 0;
 
@@ -64,11 +72,45 @@ public class Menu {
             selectorCurrentY = selectorTargetY;
         }
     }
+
+    private void createPauseMenu() {
+        pauseMenu = new ArrayList<>();
+        pauseMenu.add(new MenuItem("RESUME", (int)MENU_START_X, (int)(MENU_START_Y)));
+        pauseMenu.add(new MenuItem("RESTART", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING)));
+        pauseMenu.add(new MenuItem("BACK TO MENU", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING * 2)));
+    }
+
+    private void createSettingMenu() {
+        settingsMenu = new ArrayList<>();
+        settingsMenu.add(new MenuItem("SOUND", (int)MENU_START_X, (int)(MENU_START_Y)));
+        settingsMenu.add(new MenuItem("BACK TO MENU", (int)MENU_START_X, (int)(MENU_START_Y + MENU_ITEM_SPACING * 2)));
+    }
+
+    public void switchToMainMenu() {
+        menuItems = mainMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
+    }
+
+    public void switchToPauseMenu() {
+        menuItems = pauseMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
+    }
+
+    public void switchToSettingMenu() {
+        menuItems = settingsMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
+    }
     
     private void updateTargetY() {
         if (!menuItems.isEmpty()) {
             MenuItem selectedItem = menuItems.get(selectedItemIndex);
-            selectorTargetY = selectedItem.getY() - (itemFont.getSize() / 2);
+            selectorTargetY = selectedItem.getY() - (itemFont.getSize() / 2);     
         }
     }
 
@@ -79,7 +121,7 @@ public class Menu {
             Text textNode = new Text(item.getText());
             textNode.setFont(itemFont);
             double textWidth = textNode.getLayoutBounds().getWidth();
-            // THAY ĐỔI Ở ĐÂY: Giảm chiều cao của hộp va chạm để nó "ôm sát" vào chữ hơn
+
             double textHeight = textNode.getLayoutBounds().getHeight() * 0.7;
 
             double xMin = item.getX() - textWidth / 2.0;
@@ -101,18 +143,23 @@ public class Menu {
         selectorCurrentY += (selectorTargetY - selectorCurrentY) * LERP_SPEED;
     }
 
-    public void render(GraphicsContext gc, Image backgroundMenu) {
+    public void render(GraphicsContext gc) {
+        
+        String title = "ARKANOID";
 
-        gc.drawImage(backgroundMenu, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        if (menuItems == pauseMenu) {
+            title = "PAUSED";
+        } else if (menuItems == settingsMenu) {
+            title = "SETTINGS";
+        }
+        
+        gc.setTextAlign(TextAlignment.CENTER); // căn ngang giữa
+        gc.setTextBaseline(VPos.CENTER); // căn dọc giữa
+        gc.setFont(titleFont); // Đặt font cho tiêu đề
+        gc.setFill(Color.WHITE); // Màu cho tiêu đề
+        gc.fillText(title, TITLE_X, TITLE_Y); // Vẽ tiêu đề
+        gc.setFont(itemFont); // Đặt font cho các mục menu
 
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setTextBaseline(VPos.CENTER);
-
-        gc.setFont(titleFont);
-        gc.setFill(Color.WHITE);
-        gc.fillText("ARKANOID", TITLE_X, TITLE_Y);
-
-        gc.setFont(itemFont);
         for (MenuItem item : menuItems) {
             gc.setFill(Color.web("#ffffffff"));
             gc.fillText(item.getText(), item.getX(), item.getY());
@@ -140,6 +187,10 @@ public class Menu {
         }
     }
 
+    public MenuItem getSelectedItem() {
+        return menuItems.get(selectedItemIndex); // trả về mục menu được chọn hiện tại
+    }
+
     public void navigateUp() {
         selectedItemIndex = (selectedItemIndex - 1 + menuItems.size()) % menuItems.size();
         updateTargetY();
@@ -152,5 +203,9 @@ public class Menu {
 
     public int getSelectedItemIndex() {
         return selectedItemIndex;
+    }
+
+    public Font getTitleFont() {
+        return titleFont;
     }
 }

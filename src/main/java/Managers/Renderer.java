@@ -26,22 +26,29 @@ public class Renderer {
     private Menu menu;
 
     public Renderer() {
-        backgroundPlaying = new Image("file:assets/background/background.png");
-        backgroundMenu= new Image("file:assets/background/background1.png");
+        backgroundPlaying = new Image("file:assets/background/Background_Play.png");
+        backgroundMenu= new Image("file:assets/background/Background_Menu.png");
         ballImg       = new Image("file:assets/ball/normal_ball.png");
         paddleImg     = new Image("file:assets/paddle/paddle.png");
         menu          = new Menu();
     }
 
     public void render(GraphicsContext gc, GameManager gameManager) throws Exception {
-        gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Xóa khung vẽ trước khi vẽ lại
 
         switch (gameManager.getCurrentGameState()) {
-            case Menu -> menu.render(gc, backgroundMenu);
+            case Menu, Setting -> {
+                gc.drawImage(backgroundMenu, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền menu
+                menu.render(gc); // Vẽ nội dung hiện trên menu
+            }
             case Playing -> renderGame(gc, gameManager);
             case GameOver -> {
                 renderGame(gc, gameManager);
                 renderGameOver(gc, gameManager);
+            }
+            case Option -> {
+                renderGame(gc, gameManager); // Vẽ game bên dưới (sử dụng nền Playing)
+                renderOptionMenu(gc); // Vẽ menu Option/Pause lên trên
             }
         }
     }
@@ -94,6 +101,13 @@ public class Renderer {
 
         gc.setFont(new Font("Arial", 20));
         gc.fillText("Press Enter to Return to Menu", 300, 420);
+    }
+
+    private void renderOptionMenu(GraphicsContext gc) {
+        gc.setFill(Color.rgb(0, 0, 0, 0.7)); // Màu nền mờ 70%
+        gc.fillRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền mờ
+
+        menu.render(gc); // Vẽ nội dung menu Option/Pause
     }
 
     public Menu getMenu() {
