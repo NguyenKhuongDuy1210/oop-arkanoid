@@ -32,9 +32,9 @@ public class Menu {
     private double selectorTargetY;
     private final double LERP_SPEED = 0.15;
 
-    private final double TITLE_X = 300;
+    private final double TITLE_X = GameConfig.SCREEN_X + 300;
     private final double TITLE_Y = 200;
-    private final double MENU_START_X = 300;
+    private final double MENU_START_X = GameConfig.SCREEN_X + 300;
     private final double MENU_START_Y = 350;
     private final double MENU_ITEM_SPACING = 60;
     private final double SELECTOR_PADDING = 25;

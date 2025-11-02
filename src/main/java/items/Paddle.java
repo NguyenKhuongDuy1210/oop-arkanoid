@@ -11,10 +11,10 @@ public class Paddle extends GameObject {
     }
 
     public void move() {
-        if(x<0)
-            x=0;
-        if(x> GameConfig.SCREEN_WIDTH - width)
-            x = GameConfig.SCREEN_WIDTH - width;
+        if(x < 0)
+            x = 0;
+        if(x > GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width)
+            x = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width;
     }
    /* public void applyPowerUp(String powerUp) {
         this.currentPowerUp = powerUp;

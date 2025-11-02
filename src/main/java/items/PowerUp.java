@@ -44,7 +44,7 @@ public class PowerUp {
 
     public void update() {
         y += speed;
-        if (y > GameConfig.SCREEN_HEIGHT) active = false; // rơi khỏi màn
+        if (y > GameConfig.SCREEN_PLAY_HEIGHT) active = false; // rơi khỏi màn
     }
 
     public boolean checkCollision(Paddle paddle) {

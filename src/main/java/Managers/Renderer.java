@@ -1,13 +1,11 @@
 package Managers;
 
 import Managers.GameConfig.GameConfig;
-import Managers.MapManager.MapGame;
 import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
 import items.Paddle;
 import items.PowerUp;
-import items.factory.MovingBrick;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -16,17 +14,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;  
-
 public class Renderer {
 
-    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg;
+    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen;
     private Menu menu;
 
     public Renderer() {
+
         backgroundPlaying = new Image("file:assets/background/Background_Play.png");
+        backgroundScreen = new Image("file:assets/background/background_screen2.png");
         backgroundMenu= new Image("file:assets/background/Background_Menu.png");
         ballImg       = new Image("file:assets/ball/normal_ball.png");
         paddleImg     = new Image("file:assets/paddle/paddle.png");
@@ -35,10 +31,10 @@ public class Renderer {
 
     public void render(GraphicsContext gc, GameManager gameManager) throws Exception {
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Xóa khung vẽ trước khi vẽ lại
-
+        gc.drawImage(backgroundScreen, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         switch (gameManager.getCurrentGameState()) {
             case Menu, Setting -> {
-                gc.drawImage(backgroundMenu, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền menu
+                gc.drawImage(backgroundMenu, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền menu
                 menu.render(gc); // Vẽ nội dung hiện trên menu
             }
             case Playing -> renderGame(gc, gameManager);
@@ -54,8 +50,7 @@ public class Renderer {
     }
 
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
-
-        gc.drawImage(backgroundPlaying, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        gc.drawImage(backgroundPlaying, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT);
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.gethitPoints() >= 0) {
@@ -77,8 +72,8 @@ public class Renderer {
 
         gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         gc.setFill(Color.WHITE);
-        gc.fillText("Score: " + gameManager.getScore(), 50, 20);
-        gc.fillText("Lives: " + gameManager.getLives(), 550, 20);
+        gc.fillText("Score: " + gameManager.getScore(),GameConfig.SCREEN_X + 50, 20);
+        gc.fillText("Lives: " + gameManager.getLives(),GameConfig.SCREEN_X + 550, 20);
     }
 
     private void renderGameOver(GraphicsContext gc, GameManager gameManager) {
@@ -88,24 +83,24 @@ public class Renderer {
         if (gameManager.getPlayerWin()) {
             gc.setFill(Color.LIMEGREEN);
             gc.setFont(new Font("Arial", 70));
-            gc.fillText("YOU WIN!", 300, 300);
+            gc.fillText("YOU WIN!", GameConfig.SCREEN_X + 300, 300);
         } else {
             gc.setFill(Color.RED);
             gc.setFont(new Font("Arial", 70));
-            gc.fillText("GAME OVER", 300, 300);
+            gc.fillText("GAME OVER", GameConfig.SCREEN_X + 300, 300);
         }
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 30));
-        gc.fillText("Final Score: " + gameManager.getScore(), 300, 360);
+        gc.fillText("Final Score: " + gameManager.getScore(), GameConfig.SCREEN_X + 300, 360);
 
         gc.setFont(new Font("Arial", 20));
-        gc.fillText("Press Enter to Return to Menu", 300, 420);
+        gc.fillText("Press Enter to Return to Menu", GameConfig.SCREEN_X + 300, 420);
     }
 
     private void renderOptionMenu(GraphicsContext gc) {
         gc.setFill(Color.rgb(0, 0, 0, 0.7)); // Màu nền mờ 70%
-        gc.fillRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền mờ
+        gc.fillRect(GameConfig.SCREEN_X , GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền mờ
 
         menu.render(gc); // Vẽ nội dung menu Option/Pause
     }

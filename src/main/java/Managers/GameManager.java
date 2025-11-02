@@ -32,7 +32,7 @@ public class GameManager {
 
     /** Thiết lập lại trò chơi về trạng thái ban đầu */
     public void initGame() throws Exception {
-        paddle = new Paddle(280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
+        paddle = new Paddle(GameConfig.SCREEN_X + 280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         Ball mainBall = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
@@ -82,16 +82,16 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                /*if (Math.random() < 1) {
+                if (Math.random() < 1) {
                     PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth()/2 - 16,
                             brick.getY() + brick.getHeight()/2));
-                }*/
-                PowerUp.Type type = PowerUp.Type.values()[2];
-                powerUps.add(new PowerUp(type,
-                        brick.getX() + brick.getWidth()/2 - 16,
-                        brick.getY() + brick.getHeight()/2));
+                }
+//                PowerUp.Type type = PowerUp.Type.values()[2];
+//                powerUps.add(new PowerUp(type,
+//                        brick.getX() + brick.getWidth()/2 - 16,
+//                        brick.getY() + brick.getHeight()/2));
                 it.remove();
             }
         }
@@ -119,6 +119,7 @@ public class GameManager {
 
         if (balls.isEmpty()) {
             lives--;
+            balls.clear();
             if (lives <= 0) {
                 playerWin = false;
                 currentGameState = GameState.GameOver;
@@ -174,9 +175,9 @@ public class GameManager {
     /** Cập nhật vị trí paddle theo chuột */
     public void updatePaddlePosition(double mouseX) {
         float newX = (float) (mouseX - paddle.getWidth() / 2);
-        if (newX < 0) newX = 0;
-        if (newX > GameConfig.SCREEN_WIDTH - paddle.getWidth())
-            newX = GameConfig.SCREEN_WIDTH - paddle.getWidth();
+        if (newX < GameConfig.SCREEN_X) newX = GameConfig.SCREEN_X;
+        if (newX > GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - paddle.getWidth())
+            newX = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - paddle.getWidth();
         paddle.setdX(newX - paddle.getX());
         paddle.setX(newX);
     }
@@ -204,7 +205,6 @@ public class GameManager {
             case MULTI_BALL:
                 if (!balls.isEmpty() && balls.size() < 8) {
                     List<Ball> newBalls = new ArrayList<>();
-
                     for (Ball baseBall : balls) {
                         float baseX = baseBall.getX();
                         float baseY = baseBall.getY();
@@ -217,7 +217,6 @@ public class GameManager {
 
                         Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
                                 speed, (float)Math.cos(30), (float)Math.sin(30));
-
                         newBalls.add(left);
                         newBalls.add(right);
                     }

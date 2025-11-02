@@ -30,12 +30,12 @@ public class Ball extends GameObject {
         y += dY * speed;
 
         // Va chạm tường
-        if (x <= 0) {
-            x = 0;
+        if (x <= GameConfig.SCREEN_X) {
+            x = GameConfig.SCREEN_X;
             dX = Math.abs(dX);
         }
-        if (x + width >= GameConfig.SCREEN_WIDTH) {
-            x = GameConfig.SCREEN_WIDTH - width;
+        if (x + width >= GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH) {
+            x = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width;
             dX = -Math.abs(dX);
         }
         if (y <= 0) {
@@ -110,7 +110,10 @@ public class Ball extends GameObject {
         y += dY * speed;
 
         if (x <= 0) { x = 0; dX = Math.abs(dX); }
-        if (x + width >= GameConfig.SCREEN_WIDTH) { x = GameConfig.SCREEN_WIDTH - width; dX = -Math.abs(dX); }
+        if (x + width >= GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH) {
+            x = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width;
+            dX = -Math.abs(dX);
+        }
         if (y <= 0) { y = 0; dY = Math.abs(dY); }
 
         normalizeDirection();

@@ -19,7 +19,7 @@ public class MovingBrick extends Brick implements FactoryBrick {
     public void update() {
         super.update();
         setX(getX() + dx);
-        if (getX() <= 0 || getX() + getWidth() >= GameConfig.SCREEN_WIDTH) {
+        if (getX() <= GameConfig.SCREEN_X || getX() + getWidth() >= GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH) {
             dx *= -1;
         }
     }
