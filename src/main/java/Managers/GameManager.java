@@ -47,8 +47,9 @@ public class GameManager {
         playerWin = false;
         currentGameState = GameState.Menu;
         ballAttachedToPaddle = true;
+        powerUps.clear();
     }
-    
+
     /** Cập nhật logic của game mỗi frame. */
     public void update() {
         if (currentGameState != GameState.Playing) return;
@@ -56,7 +57,7 @@ public class GameManager {
 
         // Cập nhật bóng
         if (ballAttachedToPaddle) {
-            Ball b = balls.get(0);
+            Ball b = balls.getFirst();
             b.setX(paddle.getX() + paddle.getWidth() / 2 - b.getWidth() / 2);
             b.setY(paddle.getY() - b.getHeight());
         } else {
@@ -148,7 +149,7 @@ public class GameManager {
                     initGame(); // Reset    
                     currentGameState = GameState.Playing;
                     resetRound();
-                }    
+                }
                 case "BACK TO MENU" -> initGame(); // Reset toàn bộ game
             }
         } else if (currentGameState == GameState.Setting) { // Setting Menu
@@ -178,13 +179,12 @@ public class GameManager {
     }
 
     private void resetRound() {
+        balls.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         balls.add(new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
                 GameConfig.BALL_SPEED, 0f, -1f));
         ballAttachedToPaddle = true;
-        //powerUps.clear();
-
     }
 
     /** Kích hoạt hiệu ứng Power-Up */
