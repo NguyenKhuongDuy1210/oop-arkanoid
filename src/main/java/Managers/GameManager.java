@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class GameManager {
 
@@ -83,12 +82,16 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 1) {
+                /*if (Math.random() < 1) {
                     PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth()/2 - 16,
                             brick.getY() + brick.getHeight()/2));
-                }
+                }*/
+                PowerUp.Type type = PowerUp.Type.values()[2];
+                powerUps.add(new PowerUp(type,
+                        brick.getX() + brick.getWidth()/2 - 16,
+                        brick.getY() + brick.getHeight()/2));
                 it.remove();
             }
         }
@@ -199,27 +202,28 @@ public class GameManager {
                 break;
 
             case MULTI_BALL:
-                if (!balls.isEmpty() && balls.size() < 10) {
-                    Ball baseBall = balls.get(0);
-                    for (Ball b : balls) {
-                        if (b.getY() < baseBall.getY()) baseBall = b;
-                    }
-                    float baseX = baseBall.getX();
-                    float baseY = baseBall.getY();
-                    float speed = baseBall.getSpeed();
-                    float dirX = baseBall.getdX();
-                    float dirY = baseBall.getdY();
-                    double angle = Math.atan2(dirY, dirX);
-                    double angleLeft = angle - Math.toRadians(15);
-                    double angleRight = angle + Math.toRadians(15);
-                    Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                            speed, (float)Math.cos(angleLeft), (float)Math.sin(angleLeft));
-                    Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                            speed, (float)Math.cos(angleRight), (float)Math.sin(angleRight));
+                if (!balls.isEmpty() && balls.size() < 8) {
+                    List<Ball> newBalls = new ArrayList<>();
 
-                    balls.add(left);
-                    balls.add(right);
+                    for (Ball baseBall : balls) {
+                        float baseX = baseBall.getX();
+                        float baseY = baseBall.getY();
+                        float speed = baseBall.getSpeed();
+                        float dirX = baseBall.getdX();
+                        float dirY = baseBall.getdY();
+                        //double angle = Math.atan2(dirY, dirX);
+                        Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
+                                speed, (float)Math.cos(150), (float)Math.sin(150));
+
+                        Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
+                                speed, (float)Math.cos(30), (float)Math.sin(30));
+
+                        newBalls.add(left);
+                        newBalls.add(right);
+                    }
+                    balls.addAll(newBalls);
                 }
+
                 break;
             case LIVE:
                 lives=min(lives+1,3);

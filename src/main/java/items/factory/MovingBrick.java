@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 
 public class MovingBrick extends Brick implements FactoryBrick {
     private int dx = 1;
-
+    //private
     public MovingBrick(Image brickImg, float x, float y, int width, int height, int hitPoints) {
         super(brickImg, x, y, width, height, hitPoints);
     }
@@ -30,5 +30,8 @@ public class MovingBrick extends Brick implements FactoryBrick {
         return new MovingBrick(brickImg, x, y, GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT, 3);
     }
 
-
+    public void setDx(int dx)
+    {
+        this.dx=dx;
+    }
 }
