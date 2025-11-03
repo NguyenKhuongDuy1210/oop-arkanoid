@@ -2,9 +2,8 @@ package Managers.MenuManager;
 
 public class MenuItem {
     private String text;
-    private int x, y; // Sử dụng số nguyên (int) cho tọa độ
+    private int x, y;
 
-    // Constructor nhận vào một Chuỗi (String) và hai số nguyên (int)
     public MenuItem(String text, int x, int y) {
         this.text = text;
         this.x = x;

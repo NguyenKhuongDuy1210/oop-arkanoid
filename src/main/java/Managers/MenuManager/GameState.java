@@ -1,7 +1,7 @@
 package Managers.MenuManager;
 
 /*
- * Lưu 3 trạng thái của game.
+ * Lưu các trạng thái của game.
  */
 public enum GameState {
     Menu,

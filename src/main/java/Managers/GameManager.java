@@ -181,7 +181,7 @@ public class GameManager {
         paddle.setdX(newX - paddle.getX());
         paddle.setX(newX);
     }
-
+    
     private void resetRound() {
         balls.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
