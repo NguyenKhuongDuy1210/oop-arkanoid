@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.marlin.MarlinUtils;
+
 import Managers.GameConfig.GameConfig;
 
 public class Menu {
@@ -21,8 +23,10 @@ public class Menu {
     private List<MenuItem> mainMenu; // danh sách mục menu chính
     private List<MenuItem> pauseMenu; // danh sách mục menu tạm dừng
     private List<MenuItem> settingsMenu; // danh sách mục menu cài đặt
+    private List<MenuItem> levelsMenu; // danh sách map
 
-    private int selectedItemIndex; // chỉ số mục menu được chọn hiện tại
+    private int selectedItemIndex; // mục menu được chọn hiện tại
+    private int selectedLevel = 1; // map được chọn hiện tại
 
     private Image selectorIcon; // hình ảnh con trỏ
     private Font titleFont; // font tiêu đề
@@ -66,8 +70,12 @@ public class Menu {
         mainMenu.add(new MenuItem("OPTIONS", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING))); // thêm mục "OPTIONS" vào menu chính
         mainMenu.add(new MenuItem("EXIT", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 2))); //  thêm mục "EXIT" vào menu chính
 
+        // tạo các menu phụ ////////////////////////////////////////////////
         createPauseMenu(); // tạo menu tạm dừng
         createSettingMenu(); // tạo menu cài đặt
+        createLevelsMenu(); // tạo menu map
+
+        ////////////////////////////////////////////////////////////////////
 
         menuItems = mainMenu; // khởi đầu với menu chính
 
@@ -77,6 +85,15 @@ public class Menu {
             updateTargetY();
             selectorCurrentY = selectorTargetY;
         }
+    }
+
+    private void createLevelsMenu() {
+        levelsMenu = new ArrayList<>();
+        int startY = (int) (MENU_START_Y - 50);
+        for (int i = 1; i <= 7; i++) {
+            levelsMenu.add(new MenuItem("LEVEL " + i, (int) MENU_START_X, (int) (startY + (i - 1) * MENU_ITEM_SPACING)));
+        }
+        levelsMenu.add(new MenuItem("BACK TO OPTIONS", (int) MENU_START_X, (int) (startY + 11 * MENU_ITEM_SPACING)));
     }
 
     private void createPauseMenu() { // tạo menu tạm dừng
@@ -89,7 +106,15 @@ public class Menu {
     private void createSettingMenu() { // tạo menu cài đặt
         settingsMenu = new ArrayList<>();
         settingsMenu.add(new MenuItem("SOUND", (int) MENU_START_X, (int) (MENU_START_Y)));
+        settingsMenu.add(new MenuItem("LEVELS", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING)));
         settingsMenu.add(new MenuItem("BACK TO MENU", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 2)));
+    }
+
+    public void switchToLevelsMenu() {
+        menuItems = levelsMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
     }
 
     public void switchToMainMenu() {
@@ -180,5 +205,17 @@ public class Menu {
 
     public double getTitleY() {
         return TITLE_Y;
+    }
+
+    public List<MenuItem> getLevelsMenu() {
+        return levelsMenu;
+    }
+
+    public int getSelectedLevel() {
+        return selectedLevel;
+    }
+
+    public void setSelectedLevel(int level) {
+        selectedLevel = level;
     }
 }

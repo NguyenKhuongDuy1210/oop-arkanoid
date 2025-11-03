@@ -17,6 +17,8 @@ import static java.lang.Math.*;
 public class GameManager {
 
     private List<Ball> balls = new ArrayList<>();
+    private List<PowerUp> powerUps = new ArrayList<>();
+
     private Paddle paddle;
     private MapGame mapBrick;
     private int score;
@@ -24,13 +26,16 @@ public class GameManager {
     private GameState currentGameState;
     private boolean playerWin;
     private boolean ballAttachedToPaddle = true;
-    private List<PowerUp> powerUps = new ArrayList<>();
+    private int currentLevel = 1;
+    private boolean levelCompleted = false;
 
     public GameManager() throws Exception {
         initGame();
     }
 
-    /** Thiết lập lại trò chơi về trạng thái ban đầu */
+    /**
+     * Thiết lập lại trò chơi về trạng thái ban đầu
+     */
     public void initGame() throws Exception {
         paddle = new Paddle(GameConfig.SCREEN_X + 280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
@@ -39,19 +44,47 @@ public class GameManager {
                 GameConfig.BALL_SPEED, 0f, -1f);
         balls.clear();
         balls.add(mainBall);
-        mapBrick = new MapGame();
-        mapBrick.createMapBricks();
+
+        mapBrick = new MapGame(); // Khởi tạo đối tượng MapGame
+        mapBrick.setCurrentLevel(currentLevel); // Thiết lập level hiện tại
+        mapBrick.createMapBricks(); // Tạo các viên gạch cho level hiện tại
+
         score = 0;
         lives = 3;
         playerWin = false;
         currentGameState = GameState.Menu;
         ballAttachedToPaddle = true;
         powerUps.clear();
+        levelCompleted = false;
     }
 
-    /** Cập nhật logic của game mỗi frame. */
+    public void startLevel(int level) throws Exception {
+        currentLevel = level;
+        levelCompleted = false;
+        mapBrick.setCurrentLevel(level);
+        mapBrick.createMapBricks(); // load map
+        if (mapBrick.getMapBricks().isEmpty()) {
+            System.err.println("Không load được map, game sẽ không bắt đầu!");
+            return;
+        }
+
+        balls.clear();
+        float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
+        float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
+        balls.add(new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
+                GameConfig.BALL_SPEED, 0f, -1f));
+        ballAttachedToPaddle = true;
+        currentGameState = GameState.Playing;
+        playerWin = false;
+    }
+
+    /**
+     * Cập nhật logic của game mỗi frame.
+     */
     public void update() {
-        if (currentGameState != GameState.Playing) return;
+        if (currentGameState != GameState.Playing) {
+            return;
+        }
         paddle.update();
 
         // Cập nhật bóng
@@ -83,10 +116,10 @@ public class GameManager {
             if (brick.isDestroyed()) {
                 score += 10;
                 if (Math.random() < 1) {
-                    PowerUp.Type type = PowerUp.Type.values()[(int)(Math.random() * PowerUp.Type.values().length)];
+                    PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
-                            brick.getX() + brick.getWidth()/2 - 16,
-                            brick.getY() + brick.getHeight()/2));
+                            brick.getX() + brick.getWidth() / 2 - 16,
+                            brick.getY() + brick.getHeight() / 2));
                 }
 //                PowerUp.Type type = PowerUp.Type.values()[2];
 //                powerUps.add(new PowerUp(type,
@@ -106,7 +139,9 @@ public class GameManager {
                 pIt.remove();
                 continue;
             }
-            if (!p.isActive()) pIt.remove();
+            if (!p.isActive()) {
+                pIt.remove();
+            }
         }
 
         Iterator<Ball> ballIt = balls.iterator();
@@ -129,7 +164,24 @@ public class GameManager {
         }
 
         // --- Kiểm tra thắng game ---
-        if (mapBrick.getMapBricks().isEmpty()) {
+        if (mapBrick.getMapBricks().isEmpty() && !levelCompleted) {
+            try {
+                handleLevelComplete(); // ✅ xử lý qua level
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void handleLevelComplete() throws Exception {
+        levelCompleted = true;
+        System.out.println("✅ Hoàn thành level " + currentLevel);
+
+        if (currentLevel < 10) {
+            currentLevel++;
+            startLevel(currentLevel);
+        } else {
+            System.out.println("🎉 Bạn đã thắng toàn bộ 10 màn!");
             playerWin = true;
             currentGameState = GameState.GameOver;
         }
@@ -143,25 +195,33 @@ public class GameManager {
                     currentGameState = GameState.Playing;
                     resetRound();
                 }
-                case "OPTIONS" -> currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
-                case "EXIT" -> {}
+                case "OPTIONS" ->
+                    currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
+                case "EXIT" -> {
+                }
             }
         } else if (currentGameState == GameState.Option) { // Pause Menu
             switch (itemString) {
-                case "RESUME" -> currentGameState = GameState.Playing;
+                case "RESUME" ->
+                    currentGameState = GameState.Playing;
                 case "RESTART" -> {
                     initGame(); // Reset    
                     currentGameState = GameState.Playing;
                     resetRound();
                 }
-                case "BACK TO MENU" -> initGame(); // Reset toàn bộ game
+                case "BACK TO MENU" ->
+                    initGame(); // Reset toàn bộ game
             }
         } else if (currentGameState == GameState.Setting) { // Setting Menu
             switch (itemString) {
                 case "SOUND" -> {
                     System.out.println("Đang code...");
                 }
-                case "BACK TO MENU" -> currentGameState = GameState.Menu; // Reset toàn bộ game
+                case "LEVELS" -> {
+
+                }
+                case "BACK TO MENU" ->
+                    currentGameState = GameState.Menu; // Reset toàn bộ game
             }
         }
     }
@@ -172,16 +232,21 @@ public class GameManager {
         }
     }
 
-    /** Cập nhật vị trí paddle theo chuột */
+    /**
+     * Cập nhật vị trí paddle theo chuột
+     */
     public void updatePaddlePosition(double mouseX) {
         float newX = (float) (mouseX - paddle.getWidth() / 2);
-        if (newX < GameConfig.SCREEN_X) newX = GameConfig.SCREEN_X;
-        if (newX > GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - paddle.getWidth())
+        if (newX < GameConfig.SCREEN_X) {
+            newX = GameConfig.SCREEN_X;
+        }
+        if (newX > GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - paddle.getWidth()) {
             newX = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - paddle.getWidth();
+        }
         paddle.setdX(newX - paddle.getX());
         paddle.setX(newX);
     }
-    
+
     private void resetRound() {
         balls.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
@@ -191,7 +256,9 @@ public class GameManager {
         ballAttachedToPaddle = true;
     }
 
-    /** Kích hoạt hiệu ứng Power-Up */
+    /**
+     * Kích hoạt hiệu ứng Power-Up
+     */
     private void activatePowerUp(PowerUp.Type type) {
         switch (type) {
             case EXPAND_PADDLE:
@@ -213,10 +280,10 @@ public class GameManager {
                         float dirY = baseBall.getdY();
                         //double angle = Math.atan2(dirY, dirX);
                         Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                                speed, (float)Math.cos(150), (float)Math.sin(150));
+                                speed, (float) Math.cos(150), (float) Math.sin(150));
 
                         Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                                speed, (float)Math.cos(30), (float)Math.sin(30));
+                                speed, (float) Math.cos(30), (float) Math.sin(30));
                         newBalls.add(left);
                         newBalls.add(right);
                     }
@@ -225,19 +292,19 @@ public class GameManager {
 
                 break;
             case LIVE:
-                lives=min(lives+1,3);
+                lives = min(lives + 1, 3);
                 break;
 
             case SCORE_1:
-                score+=10;
+                score += 10;
                 break;
 
             case SCORE_2:
-                score+=20;
+                score += 20;
                 break;
 
             case SCORE_3:
-                score+=50;
+                score += 50;
                 break;
 
             case BALL_FIRE:
@@ -246,19 +313,55 @@ public class GameManager {
                 }
                 break;
 
-
         }
     }
 
-    // --- Getter ---
-    public GameState getCurrentGameState() { return currentGameState; }
-    public void setCurrentGameState(GameState state) { this.currentGameState = state; }
-    public List<Ball> getBalls() { return balls; }
-    public Paddle getPaddle() { return paddle; }
-    public List<Brick> getBricks() { return this.mapBrick.getMapBricks(); }
-    public int getScore() { return score; }
-    public int getLives() { return lives; }
-    public boolean getPlayerWin() { return playerWin; }
-    public boolean isBallAttachedToPaddle() { return ballAttachedToPaddle; }
-    public List<PowerUp> getPowerUps() { return powerUps; }
+    // --- Getter and Setter ---
+    public GameState getCurrentGameState() {
+        return currentGameState;
+    }
+
+    public void setCurrentGameState(GameState state) {
+        this.currentGameState = state;
+    }
+
+    public List<Ball> getBalls() {
+        return balls;
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    public List<Brick> getBricks() {
+        return this.mapBrick.getMapBricks();
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public boolean getPlayerWin() {
+        return playerWin;
+    }
+
+    public boolean isBallAttachedToPaddle() {
+        return ballAttachedToPaddle;
+    }
+
+    public List<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+
+    public void setCurrentLevel(int level) {
+        currentLevel = level;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
 }

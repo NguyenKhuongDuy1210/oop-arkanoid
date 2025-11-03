@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapGame {
-    private List<Brick> bricks = new ArrayList<Brick>();
+
+    private List<Brick> bricks = new ArrayList<Brick>(); // Danh sách các viên gạch trong bản đồ
+    private int currentLevel = 1; // Map hiện tại của trò chơi
 
     public void ReadFileMap(String path) throws Exception {
+        bricks.clear(); // Xóa danh sách gạch hiện tại trước khi đọc bản đồ mới
+
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(path));
+            BufferedReader reader = new BufferedReader(new FileReader(path)); // Mở file bản đồ để đọc
             String line;
             int y = 0;
             while ((line = reader.readLine()) != null) {
@@ -39,7 +43,7 @@ public class MapGame {
                         case '3':
                             FactoryBrick Fbrick3 = new MovingBrick();
                             Brick brick3 = Fbrick3.createBrick(GameConfig.SCREEN_X + x * GameConfig.BRICK_WIDTH,
-                                    GameConfig.SCREEN_Y +y * GameConfig.BRICK_HEIGHT);
+                                    GameConfig.SCREEN_Y + y * GameConfig.BRICK_HEIGHT);
                             bricks.add(brick3);
                             break;
                         default:
@@ -56,11 +60,27 @@ public class MapGame {
         }
     }
 
-    public void createMapBricks () throws Exception {
-        this.ReadFileMap("Map/map1.txt");
+    public void createMapBricks() throws Exception {
+    String path = "Map/map" + currentLevel + ".txt";
+    File file = new File(path);
+    if (!file.exists() || file.length() == 0) {
+        System.err.println("Map " + currentLevel + " chưa tồn tại hoặc rỗng!");
+        return;
     }
+    this.ReadFileMap(path);
+}
 
     public List<Brick> getMapBricks() {
         return this.bricks;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int level) {
+        if (level >= 1 && level <= 7) {
+            currentLevel = level;
+        }
     }
 }

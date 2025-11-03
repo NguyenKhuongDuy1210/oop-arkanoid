@@ -19,7 +19,7 @@ public class InputHandler {
     private GameManager gameManager;
     private Menu menu;
     private Stage stage; // Cửa sổ chính của game, dùng để đóng ứng dụng khi chọn "EXIT"
-        private boolean leftPressed = false; // trạng thái phím trái
+    private boolean leftPressed = false; // trạng thái phím trái
     private boolean rightPressed = false; // trạng thái phím phải
     private final double PADDLE_SPEED = 5.0; // tốc độ di chuyển của paddle
 
@@ -59,7 +59,6 @@ public class InputHandler {
         });
 
         // XỬ LÝ BÀN PHÍM
-
         scene.setOnKeyPressed(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
@@ -167,6 +166,17 @@ public class InputHandler {
                 }
 
             } else if (gameManager.getCurrentGameState() == GameState.Setting) {
+
+                if (selecString.equals("LEVELS")) {
+                    menu.switchToLevelsMenu(); // Chuyển sang menu Level
+                    return;
+                }
+
+                if (selecString.startsWith("LEVEL ")) {
+                    int level = Integer.parseInt(selecString.substring(6));
+                    gameManager.startLevel(level);  // Thay cho initGame()
+                    return;
+                }
 
                 gameManager.handleMenuSelection(selecString);
 
