@@ -37,7 +37,7 @@ public class GameManager {
      * Thiết lập lại trò chơi về trạng thái ban đầu
      */
     public void initGame() throws Exception {
-        paddle = new Paddle(GameConfig.SCREEN_X + 280, 600, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
+        paddle = new Paddle(GameConfig.SCREEN_X + 280, 700, GameConfig.PADDLE_WIDTH, GameConfig.PADDLE_HEIGHT);
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         Ball mainBall = new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
@@ -115,16 +115,12 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 1) {
+                if (Math.random() < 0.5) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
                 }
-//                PowerUp.Type type = PowerUp.Type.values()[2];
-//                powerUps.add(new PowerUp(type,
-//                        brick.getX() + brick.getWidth()/2 - 16,
-//                        brick.getY() + brick.getHeight()/2));
                 it.remove();
             }
         }
@@ -166,7 +162,7 @@ public class GameManager {
         // --- Kiểm tra thắng game ---
         if (mapBrick.getMapBricks().isEmpty() && !levelCompleted) {
             try {
-                handleLevelComplete(); // ✅ xử lý qua level
+                handleLevelComplete(); // xử lý qua level
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -175,13 +171,14 @@ public class GameManager {
 
     private void handleLevelComplete() throws Exception {
         levelCompleted = true;
-        System.out.println("✅ Hoàn thành level " + currentLevel);
+        System.out.println("Hoàn thành level " + currentLevel);
 
-        if (currentLevel < 10) {
+        if (currentLevel < 7) {
             currentLevel++;
+            powerUps.clear();
             startLevel(currentLevel);
         } else {
-            System.out.println("🎉 Bạn đã thắng toàn bộ 10 màn!");
+            System.out.println("Bạn đã thắng toàn bộ 10 màn!");
             playerWin = true;
             currentGameState = GameState.GameOver;
         }
@@ -249,6 +246,7 @@ public class GameManager {
 
     private void resetRound() {
         balls.clear();
+        powerUps.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         balls.add(new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,

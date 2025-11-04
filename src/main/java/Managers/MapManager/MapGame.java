@@ -2,10 +2,7 @@ package Managers.MapManager;
 
 import Managers.GameConfig.GameConfig;
 import items.Brick;
-import items.factory.FactoryBrick;
-import items.factory.MovingBrick;
-import items.factory.NormalBrick;
-import items.factory.StrongBrick;
+import items.factory.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ public class MapGame {
 
     public void ReadFileMap(String path) throws Exception {
         bricks.clear(); // Xóa danh sách gạch hiện tại trước khi đọc bản đồ mới
-
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path)); // Mở file bản đồ để đọc
             String line;
@@ -46,9 +42,20 @@ public class MapGame {
                                     GameConfig.SCREEN_Y + y * GameConfig.BRICK_HEIGHT);
                             bricks.add(brick3);
                             break;
+                        case '4':
+                            FactoryBrick Fbrick4 = new UltraBrick();
+                            Brick brick4 = Fbrick4.createBrick(GameConfig.SCREEN_X + x * GameConfig.BRICK_WIDTH,
+                                    GameConfig.SCREEN_Y + y * GameConfig.BRICK_HEIGHT);
+                            bricks.add(brick4);
+                            break;
+                        case '5':
+                            FactoryBrick Fbrick5 = new TitanBrick();
+                            Brick brick5 = Fbrick5.createBrick(GameConfig.SCREEN_X + x * GameConfig.BRICK_WIDTH,
+                                    GameConfig.SCREEN_Y + y * GameConfig.BRICK_HEIGHT);
+                            bricks.add(brick5);
+                            break;
                         default:
                             break;
-
                     }
                 }
                 y++;
