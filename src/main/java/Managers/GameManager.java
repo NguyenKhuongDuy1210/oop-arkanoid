@@ -96,8 +96,6 @@ public class GameManager {
                 b.update(paddle);
             }
         }
-
-        // --- Va chạm với gạch ---
         Iterator<Brick> it = mapBrick.getMapBricks().iterator();
         while (it.hasNext()) {
             Brick brick = it.next();
@@ -269,25 +267,33 @@ public class GameManager {
             case MULTI_BALL:
                 if (!balls.isEmpty() && balls.size() < 8) {
                     List<Ball> newBalls = new ArrayList<>();
+
                     for (Ball baseBall : balls) {
                         float baseX = baseBall.getX();
                         float baseY = baseBall.getY();
                         float speed = baseBall.getSpeed();
                         float dirX = baseBall.getdX();
                         float dirY = baseBall.getdY();
-                        //double angle = Math.atan2(dirY, dirX);
+                        double angle = Math.atan2(dirY, dirX);
+                        if (dirY > 0) {
+                            angle = -angle;
+                        }
+                        double leftAngle = angle - Math.toRadians(30);
+                        double rightAngle = angle + Math.toRadians(30);
                         Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                                speed, (float) Math.cos(150), (float) Math.sin(150));
-
+                                speed, (float) Math.cos(leftAngle), (float) Math.sin(leftAngle));
                         Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
-                                speed, (float) Math.cos(30), (float) Math.sin(30));
+                                speed, (float) Math.cos(rightAngle), (float) Math.sin(rightAngle));
+                        left.setFireBall(baseBall.isFireBall());
+                        right.setFireBall(baseBall.isFireBall());
                         newBalls.add(left);
                         newBalls.add(right);
                     }
+
                     balls.addAll(newBalls);
                 }
-
                 break;
+
             case LIVE:
                 lives = min(lives + 1, 3);
                 break;
