@@ -112,16 +112,12 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                /*if (Math.random() < 0.5) {
+                if (Math.random() < 0.5) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
-                }*/
-                PowerUp.Type type = PowerUp.Type.values()[2];
-                powerUps.add(new PowerUp(type,
-                        brick.getX() + brick.getWidth() / 2 - 16,
-                        brick.getY() + brick.getHeight() / 2));
+                }
                 it.remove();
             }
         }
@@ -177,9 +173,10 @@ public class GameManager {
         if (currentLevel < 7) {
             currentLevel++;
             powerUps.clear();
+            paddle.setWidth(GameConfig.PADDLE_WIDTH);
             startLevel(currentLevel);
         } else {
-            System.out.println("Bạn đã thắng toàn bộ 10 màn!");
+            System.out.println("Bạn đã thắng toàn bộ 7 màn!");
             playerWin = true;
             currentGameState = GameState.GameOver;
         }
