@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
 
 public class Renderer {
 
-    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen;
+    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen, fireball;
     private Menu menu;
 
     public Renderer() {
@@ -26,7 +26,8 @@ public class Renderer {
         backgroundPlaying = new Image("file:assets/background/Background_Play.png"); // Nền khi chơi game
         backgroundScreen = new Image("file:assets/background/background_screen2.png"); // Nền chung cho tất cả các trạng thái
         backgroundMenu = new Image("file:assets/background/Background_Menu.png"); // Nền menu
-        ballImg = new Image("file:assets/ball/normal_ball.png"); // Hình ảnh quả bóng
+        ballImg = new Image("file:assets/ball/normal_ball.png");
+        fireball = new Image("file:assets/ball/fire_ball.png");
         paddleImg = new Image("file:assets/paddle/paddle.png"); // Hình ảnh thanh trượt
         menu = new Menu(); // Khởi tạo menu
     }
@@ -119,7 +120,8 @@ public class Renderer {
         Paddle paddle = gameManager.getPaddle();
         gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
         for (Ball b : gameManager.getBalls()) {
-            gc.drawImage(ballImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            Image img = b.isFireBall() ? fireball : ballImg;
+            gc.drawImage(img, (int)b.getX(), (int)b.getY(), b.getWidth(), b.getHeight());
         }
 
         for (PowerUp p : gameManager.getPowerUps()) {

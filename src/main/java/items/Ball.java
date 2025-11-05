@@ -8,7 +8,6 @@ public class Ball extends GameObject {
     private float dX, dY;
     private boolean isFireBall = false;
     private long fireBallEndTime = 0;
-
     public Ball(float x, float y, int width, int height, float speed, float dX, float dY) {
         super(x, y, width, height);
         this.speed = speed;
@@ -140,4 +139,8 @@ public class Ball extends GameObject {
 
     public float getSpeed() { return speed; }
     public void setSpeed(float speed) { this.speed = speed; }
+    public void setFireBall(boolean fireBall) {
+        this.isFireBall = fireBall;
+    }
+
 }

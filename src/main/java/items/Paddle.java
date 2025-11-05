@@ -16,10 +16,7 @@ public class Paddle extends GameObject {
         if(x > GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width)
             x = GameConfig.SCREEN_X + GameConfig.SCREEN_PLAY_WIDTH - width;
     }
-   /* public void applyPowerUp(String powerUp) {
-        this.currentPowerUp = powerUp;
-    }
-*/
+
     public float getdX() {
         return dX;
     }
@@ -30,6 +27,12 @@ public class Paddle extends GameObject {
     @Override
     public void update() {
 
+    }
+    @Override
+    public void setWidth(int newWidth) {
+        float centerX = x + width / 2f;
+        width = newWidth;
+        x = centerX - width / 2f;
     }
 
 }
