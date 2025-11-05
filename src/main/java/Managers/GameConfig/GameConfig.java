@@ -32,6 +32,6 @@ public class GameConfig {
     public static final int DEFAULT_VOLUME = 70;
 
     public static void resetToDefault() {
-        // Logic để reset game về trạng thái mặc định
+
     }
 }
