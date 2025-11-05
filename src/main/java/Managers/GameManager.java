@@ -112,12 +112,16 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 0.5) {
+                /*if (Math.random() < 0.5) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
-                }
+                }*/
+                PowerUp.Type type = PowerUp.Type.values()[2];
+                powerUps.add(new PowerUp(type,
+                        brick.getX() + brick.getWidth() / 2 - 16,
+                        brick.getY() + brick.getHeight() / 2));
                 it.remove();
             }
         }
@@ -280,6 +284,8 @@ public class GameManager {
                         }
                         double leftAngle = angle - Math.toRadians(30);
                         double rightAngle = angle + Math.toRadians(30);
+                        leftAngle = clampAngle(leftAngle);
+                        rightAngle = clampAngle(rightAngle);
                         Ball left = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
                                 speed, (float) Math.cos(leftAngle), (float) Math.sin(leftAngle));
                         Ball right = new Ball(baseX, baseY, baseBall.getWidth(), baseBall.getHeight(),
@@ -318,7 +324,17 @@ public class GameManager {
 
         }
     }
+    private double clampAngle(double angle) {
+        angle = (angle + Math.PI) % (2 * Math.PI) - Math.PI;
 
+        double minVertical = Math.toRadians(15);
+        double maxVertical = Math.toRadians(165);
+        if (Math.abs(angle) < minVertical)
+            angle = Math.copySign(minVertical, angle);
+        if (Math.abs(angle) > maxVertical)
+            angle = Math.copySign(maxVertical, angle);
+        return angle;
+    }
     // --- Getter and Setter ---
     public GameState getCurrentGameState() {
         return currentGameState;
