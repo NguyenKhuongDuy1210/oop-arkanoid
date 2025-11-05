@@ -11,7 +11,7 @@ public class GameConfig {
     // KÍCH THƯỚC MÀN HÌNH
     public static final int SCREEN_WIDTH = 1400;
     public static final int SCREEN_HEIGHT = 801;
-    // KÍCH THƯỚC VÀ TỐC ĐỘ PADDLE
+    // KÍCH THƯỚC PADDLE
     public static final int PADDLE_WIDTH = 120;
     public static final int PADDLE_HEIGHT = 20;
     // KÍCH THƯỚC VÀ TỐC ĐỘ BÓNG
@@ -25,10 +25,8 @@ public class GameConfig {
     //
     public static final GameState DEFAULT_STATE = GameState.Menu;
 
-    // Có thể thêm các giá trị mặc định khác như âm thanh, độ khó, v.v.
     public static final int DEFAULT_VOLUME = 70;
 
-    // Hàm khởi tạo hoặc reset nếu cần
     public static void resetToDefault() {
         // Logic để reset game về trạng thái mặc định
     }

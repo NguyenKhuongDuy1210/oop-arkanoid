@@ -45,9 +45,9 @@ public class Renderer {
                 renderMenu(gc, menu); // Vẽ menu chính hoặc menu cài đặt
             }
             case Option -> {
-                renderGame(gc, gameManager); // Vẽ game phía sau
-                renderOptionOverlay(gc); // Vẽ nền mờ
-                renderMenu(gc, menu); // Vẽ menu Option/Pause phía trên
+                renderGame(gc, gameManager);
+                renderOptionOverlay(gc);
+                renderMenu(gc, menu);
             }
             case Playing -> {
                 renderGame(gc, gameManager); // Vẽ game khi đang chơi
