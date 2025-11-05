@@ -24,7 +24,7 @@ public class Renderer {
     public Renderer() {
 
         backgroundPlaying = new Image("file:assets/background/Background_Play.png"); // Nền khi chơi game
-        backgroundScreen = new Image("file:assets/background/background_screen.png"); // Nền chung cho tất cả các trạng thái
+        backgroundScreen = new Image("file:assets/background/Background_Screen.png"); // Nền chung cho tất cả các trạng thái
         backgroundMenu = new Image("file:assets/background/Background_Menu.png"); // Nền menu
         ballImg = new Image("file:assets/ball/ball_normal.png"); // Hình ảnh quả bóng
         fireBallImg = new Image("file:assets/ball/ball_fire.png"); // hình ảnh quả bóng lửa khi ăn power up
