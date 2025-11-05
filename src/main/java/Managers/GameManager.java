@@ -112,11 +112,16 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 0.5) {
+                if (Math.random() < 0.5 && powerUps.size()<=5 ) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
+                }
+                for(PowerUp p : powerUps)
+                {
+                    if(!p.isActive())
+                        powerUps.remove(p);
                 }
                 it.remove();
             }
@@ -244,7 +249,6 @@ public class GameManager {
 
     private void resetRound() {
         balls.clear();
-        powerUps.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         balls.add(new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
