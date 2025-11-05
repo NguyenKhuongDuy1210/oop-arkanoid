@@ -18,15 +18,16 @@ import javafx.scene.text.Text;
 
 public class Renderer {
 
-    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen;
+    private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen, fireBallImg;
     private Menu menu;
 
     public Renderer() {
 
         backgroundPlaying = new Image("file:assets/background/Background_Play.png"); // Nền khi chơi game
-        backgroundScreen = new Image("file:assets/background/background_screen2.png"); // Nền chung cho tất cả các trạng thái
+        backgroundScreen = new Image("file:assets/background/background_screen.png"); // Nền chung cho tất cả các trạng thái
         backgroundMenu = new Image("file:assets/background/Background_Menu.png"); // Nền menu
-        ballImg = new Image("file:assets/ball/normal_ball.png"); // Hình ảnh quả bóng
+        ballImg = new Image("file:assets/ball/ball_normal.png"); // Hình ảnh quả bóng
+        fireBallImg = new Image("file:assets/ball/ball_fire.png"); // hình ảnh quả bóng lửa khi ăn power up
         paddleImg = new Image("file:assets/paddle/paddle.png"); // Hình ảnh thanh trượt
         menu = new Menu(); // Khởi tạo menu
     }
@@ -119,7 +120,11 @@ public class Renderer {
         Paddle paddle = gameManager.getPaddle();
         gc.drawImage(paddleImg, paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
         for (Ball b : gameManager.getBalls()) {
-            gc.drawImage(ballImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            if (b.isFireBall()) {
+                gc.drawImage(fireBallImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            } else {
+                gc.drawImage(ballImg, b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            }
         }
 
         for (PowerUp p : gameManager.getPowerUps()) {

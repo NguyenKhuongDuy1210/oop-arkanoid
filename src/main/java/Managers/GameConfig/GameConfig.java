@@ -10,7 +10,7 @@ public class GameConfig {
     public static final int SCREEN_Y = 0;
     // KÍCH THƯỚC MÀN HÌNH
     public static final int SCREEN_WIDTH = 1400;
-    public static final int SCREEN_HEIGHT = 800;
+    public static final int SCREEN_HEIGHT = 801;
     // KÍCH THƯỚC VÀ TỐC ĐỘ PADDLE
     public static final int PADDLE_WIDTH = 120;
     public static final int PADDLE_HEIGHT = 20;

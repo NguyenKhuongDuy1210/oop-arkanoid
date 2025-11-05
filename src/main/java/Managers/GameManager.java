@@ -67,7 +67,6 @@ public class GameManager {
             System.err.println("Không load được map, game sẽ không bắt đầu!");
             return;
         }
-
         balls.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;

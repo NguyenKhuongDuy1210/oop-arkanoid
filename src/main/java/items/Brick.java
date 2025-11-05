@@ -12,7 +12,7 @@ public class Brick extends GameObject {
     private Animation brick_animation;
     private int frameIndex = 0;
     private long lastFrameTime = 0;
-    private long frameDelay = 10000000 ;
+    private long frameDelay = 100_000_00 ;
 
     private Image brickImg;
     private int hitPoints;
