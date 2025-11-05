@@ -111,12 +111,12 @@ public class InputHandler {
         }
     }
 
-    public void handleMouseMove(double mouseX, double mouseY) { // Cập nhật vị trí con trỏ trong menu dựa trên vị trí chuột
-        if (menu == null || menu.getMenuItems().isEmpty()) { // Kiểm tra menu hợp lệ
+    public void handleMouseMove(double mouseX, double mouseY) {
+        if (menu == null || menu.getMenuItems().isEmpty()) {
             return;
         }
 
-        for (int i = 0; i < menu.getMenuItems().size(); i++) { // duyệt qua các mục menu
+        for (int i = 0; i < menu.getMenuItems().size(); i++) {
             MenuItem item = menu.getMenuItems().get(i);
 
             Text textNode = new Text(item.getText());
