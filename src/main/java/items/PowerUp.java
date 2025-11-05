@@ -32,8 +32,6 @@ public class PowerUp {
 
     private Type type;
     private double x, y;
-    private double speed = 3;
-    private double width = 40, height = 16;
     private boolean active = true;
 
     public PowerUp(Type type, double x, double y) {
@@ -43,21 +41,21 @@ public class PowerUp {
     }
 
     public void update() {
-        y += speed;
+        y += GameConfig.POWER_UP_SPEED;
         if (y > GameConfig.SCREEN_PLAY_HEIGHT) active = false; // rơi khỏi màn
     }
 
     public boolean checkCollision(Paddle paddle) {
         return x < paddle.getX() + paddle.getWidth() &&
-                x + width > paddle.getX() &&
+                x + GameConfig.POWER_UP_WIDTH > paddle.getX() &&
                 y < paddle.getY() + paddle.getHeight() &&
-                y + height > paddle.getY();
+                y + GameConfig.POWER_UP_HEIGHT > paddle.getY();
     }
 
     public void render(GraphicsContext gc) {
         Image img = powerUpImages.get(type);
         if (img != null) {
-            gc.drawImage(img, x, y, width, height);
+            gc.drawImage(img, x, y, GameConfig.POWER_UP_WIDTH, GameConfig.POWER_UP_HEIGHT);
         }
     }
 
@@ -67,7 +65,5 @@ public class PowerUp {
     public void setActive(boolean active) { this.active = active; }
     public double getX() { return x; }
     public double getY() { return y; }
-    public double getWidth() { return width; }
-    public double getHeight() { return height; }
     public Type getType() { return type; }
 }
