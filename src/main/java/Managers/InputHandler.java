@@ -37,6 +37,7 @@ public class InputHandler {
 
         // XỬ LÝ CHUỘT 
         scene.setOnMouseMoved(e -> {
+            
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
                     || gameManager.getCurrentGameState() == GameState.Setting
@@ -49,10 +50,6 @@ public class InputHandler {
         });
 
         scene.setOnMousePressed(e -> {
-
-            if (gameManager.getCurrentGameState() == GameState.LevelComplete) {
-                handleMenuAction(); // Xử lý click chuột giống như nhấn Enter
-            }
 
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
@@ -75,7 +72,7 @@ public class InputHandler {
                     || gameManager.getCurrentGameState() == GameState.Option
                     || gameManager.getCurrentGameState() == GameState.Setting
                     || gameManager.getCurrentGameState() == GameState.SoundSetting
-                    || gameManager.getCurrentGameState() == GameState.LevelComplete)  { // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.LevelComplete) { // Đang ở bên trong 1 trong 3 cái.
                 switch (e.getCode()) {
                     case UP: // Di chuyển lên trên
                         menu.navigateUp();
@@ -191,18 +188,6 @@ public class InputHandler {
                         break;
                     case "BACK TO MENU":
                         gameManager.initGame();
-                        menu.switchToMainMenu();
-                        break;
-                }
-            }
-
-            if (gameManager.getCurrentGameState() == GameState.LevelComplete) {
-                switch (selecString) {
-                    case "NEXT LEVEL":
-                        gameManager.proceedToNextLevel(); // Chuyển sang level tiếp theo
-                        break;
-                    case "BACK TO MENU":
-                        gameManager.initGame(); // Reset game
                         menu.switchToMainMenu();
                         break;
                 }
