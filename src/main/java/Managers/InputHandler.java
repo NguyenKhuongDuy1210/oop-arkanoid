@@ -1,16 +1,13 @@
 // In Managers/InputHandler.java
 package Managers;
 
-import Managers.GameConfig.GameConfig;
 import Managers.MenuManager.GameState;
 import Managers.MenuManager.Menu;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import Managers.MenuManager.MenuItem;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Lớp xử lý đầu vào từ chuột cho game.
@@ -131,21 +128,6 @@ public class InputHandler {
             gameManager.changeMusicVolume(increase);
         } else if (selectedText.startsWith("SFX VOL")) {
             gameManager.changeSfxVolume(increase);
-        }
-    }
-
-    public void updatePaddleKeyboard() {
-        if (gameManager.getCurrentGameState() != GameState.Playing) {
-            return;
-        }
-
-        if (leftPressed) {
-            double newX = gameManager.getPaddle().getX() - PADDLE_SPEED;
-            gameManager.updatePaddlePosition(newX + gameManager.getPaddle().getWidth() / 2);
-        }
-        if (rightPressed) {
-            double newX = gameManager.getPaddle().getX() + PADDLE_SPEED;
-            gameManager.updatePaddlePosition(newX + gameManager.getPaddle().getWidth() / 2);
         }
     }
 

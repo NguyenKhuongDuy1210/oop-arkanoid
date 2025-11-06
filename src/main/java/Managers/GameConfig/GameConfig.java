@@ -17,7 +17,7 @@ public class GameConfig {
     // KÍCH THƯỚC VÀ TỐC ĐỘ BÓNG
     public static final int BALL_WIDTH = 15;
     public static final int BALL_HEIGHT = 15;
-    public static final float BALL_SPEED = 12;
+    public static final float BALL_SPEED = 6;
     // KÍCH THƯỚC VÀ TỐC ĐỘ POWER UP
     public static final int POWER_UP_WIDTH = 50;
     public static final int POWER_UP_HEIGHT = 20;
@@ -26,12 +26,4 @@ public class GameConfig {
     public static final int BRICK_WIDTH = 50;
     public static final int BRICK_HEIGHT = 25;
     public static final int BRICK_GAP = 0;
-    //
-    public static final GameState DEFAULT_STATE = GameState.Menu;
-
-    public static final int DEFAULT_VOLUME = 70;
-
-    public static void resetToDefault() {
-
-    }
 }

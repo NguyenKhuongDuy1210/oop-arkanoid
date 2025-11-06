@@ -1,19 +1,17 @@
 package Managers.MenuManager;
 
-import javafx.geometry.VPos;
+import Managers.GameManager;
+import com.sun.tools.javac.Main;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.marlin.MarlinUtils;
 
 import Managers.SoundManager;
 import Managers.GameConfig.GameConfig;
@@ -40,13 +38,13 @@ public class Menu {
     private final double LERP_SPEED = 0.15; // tốc độ nội suy tuyến tính
 
     private final double TITLE_X = GameConfig.SCREEN_X + 300; // vị trí X của tiêu đề
-    private final double TITLE_Y = 200; // vị trí Y của tiêu đề
+    private final double TITLE_Y = 150; // vị trí Y của tiêu đề
     private final double MENU_START_X = GameConfig.SCREEN_X + 300; //  vị trí X bắt đầu của menu
     private final double MENU_START_Y = 350; // vị trí Y bắt đầu của menu
     private final double MENU_ITEM_SPACING = 60; // khoảng cách giữa các mục menu
     private final double SELECTOR_PADDING = 25; // khoảng cách giữa con trỏ và mục menu
 
-    public Menu() {
+    public Menu() throws FileNotFoundException {
         try {
 
             titleFont = Font.loadFont(new FileInputStream("assets/fonts/Cinzel-Bold.ttf"), 70);
@@ -92,11 +90,11 @@ public class Menu {
         }
     }
 
-    // CREATE MENUS PHỤ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void createLevelCompleteMenu() { // tạo menu hoàn thành level
+    // CREATE MENU PHỤ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void createLevelCompleteMenu() throws FileNotFoundException { // tạo menu hoàn thành level
         levelCompleteMenu = new ArrayList<>();
-        levelCompleteMenu.add(new MenuItem("NEXT LEVEL", (int) MENU_START_X, (int) (MENU_START_Y)));
-        levelCompleteMenu.add(new MenuItem("BACK TO MENU", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING)));
+        levelCompleteMenu.add(new MenuItem("NEXT LEVEL", (int) MENU_START_X, 650));
+        levelCompleteMenu.add(new MenuItem("BACK TO MENU", (int) MENU_START_X, 700));
     }
 
     private void createLevelsMenu() { // tạo menu map

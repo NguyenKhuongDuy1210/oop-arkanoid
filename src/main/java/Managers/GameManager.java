@@ -136,10 +136,6 @@ public class GameManager {
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
                 }
-//                PowerUp.Type type = PowerUp.Type.values()[2];
-//                powerUps.add(new PowerUp(type,
-//                        brick.getX() + brick.getWidth() / 2 - 16,
-//                        brick.getY() + brick.getHeight() / 2));
                 Iterator<PowerUp> pIt = powerUps.iterator();
                 while (pIt.hasNext()) {
                     PowerUp p = pIt.next();
