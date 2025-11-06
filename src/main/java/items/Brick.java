@@ -60,7 +60,8 @@ public class Brick extends GameObject {
         return frameIndex;
     }
     public int[] getCurrentClip() {
-        return brick_animation.getFrame_clips()[getFrameIndex()];
+        int index = Math.min(frameIndex, brick_animation.getFrame_clips().length - 1);
+        return brick_animation.getFrame_clips()[index];
     }
 
 }

@@ -30,6 +30,7 @@ public class GameManager {
     private boolean levelCompleted = false;
 
     public GameManager() throws Exception {
+        SoundManager.loadSounds();
         initGame();
     }
 
@@ -44,7 +45,6 @@ public class GameManager {
                 GameConfig.BALL_SPEED, 0f, -1f);
         balls.clear();
         balls.add(mainBall);
-        SoundManager.loadSounds();
 
         mapBrick = new MapGame(); // Khởi tạo đối tượng MapGame
         mapBrick.setCurrentLevel(currentLevel); // Thiết lập level hiện tại
@@ -57,9 +57,11 @@ public class GameManager {
         ballAttachedToPaddle = true;
         powerUps.clear();
         levelCompleted = false;
+        SoundManager.play("start_game");
     }
 
     public void startLevel(int level) throws Exception {
+
         currentLevel = level;
         score = 0;
         paddle.setWidth(GameConfig.PADDLE_WIDTH);
@@ -91,26 +93,36 @@ public class GameManager {
 
         // Cập nhật bóng
         if (ballAttachedToPaddle) {
-            Ball b = balls.getFirst();
+            Ball b = balls.get(0);
             b.setX(paddle.getX() + paddle.getWidth() / 2 - b.getWidth() / 2);
             b.setY(paddle.getY() - b.getHeight());
         } else {
             for (Ball b : balls) {
-                b.update(paddle);
+                if (b.checkColisionPaddle(paddle))
+                {
+                    SoundManager.play("hit_brick");
+                    continue;
+                }
+                b.update();
             }
         }
         Iterator<Brick> it = mapBrick.getMapBricks().iterator();
         while (it.hasNext()) {
             Brick brick = it.next();
             brick.update();
-
+            boolean hitPlayed = false;
             for (Ball b : balls) {
                 if (b.checkCollision(brick) && !brick.isDestroyed()) {
                     if (brick.gethitPoints() > 0) {
+                        if(!hitPlayed) {
+                        SoundManager.play("hit_brick");
+                        hitPlayed = true;
+                    }
                         brick.sethitPoints(brick.gethitPoints() - 1);
                         brick.setOnHit(true);
                     }
                 }
+                //if()
                 b.updateFireBallStatus();
             }
             if (brick.isDestroyed()) {
@@ -121,15 +133,21 @@ public class GameManager {
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
                 }
-                for (PowerUp p : powerUps) {
+//                PowerUp.Type type = PowerUp.Type.values()[2];
+//                powerUps.add(new PowerUp(type,
+//                        brick.getX() + brick.getWidth() / 2 - 16,
+//                        brick.getY() + brick.getHeight() / 2));
+                Iterator<PowerUp> pIt = powerUps.iterator();
+                while (pIt.hasNext()) {
+                    PowerUp p = pIt.next();
                     if (!p.isActive()) {
-                        powerUps.remove(p);
+                        pIt.remove();
                     }
                 }
                 it.remove();
             }
         }
-
+        boolean sound=false;
         Iterator<PowerUp> pIt = powerUps.iterator();
         while (pIt.hasNext()) {
             PowerUp p = pIt.next();
@@ -138,6 +156,11 @@ public class GameManager {
             if (p.checkCollision(paddle)) {
                 activatePowerUp(p.getType());
                 pIt.remove();
+                if(!sound)
+                {
+                    sound=true;
+                    SoundManager.play("bonus");
+                }
                 continue;
             }
             if (!p.isActive()) {
@@ -159,11 +182,11 @@ public class GameManager {
             if (lives <= 0) {
                 playerWin = false;
                 currentGameState = GameState.GameOver;
+                SoundManager.play("game-over");
             } else {
                 resetRound();
             }
         }
-
         // --- Kiểm tra thắng game ---
         if (mapBrick.getMapBricks().isEmpty() && !levelCompleted) {
             try {
@@ -202,9 +225,7 @@ public class GameManager {
         if (currentGameState == GameState.Menu) {
             switch (itemString) {
                 case "START" -> {
-                    initGame();
                     currentGameState = GameState.Playing;
-                    resetRound();
                 }
                 case "OPTIONS" ->
                     currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
