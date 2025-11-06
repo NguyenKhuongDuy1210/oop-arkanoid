@@ -111,6 +111,8 @@ public class Renderer {
 
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
         gc.drawImage(backgroundPlaying, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT);
+        gc.setFont(new Font("Algerian", 70));
+        gc.fillText("LEVEL " + gameManager.getCurrentLevel() , 200, 350);
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.gethitPoints() >= 0) {
@@ -134,10 +136,10 @@ public class Renderer {
             p.render(gc);
         }
 
-        gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        gc.setFont(Font.font("Algerian", FontWeight.BOLD, 30));
         gc.setFill(Color.WHITE);
-        gc.fillText("Score: " + gameManager.getScore(), GameConfig.SCREEN_X + 50, 20);
-        gc.fillText("Lives: " + gameManager.getLives(), GameConfig.SCREEN_X + 550, 20);
+        gc.fillText("Score: " + gameManager.getScore(),1200, 330);
+        gc.fillText("Lives: " + gameManager.getLives(),1200, 380);
     }
 
     private void renderGameOver(GraphicsContext gc, GameManager gameManager) throws FileNotFoundException {
