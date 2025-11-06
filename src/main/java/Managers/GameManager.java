@@ -44,6 +44,7 @@ public class GameManager {
                 GameConfig.BALL_SPEED, 0f, -1f);
         balls.clear();
         balls.add(mainBall);
+        SoundManager.loadSounds();
 
         mapBrick = new MapGame(); // Khởi tạo đối tượng MapGame
         mapBrick.setCurrentLevel(currentLevel); // Thiết lập level hiện tại

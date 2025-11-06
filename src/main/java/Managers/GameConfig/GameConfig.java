@@ -17,7 +17,6 @@ public class GameConfig {
     // KÍCH THƯỚC VÀ TỐC ĐỘ BÓNG
     public static final int BALL_WIDTH = 15;
     public static final int BALL_HEIGHT = 15;
-    public static final float BALL_SPEED = 5;
     // KÍCH THƯỚC VÀ TỐC ĐỘ POWER UP
     public static final int POWER_UP_WIDTH = 40;
     public static final int POWER_UP_HEIGHT = 16;
