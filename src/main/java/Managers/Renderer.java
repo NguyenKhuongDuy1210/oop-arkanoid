@@ -16,6 +16,9 @@ import javafx.scene.text.TextAlignment;
 import Managers.MenuManager.MenuItem;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Renderer {
 
     private Image backgroundMenu, backgroundPlaying, ballImg, paddleImg, backgroundScreen, fireBallImg;
@@ -137,33 +140,36 @@ public class Renderer {
         gc.fillText("Lives: " + gameManager.getLives(), GameConfig.SCREEN_X + 550, 20);
     }
 
-    private void renderGameOver(GraphicsContext gc, GameManager gameManager) {
+    private void renderGameOver(GraphicsContext gc, GameManager gameManager) throws FileNotFoundException {
+        Image game_overImg, top1Img, top2Img, top3Img;
+        game_overImg = new Image(new FileInputStream("assets/background/game_over.png"));
+        top1Img = new Image(new FileInputStream("assets/background/top1.png"));
+        top2Img = new Image(new FileInputStream("assets/background/top2.png"));
+        top3Img = new Image(new FileInputStream("assets/background/top3.png"));
+        int [] topScore = gameManager.getListHighScore();
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-
+        gc.drawImage(game_overImg, GameConfig.SCREEN_X, GameConfig.SCREEN_Y);
+        gc.drawImage(top1Img, GameConfig.SCREEN_X + 225, 450, 30, 30);
+        gc.drawImage(top2Img, GameConfig.SCREEN_X + 225, 520, 30, 30);
+        gc.drawImage(top3Img, GameConfig.SCREEN_X + 225, 590, 30, 30);
         if (gameManager.getPlayerWin()) {
             gc.setFill(Color.LIMEGREEN);
             gc.setFont(new Font("Arial", 70));
             gc.fillText("YOU WIN!", GameConfig.SCREEN_X + 300, 300);
-        } else {
-            gc.setFill(Color.RED);
-            gc.setFont(new Font("Arial", 70));
-            gc.fillText("GAME OVER", GameConfig.SCREEN_X + 300, 300);
         }
 
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial", 30));
-        gc.fillText("Final Score: " + gameManager.getScore(), GameConfig.SCREEN_X + 300, 360);
+        gc.setFont(new Font("Arial", 60));
+        gc.fillText("" + gameManager.getScore(), GameConfig.SCREEN_X + 290, 330);
+        gc.setFont(new Font("Arial", 45));
+        gameManager.updateHighScore();
+        gc.fillText("" + topScore[0], GameConfig.SCREEN_X + 325, 465);
+        gc.fillText("" + topScore[1], GameConfig.SCREEN_X + 325, 535);
+        gc.fillText("" + topScore[2], GameConfig.SCREEN_X + 325, 605);
 
         gc.setFont(new Font("Arial", 20));
-        gc.fillText("Press Enter to Return to Menu", GameConfig.SCREEN_X + 300, 420);
-    }
-
-    private void renderOptionMenu(GraphicsContext gc) {
-        gc.setFill(Color.rgb(0, 0, 0, 0.7)); // Màu nền mờ 70%
-        gc.fillRect(GameConfig.SCREEN_X, GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền mờ
-
-        renderMenu(gc, menu); // Vẽ nội dung menu Option/Pause
+        gc.fillText("Press Enter to Return to Menu", GameConfig.SCREEN_X + 300, 700);
     }
 
     private void renderOptionOverlay(GraphicsContext gc) { // Vẽ nền mờ cho menu Option/Pause

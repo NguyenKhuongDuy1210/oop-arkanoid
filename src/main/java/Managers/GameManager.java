@@ -18,7 +18,7 @@ public class GameManager {
 
     private List<Ball> balls = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
-
+    private int[][] listHighScore = new int[7][3];
     private Paddle paddle;
     private MapGame mapBrick;
     private int score;
@@ -60,6 +60,8 @@ public class GameManager {
 
     public void startLevel(int level) throws Exception {
         currentLevel = level;
+        score = 0;
+        paddle.setWidth(GameConfig.PADDLE_WIDTH);
         levelCompleted = false;
         mapBrick.setCurrentLevel(level);
         mapBrick.createMapBricks(); // load map
@@ -112,11 +114,16 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 0.5) {
+                if (Math.random() < 0.5  && powerUps.size() <= 4) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
                             brick.getY() + brick.getHeight() / 2));
+                }
+                for (PowerUp p : powerUps) {
+                    if (!p.isActive()) {
+                        powerUps.remove(p);
+                    }
                 }
                 it.remove();
             }
@@ -166,14 +173,22 @@ public class GameManager {
         }
     }
 
+    public void updateHighScore() {
+        if (score >= listHighScore[currentLevel][0]) {
+            listHighScore[currentLevel][0] = score;
+        } else if (score >= listHighScore[currentLevel][1]) {
+            listHighScore[currentLevel][1] = score;
+        } else if (score >= listHighScore[currentLevel][2]) {
+            listHighScore[currentLevel][2] = score;
+        }
+    }
+
     private void handleLevelComplete() throws Exception {
         levelCompleted = true;
         System.out.println("Hoàn thành level " + currentLevel);
-
         if (currentLevel < 7) {
             currentLevel++;
             powerUps.clear();
-            paddle.setWidth(GameConfig.PADDLE_WIDTH);
             startLevel(currentLevel);
         } else {
             System.out.println("Bạn đã thắng toàn bộ 7 màn!");
@@ -244,7 +259,6 @@ public class GameManager {
 
     private void resetRound() {
         balls.clear();
-        powerUps.clear();
         float ballX = paddle.getX() + paddle.getWidth() / 2 - GameConfig.BALL_WIDTH / 2;
         float ballY = paddle.getY() - GameConfig.BALL_HEIGHT;
         balls.add(new Ball(ballX, ballY, GameConfig.BALL_WIDTH, GameConfig.BALL_HEIGHT,
@@ -379,5 +393,9 @@ public class GameManager {
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public int[] getListHighScore() {
+        return listHighScore[currentLevel];
     }
 }
