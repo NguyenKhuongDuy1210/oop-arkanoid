@@ -97,7 +97,7 @@ public class Menu {
         for (int i = 1; i <= 7; i++) {
             levelsMenu.add(new MenuItem("LEVEL " + i, (int) MENU_START_X, (int) (startY + (i - 1) * MENU_ITEM_SPACING)));
         }
-        levelsMenu.add(new MenuItem("BACK TO OPTIONS", (int) MENU_START_X, (int) (startY + 11 * MENU_ITEM_SPACING)));
+        levelsMenu.add(new MenuItem("BACK", (int) MENU_START_X, (int) (startY + 7 * MENU_ITEM_SPACING)));
     }
 
     private void createPauseMenu() { // tạo menu tạm dừng
@@ -136,6 +136,8 @@ public class Menu {
 
         int sfxVolPercent = (int) (SoundManager.getSfxVolume() * 100); // phần trăm âm lượng
         soundSettingsMenu.get(3).setText("SFX VOL: < " + sfxVolPercent + " >"); // cập nhật text mục âm lượng hiệu ứng âm thanh
+
+        soundSettingsMenu.add(new MenuItem("BACK", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 5))); // thêm mục quay lại
     }
 
     public void switchToSoundSettingsMenu() { // chuyển sang menu cài đặt âm thanh

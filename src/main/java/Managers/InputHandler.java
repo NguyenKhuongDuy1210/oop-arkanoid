@@ -202,6 +202,11 @@ public class InputHandler {
 
             } else if (gameManager.getCurrentGameState() == GameState.Setting) {
 
+                if (selecString.equals("BACK")) {
+                    menu.switchToSettingMenu(); // chuyển menu hiển thị
+                    return;
+                }
+
                 if (selecString.equals("LEVELS")) {
                     menu.switchToLevelsMenu(); // Chuyển sang menu Level
                     return;

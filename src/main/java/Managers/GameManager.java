@@ -226,7 +226,7 @@ public class GameManager {
         if (currentGameState == GameState.Menu) {
             switch (itemString) {
                 case "START" -> {
-                    currentGameState = GameState.Playing;
+                    currentGameState = GameState.Playing; // Chuyển trạng thái game sang Playing
                 }
                 case "OPTIONS" ->
                     currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
@@ -236,10 +236,10 @@ public class GameManager {
         } else if (currentGameState == GameState.Option) { // Pause Menu
             switch (itemString) {
                 case "RESUME" ->
-                    currentGameState = GameState.Playing;
+                    currentGameState = GameState.Playing; // Quay lại chơi game
                 case "RESTART" -> {
                     initGame(); // Reset    
-                    currentGameState = GameState.Playing;
+                    currentGameState = GameState.Playing; // Bắt đầu chơi lại
                     resetRound();
                 }
                 case "BACK TO MENU" ->
@@ -262,6 +262,11 @@ public class GameManager {
                 SoundManager.toggleMusic();
             } else if (itemString.startsWith("SFX:")) { // bật/tắt hiệu ứng âm thanh
                 SoundManager.toggleSfx();
+            } else if (itemString.equals("BACK")) {
+                currentGameState = GameState.Setting; // Quay lại menu cài đặt
+                if (menu != null) {
+                    menu.switchToSettingMenu(); // chuyển menu hiển thị
+                }
             }
         }
     }
