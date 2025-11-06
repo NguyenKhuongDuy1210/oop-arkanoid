@@ -21,4 +21,8 @@ public class MenuItem {
     public int getY() {
         return y;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

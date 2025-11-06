@@ -1,6 +1,7 @@
 package Managers;
 
 import Managers.GameConfig.GameConfig;
+import Managers.MenuManager.GameState;
 import Managers.MenuManager.Menu;
 import items.Ball;
 import items.Brick;
@@ -39,11 +40,16 @@ public class Renderer {
 
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Xóa khung vẽ trước khi vẽ lại
         gc.drawImage(backgroundScreen, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền chung
+        GameState state = gameManager.getCurrentGameState(); // Lấy trạng thái hiện tại của game
         
-        switch (gameManager.getCurrentGameState()) {
-            case Menu, Setting -> {
+        switch (state) {
+            case Menu, Setting, SoundSetting -> {
                 gc.drawImage(backgroundMenu, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, 
                 GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền menu
+
+                if (state == GameState.SoundSetting) { // nếu là menu cài đặt âm thanh
+                    menu.updateSoundSettingsMenuItemsText(); // cập nhật text các mục trong menu cài đặt âm thanh
+                }
 
                 renderMenu(gc, menu); // Vẽ menu chính hoặc menu cài đặt
             }
@@ -70,7 +76,11 @@ public class Renderer {
             title = "PAUSED";
         } else if (menu.getMenuItems() == menu.getSettingsMenu()) { // Kiểm tra nếu là menu Setting
             title = "OPTIONS";
+        } else if (menu.getMenuItems() == menu.getSoundSettingsMenu()) { // Kiểm tra nếu là menu Sound Settings
+            title = "SOUND";
         }
+
+         // Vẽ tiêu đề menu
 
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);

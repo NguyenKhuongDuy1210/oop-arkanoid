@@ -24,6 +24,8 @@ public class Main extends Application {
 
         GameManager gameManager = new GameManager();
         Renderer renderer = new Renderer();
+
+        gameManager.setMenu(renderer.getMenu());
         // InputHandler cần biết về gameManager, menu và stage để hoạt động
         InputHandler inputHandler = new InputHandler(gameManager, renderer.getMenu(), stage);
         inputHandler.attach(scene); // Gắn trình xử lý input vào scene

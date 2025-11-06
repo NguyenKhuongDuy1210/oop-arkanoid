@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import com.sun.marlin.MarlinUtils;
 
+import Managers.SoundManager;
 import Managers.GameConfig.GameConfig;
 
 public class Menu {
@@ -24,6 +26,7 @@ public class Menu {
     private List<MenuItem> pauseMenu; // danh sách mục menu tạm dừng
     private List<MenuItem> settingsMenu; // danh sách mục menu cài đặt
     private List<MenuItem> levelsMenu; // danh sách map
+    private List<MenuItem> soundSettingsMenu; // danh sách cài đặt âm thanh
 
     private int selectedItemIndex; // mục menu được chọn hiện tại
     private int selectedLevel = 1; // map được chọn hiện tại
@@ -73,6 +76,7 @@ public class Menu {
         // tạo các menu phụ ////////////////////////////////////////////////
         createPauseMenu(); // tạo menu tạm dừng
         createSettingMenu(); // tạo menu cài đặt
+        createSoundSettingsMenu(); // tạo menu cài đặt âm thanh
         createLevelsMenu(); // tạo menu map
 
         ////////////////////////////////////////////////////////////////////
@@ -110,28 +114,59 @@ public class Menu {
         settingsMenu.add(new MenuItem("BACK TO MENU", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 2)));
     }
 
-    public void switchToLevelsMenu() {
+    private void createSoundSettingsMenu() { // tạo menu cài đặt âm thanh
+        soundSettingsMenu = new ArrayList<>();
+
+        double startY = MENU_START_Y - MENU_ITEM_SPACING; // bắt đầu cao hơn một chút
+        soundSettingsMenu.add(new MenuItem("MUSIC: ON", (int) MENU_START_X, (int) startY)); // trạng thái nhạc nền
+        soundSettingsMenu.add(new MenuItem("MUSIC VOL", (int) MENU_START_X, (int) (startY + MENU_ITEM_SPACING))); // điều chỉnh âm lượng nhạc nền
+        soundSettingsMenu.add(new MenuItem("SFX: ON", (int) MENU_START_X, (int) (startY + MENU_ITEM_SPACING * 2))); // trạng thái hiệu ứng âm thanh
+        soundSettingsMenu.add(new MenuItem("SFX VOL", (int) MENU_START_X, (int) (startY + MENU_ITEM_SPACING * 3))); // điều chỉnh âm lượng hiệu ứng âm thanh
+    }
+
+    public void updateSoundSettingsMenuItemsText() {
+        String musicStatus = SoundManager.isMusicEnabled() ? "ON" : "OFF"; // trạng thái nhạc nền
+        soundSettingsMenu.get(0).setText("MUSIC: " + musicStatus); // cập nhật text mục nhạc nền
+
+        int musicVolPercent = (int) (SoundManager.getMusicVolume() * 100); // phần trăm âm lượng
+        soundSettingsMenu.get(1).setText("MUSIC VOL: < " + musicVolPercent + " >"); // cập nhật text mục âm lượng nhạc nền
+
+        String sfxStatus = SoundManager.isSfxEnabled() ? "ON" : "OFF"; // trạng thái hiệu ứng âm thanh
+        soundSettingsMenu.get(2).setText("SFX: " + sfxStatus); // cập nhật text mục hiệu ứng âm thanh
+
+        int sfxVolPercent = (int) (SoundManager.getSfxVolume() * 100); // phần trăm âm lượng
+        soundSettingsMenu.get(3).setText("SFX VOL: < " + sfxVolPercent + " >"); // cập nhật text mục âm lượng hiệu ứng âm thanh
+    }
+
+    public void switchToSoundSettingsMenu() { // chuyển sang menu cài đặt âm thanh
+        menuItems = soundSettingsMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
+    }
+
+    public void switchToLevelsMenu() { // chuyển sang menu map
         menuItems = levelsMenu;
         selectedItemIndex = 0;
         updateTargetY();
         selectorCurrentY = selectorTargetY;
     }
 
-    public void switchToMainMenu() {
+    public void switchToMainMenu() { // chuyển sang menu chính
         menuItems = mainMenu; // chuyển sang menu chính
         selectedItemIndex = 0; // đặt mục được chọn về mục đầu tiên (START)
         updateTargetY(); // cập nhật vị trí mục được chọn
         selectorCurrentY = selectorTargetY; // đặt vị trí con trỏ hiện tại bằng vị trí mục được chọn
     }
 
-    public void switchToPauseMenu() {
+    public void switchToPauseMenu() { // chuyển sang menu tạm dừng
         menuItems = pauseMenu;
         selectedItemIndex = 0;
         updateTargetY();
         selectorCurrentY = selectorTargetY;
     }
 
-    public void switchToSettingMenu() {
+    public void switchToSettingMenu() { // chuyển sang menu cài đặt
         menuItems = settingsMenu;
         selectedItemIndex = 0;
         updateTargetY();
@@ -189,6 +224,10 @@ public class Menu {
 
     public List<MenuItem> getSettingsMenu() {
         return settingsMenu;
+    }
+
+    public List<MenuItem> getSoundSettingsMenu() {
+        return soundSettingsMenu;
     }
 
     public Image getSelectorIcon() {

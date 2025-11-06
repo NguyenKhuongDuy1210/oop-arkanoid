@@ -38,7 +38,8 @@ public class InputHandler {
         scene.setOnMouseMoved(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
-                    || gameManager.getCurrentGameState() == GameState.Setting) { // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.Setting
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting) { // Đang ở bên trong 1 trong 3 cái.
                 handleMouseMove(e.getX(), e.getY()); // Cập nhật vị trí chuột trong menu
             } else if (gameManager.getCurrentGameState() == GameState.Playing) { // Chỉ khi đang chơi
                 gameManager.updatePaddlePosition(e.getX()); // Cập nhật vị trí thanh trượt
@@ -48,7 +49,8 @@ public class InputHandler {
         scene.setOnMousePressed(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
-                    || gameManager.getCurrentGameState() == GameState.Setting) // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.Setting
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting) // Đang ở bên trong 1 trong 3 cái.
             {
                 handleMenuAction(); // Xử lý khi chọn mục trong menu
             } else if (gameManager.getCurrentGameState() == GameState.Playing) { // Chỉ khi đang chơi
@@ -62,7 +64,8 @@ public class InputHandler {
         scene.setOnKeyPressed(e -> {
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
-                    || gameManager.getCurrentGameState() == GameState.Setting) { // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.Setting
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting) { // Đang ở bên trong 1 trong 3 cái.
                 switch (e.getCode()) {
                     case UP: // Di chuyển lên trên
                         menu.navigateUp();
@@ -72,6 +75,16 @@ public class InputHandler {
                         break;
                     case ENTER: // Chọn mục trong menu
                         handleMenuAction();
+                        break;
+                    case LEFT: // Di chuyển trái (chỉ trong Sound Setting) 
+                        if (gameManager.getCurrentGameState() == GameState.SoundSetting) {
+                            handleVolumeChange(false); // false = giảm
+                        }
+                        break;
+                    case RIGHT: // Di chuyển phải (chỉ trong Sound Setting)
+                        if (gameManager.getCurrentGameState() == GameState.SoundSetting) {
+                            handleVolumeChange(true); // true = tăng
+                        }
                         break;
                 }
             }
@@ -83,6 +96,9 @@ public class InputHandler {
                     menu.switchToPauseMenu(); // Chuyển danh sách menu
                 } else if (gameManager.getCurrentGameState() == GameState.Option) {
                     gameManager.setCurrentGameState(GameState.Playing); // Resume Game
+                } else if (gameManager.getCurrentGameState() == GameState.SoundSetting) { // từ Sound Setting về Setting
+                    gameManager.setCurrentGameState(GameState.Setting);
+                    menu.switchToSettingMenu();
                 } else if (gameManager.getCurrentGameState() == GameState.Setting) {
                     gameManager.setCurrentGameState(GameState.Menu); // Thoát khỏi Settings về Main Menu
                     menu.switchToMainMenu();
@@ -93,7 +109,22 @@ public class InputHandler {
             if (gameManager.getCurrentGameState() == GameState.GameOver && e.getCode() == KeyCode.ENTER) {
                 handleMenuAction(); // Sẽ gọi logic quay về Menu
             }
-        });
+        }
+        );
+    }
+
+    private void handleVolumeChange(boolean increase) { // thay đổi âm lượng trong Sound Setting
+        if (menu.getSelectedItem() == null) {
+            return;
+        }
+
+        String selectedText = menu.getSelectedItem().getText(); // Lấy text của mục được chọn
+
+        if (selectedText.startsWith("MUSIC VOL")) {
+            gameManager.changeMusicVolume(increase);
+        } else if (selectedText.startsWith("SFX VOL")) {
+            gameManager.changeSfxVolume(increase);
+        }
     }
 
     public void updatePaddleKeyboard() {
@@ -141,9 +172,13 @@ public class InputHandler {
 
     private void handleMenuAction() { // Xử lý hành động khi chọn mục trong menu
         try {
-            String selecString = menu.getSelectedItem().getText();
+            String selecString = menu.getSelectedItem().getText(); // Lấy text của mục được chọn
 
-            if (gameManager.getCurrentGameState() == GameState.Menu) {
+            if (gameManager.getCurrentGameState() == GameState.SoundSetting) {
+
+                gameManager.handleMenuSelection(selecString); // Xử lý lựa chọn trong Sound Setting
+
+            } else if (gameManager.getCurrentGameState() == GameState.Menu) {
                 switch (selecString) {
                     case "START":
                         gameManager.handleMenuSelection(selecString);  // Chuyển trạng thái game sang Playing

@@ -14,11 +14,13 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
+import Managers.MenuManager.Menu;
+
 public class GameManager {
 
     private List<Ball> balls = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
-    private int[][] listHighScore = new int[7][3];
+    private int[][] listHighScore = new int[8][3];
     private Paddle paddle;
     private MapGame mapBrick;
     private int score;
@@ -28,6 +30,7 @@ public class GameManager {
     private boolean ballAttachedToPaddle = true;
     private int currentLevel = 1;
     private boolean levelCompleted = false;
+    private Menu menu;
 
     public GameManager() throws Exception {
         SoundManager.loadSounds();
@@ -63,7 +66,7 @@ public class GameManager {
     public void startLevel(int level) throws Exception {
 
         currentLevel = level;
-        score = 0;
+        // score = 0; // giữ nguyên điểm số khi qua level
         paddle.setWidth(GameConfig.PADDLE_WIDTH);
         levelCompleted = false;
         mapBrick.setCurrentLevel(level);
@@ -98,8 +101,7 @@ public class GameManager {
             b.setY(paddle.getY() - b.getHeight());
         } else {
             for (Ball b : balls) {
-                if (b.checkColisionPaddle(paddle))
-                {
+                if (b.checkColisionPaddle(paddle)) {
                     SoundManager.play("hit_brick");
                     continue;
                 }
@@ -114,10 +116,10 @@ public class GameManager {
             for (Ball b : balls) {
                 if (b.checkCollision(brick) && !brick.isDestroyed()) {
                     if (brick.gethitPoints() > 0) {
-                        if(!hitPlayed) {
-                        SoundManager.play("hit_brick");
-                        hitPlayed = true;
-                    }
+                        if (!hitPlayed) {
+                            SoundManager.play("hit_brick");
+                            hitPlayed = true;
+                        }
                         brick.sethitPoints(brick.gethitPoints() - 1);
                         brick.setOnHit(true);
                     }
@@ -127,7 +129,7 @@ public class GameManager {
             }
             if (brick.isDestroyed()) {
                 score += 10;
-                if (Math.random() < 0.5  && powerUps.size() <= 4) {
+                if (Math.random() < 0.5 && powerUps.size() <= 4) {
                     PowerUp.Type type = PowerUp.Type.values()[(int) (Math.random() * PowerUp.Type.values().length)];
                     powerUps.add(new PowerUp(type,
                             brick.getX() + brick.getWidth() / 2 - 16,
@@ -147,7 +149,7 @@ public class GameManager {
                 it.remove();
             }
         }
-        boolean sound=false;
+        boolean sound = false;
         Iterator<PowerUp> pIt = powerUps.iterator();
         while (pIt.hasNext()) {
             PowerUp p = pIt.next();
@@ -156,9 +158,8 @@ public class GameManager {
             if (p.checkCollision(paddle)) {
                 activatePowerUp(p.getType());
                 pIt.remove();
-                if(!sound)
-                {
-                    sound=true;
+                if (!sound) {
+                    sound = true;
                     SoundManager.play("bonus");
                 }
                 continue;
@@ -229,7 +230,7 @@ public class GameManager {
                 }
                 case "OPTIONS" ->
                     currentGameState = GameState.Option; // Chuyển đến menu tạm dừng
-                case "EXIT" -> {
+                case "EXIT" -> { // xử lý trong InputHandler
                 }
             }
         } else if (currentGameState == GameState.Option) { // Pause Menu
@@ -247,13 +248,20 @@ public class GameManager {
         } else if (currentGameState == GameState.Setting) { // Setting Menu
             switch (itemString) {
                 case "SOUND" -> {
-                    System.out.println("Đang code...");
+                    currentGameState = GameState.SoundSetting; // Chuyển đến menu cài đặt âm thanh  
+                    menu.switchToSoundSettingsMenu(); // chuyển menu hiển thị
                 }
                 case "LEVELS" -> {
 
                 }
                 case "BACK TO MENU" ->
                     currentGameState = GameState.Menu; // Reset toàn bộ game
+            }
+        } else if (currentGameState == GameState.SoundSetting) { // Setting Sound Menu
+            if (itemString.startsWith("MUSIC:")) { // bật/tắt nhạc nền
+                SoundManager.toggleMusic();
+            } else if (itemString.startsWith("SFX:")) { // bật/tắt hiệu ứng âm thanh
+                SoundManager.toggleSfx();
             }
         }
     }
@@ -357,17 +365,37 @@ public class GameManager {
 
         }
     }
+
     private double clampAngle(double angle) {
         angle = (angle + Math.PI) % (2 * Math.PI) - Math.PI;
 
         double minVertical = Math.toRadians(15);
         double maxVertical = Math.toRadians(165);
-        if (Math.abs(angle) < minVertical)
+        if (Math.abs(angle) < minVertical) {
             angle = Math.copySign(minVertical, angle);
-        if (Math.abs(angle) > maxVertical)
+        }
+        if (Math.abs(angle) > maxVertical) {
             angle = Math.copySign(maxVertical, angle);
+        }
         return angle;
     }
+
+    public void changeMusicVolume(boolean increase) { // thay đổi âm lượng nhạc nền
+        double currentVolume = SoundManager.getMusicVolume(); // Lấy âm lượng hiện tại
+
+        double newVolume = increase ? currentVolume + 0.1 : currentVolume - 0.1; // Tăng hoặc giảm âm lượng
+
+        SoundManager.setMusicVolume(newVolume); // Cập nhật âm lượng nhạc nền
+    }
+
+    public void changeSfxVolume(boolean increase) { // thay đổi âm lượng hiệu ứng âm thanh
+        double currentVolume = SoundManager.getSfxVolume(); // Lấy âm lượng hiện tại
+
+        double newVolume = increase ? currentVolume + 0.1 : currentVolume - 0.1;
+
+        SoundManager.setSfxVolume(newVolume); // Cập nhật âm lượng hiệu ứng âm thanh
+    }
+
     // --- Getter and Setter ---
     public GameState getCurrentGameState() {
         return currentGameState;
@@ -419,5 +447,9 @@ public class GameManager {
 
     public int[] getListHighScore() {
         return listHighScore[currentLevel];
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

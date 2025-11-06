@@ -8,5 +8,6 @@ public enum GameState {
     Playing,
     GameOver,
     Option,
-    Setting
+    Setting,
+    SoundSetting
 }

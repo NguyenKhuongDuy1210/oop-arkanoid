@@ -13,6 +13,11 @@ public class SoundManager {
     private static final Map<String, AudioClip> sounds = new HashMap<>();
     private static MediaPlayer bgMusic = null; // nhạc nền menu/start
 
+    private static boolean musicEnabled = true;
+    private static boolean sfxEnabled = true;
+    private static double musicVolume = 0.5; // Âm lượng nhạc nền
+    private static double sfxVolume = 1.0; // Âm lượng hiệu ứng âm thanh
+
     public static void loadSounds() {
         load("hit_brick", "assets/sounds/hit_brick.wav");
         load("bonus", "assets/sounds/bonus.wav");
@@ -41,25 +46,83 @@ public class SoundManager {
         Media media = new Media(file.toURI().toString());
         bgMusic = new MediaPlayer(media);
         bgMusic.setCycleCount(MediaPlayer.INDEFINITE); // lặp liên tục
-        bgMusic.setVolume(0.5); // âm lượng mặc định
+        bgMusic.setVolume(musicVolume); // đặt âm lượng ban đầu
     }
 
     public static void play(String key) {
         if (key.equals("start_game")) {
-            if (bgMusic != null) {
-                bgMusic.play(); // không stop nữa, tránh reset
+            if (bgMusic != null && musicEnabled) {
+                bgMusic.play(); // phát nhạc nền
             }
         } else {
+            if (!sfxEnabled) {
+                return;
+            }
+
             AudioClip clip = sounds.get(key);
-            if (clip != null) clip.play();
+
+            if (clip != null) {
+                clip.play(sfxVolume); // phát hiệu ứng âm thanh với âm lượng đã đặt
+            }
         }
     }
 
     public static void stopBackgroundMusic() {
-        if (bgMusic != null) bgMusic.stop();
+        if (bgMusic != null) {
+            bgMusic.stop();
+        }
     }
 
     public static void setBackgroundVolume(double volume) {
-        if (bgMusic != null) bgMusic.setVolume(volume); // 0.0 -> 1.0
+        if (bgMusic != null) {
+            bgMusic.setVolume(volume); // 0.0 -> 1.0
+        }
     }
+
+    public static void toggleMusic() { // bật/tắt nhạc nền
+        musicEnabled = !musicEnabled; // chuyển trạng thái
+        if (musicEnabled) {
+            if (bgMusic != null) {
+                bgMusic.play(); // phát nhạc nền
+            }
+        } else {
+            if (bgMusic != null) {
+                bgMusic.stop(); // dừng nhạc nền
+            }
+        }
+    }
+
+    public static void toggleSfx() { // bật/tắt hiệu ứng âm thanh
+        sfxEnabled = !sfxEnabled;
+    }
+
+    public static void setMusicVolume(double volume) { // đặt âm lượng nhạc nền
+        musicVolume = Math.max(0.0, Math.min(1.0, volume)); // giới hạn trong khoảng 0.0 -> 1.0
+        if (bgMusic != null) {
+            bgMusic.setVolume(musicVolume); // cập nhật âm lượng nếu có nhạc nền đang chạy
+        }
+    }
+
+    public static void setSfxVolume(double volume) { // đặt âm lượng hiệu ứng âm thanh
+        sfxVolume = Math.max(0.0, Math.min(1.0, volume));
+    }
+
+    // Getters và Setters
+
+    public static boolean isMusicEnabled() {
+        return musicEnabled;
+    }
+
+    public static boolean isSfxEnabled() {
+        return sfxEnabled;
+    }
+
+    public static double getMusicVolume() {
+        return musicVolume;
+    }
+
+    public static double getSfxVolume() {
+        return sfxVolume;
+    }
+    
 }
