@@ -9,5 +9,6 @@ public enum GameState {
     GameOver,
     Option,
     Setting,
-    SoundSetting
+    SoundSetting,
+    LevelComplete
 }

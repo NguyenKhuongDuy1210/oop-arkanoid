@@ -41,11 +41,11 @@ public class Renderer {
         gc.clearRect(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Xóa khung vẽ trước khi vẽ lại
         gc.drawImage(backgroundScreen, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Vẽ nền chung
         GameState state = gameManager.getCurrentGameState(); // Lấy trạng thái hiện tại của game
-        
+
         switch (state) {
-            case Menu, Setting, SoundSetting -> {
-                gc.drawImage(backgroundMenu, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, 
-                GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền menu
+            case Menu, Setting, SoundSetting, LevelComplete  -> {
+                gc.drawImage(backgroundMenu, GameConfig.SCREEN_X, GameConfig.SCREEN_Y,
+                        GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền menu
 
                 if (state == GameState.SoundSetting) { // nếu là menu cài đặt âm thanh
                     menu.updateSoundSettingsMenuItemsText(); // cập nhật text các mục trong menu cài đặt âm thanh
@@ -78,10 +78,11 @@ public class Renderer {
             title = "OPTIONS";
         } else if (menu.getMenuItems() == menu.getSoundSettingsMenu()) { // Kiểm tra nếu là menu Sound Settings
             title = "SOUND";
+        } else if (menu.getMenuItems() == menu.getLevelCompleteMenu()) {
+            title = "LEVEL WIN!";
         }
 
-         // Vẽ tiêu đề menu
-
+        // Vẽ tiêu đề menu
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFont(menu.getTitleFont());
@@ -122,7 +123,7 @@ public class Renderer {
     private void renderGame(GraphicsContext gc, GameManager gameManager) {
         gc.drawImage(backgroundPlaying, GameConfig.SCREEN_X, GameConfig.SCREEN_Y, GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT);
         gc.setFont(new Font("Algerian", 70));
-        gc.fillText("LEVEL " + gameManager.getCurrentLevel() , 200, 350);
+        gc.fillText("LEVEL " + gameManager.getCurrentLevel(), 200, 350);
         for (Brick brick : gameManager.getBricks()) {
             brick.update();
             if (brick.gethitPoints() >= 0) {
@@ -148,8 +149,8 @@ public class Renderer {
 
         gc.setFont(Font.font("Algerian", FontWeight.BOLD, 30));
         gc.setFill(Color.WHITE);
-        gc.fillText("Score: " + gameManager.getScore(),1200, 330);
-        gc.fillText("Lives: " + gameManager.getLives(),1200, 380);
+        gc.fillText("Score: " + gameManager.getScore(), 1200, 330);
+        gc.fillText("Lives: " + gameManager.getLives(), 1200, 380);
     }
 
     private void renderGameOver(GraphicsContext gc, GameManager gameManager) throws FileNotFoundException {
@@ -158,7 +159,7 @@ public class Renderer {
         top1Img = new Image(new FileInputStream("assets/background/top1.png"));
         top2Img = new Image(new FileInputStream("assets/background/top2.png"));
         top3Img = new Image(new FileInputStream("assets/background/top3.png"));
-        int [] topScore = gameManager.getListHighScore();
+        int[] topScore = gameManager.getListHighScore();
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.drawImage(game_overImg, GameConfig.SCREEN_X, GameConfig.SCREEN_Y);
@@ -186,8 +187,8 @@ public class Renderer {
 
     private void renderOptionOverlay(GraphicsContext gc) { // Vẽ nền mờ cho menu Option/Pause
         gc.setFill(Color.rgb(0, 0, 0, 0.7)); // nền mờ 70%
-        gc.fillRect(GameConfig.SCREEN_X, GameConfig.SCREEN_Y, 
-        GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền mờ
+        gc.fillRect(GameConfig.SCREEN_X, GameConfig.SCREEN_Y,
+                GameConfig.SCREEN_PLAY_WIDTH, GameConfig.SCREEN_PLAY_HEIGHT); // Vẽ nền mờ
     }
 
     public Menu getMenu() {

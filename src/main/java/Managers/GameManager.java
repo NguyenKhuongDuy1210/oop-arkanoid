@@ -31,6 +31,7 @@ public class GameManager {
     private int currentLevel = 1;
     private boolean levelCompleted = false;
     private Menu menu;
+    private int levelCompleteSelection = 0;
 
     public GameManager() throws Exception {
         SoundManager.loadSounds();
@@ -210,15 +211,29 @@ public class GameManager {
 
     private void handleLevelComplete() throws Exception {
         levelCompleted = true;
+        SoundManager.play("level-up");
         System.out.println("Hoàn thành level " + currentLevel);
+
         if (currentLevel < 7) {
-            currentLevel++;
-            powerUps.clear();
-            startLevel(currentLevel);
+
+            currentGameState = GameState.LevelComplete;
+
+            if (menu != null) {
+                menu.switchToLevelCompleteMenu();
+            }
+
         } else {
             System.out.println("Bạn đã thắng toàn bộ 7 màn!");
             playerWin = true;
             currentGameState = GameState.GameOver;
+        }
+    }
+
+    public void proceedToNextLevel() throws Exception { // Chuyển đến level tiếp theo
+        if (currentLevel < 7) {
+            currentLevel++;
+            powerUps.clear();
+            startLevel(currentLevel);
         }
     }
 
@@ -456,5 +471,9 @@ public class GameManager {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public int getLevelCompleteSelection() {
+        return levelCompleteSelection;
     }
 }

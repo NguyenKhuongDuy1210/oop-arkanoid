@@ -1,6 +1,7 @@
 // In Managers/InputHandler.java
 package Managers;
 
+import Managers.GameConfig.GameConfig;
 import Managers.MenuManager.GameState;
 import Managers.MenuManager.Menu;
 import javafx.scene.Scene;
@@ -39,7 +40,8 @@ public class InputHandler {
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
                     || gameManager.getCurrentGameState() == GameState.Setting
-                    || gameManager.getCurrentGameState() == GameState.SoundSetting) { // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting
+                    || gameManager.getCurrentGameState() == GameState.LevelComplete) { // Đang ở bên trong 1 trong 3 cái.
                 handleMouseMove(e.getX(), e.getY()); // Cập nhật vị trí chuột trong menu
             } else if (gameManager.getCurrentGameState() == GameState.Playing) { // Chỉ khi đang chơi
                 gameManager.updatePaddlePosition(e.getX()); // Cập nhật vị trí thanh trượt
@@ -47,10 +49,16 @@ public class InputHandler {
         });
 
         scene.setOnMousePressed(e -> {
+
+            if (gameManager.getCurrentGameState() == GameState.LevelComplete) {
+                handleMenuAction(); // Xử lý click chuột giống như nhấn Enter
+            }
+
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
                     || gameManager.getCurrentGameState() == GameState.Setting
-                    || gameManager.getCurrentGameState() == GameState.SoundSetting) // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting
+                    || gameManager.getCurrentGameState() == GameState.LevelComplete) // Đang ở bên trong 1 trong 3 cái.
             {
                 handleMenuAction(); // Xử lý khi chọn mục trong menu
             } else if (gameManager.getCurrentGameState() == GameState.Playing) { // Chỉ khi đang chơi
@@ -62,10 +70,12 @@ public class InputHandler {
 
         // XỬ LÝ BÀN PHÍM
         scene.setOnKeyPressed(e -> {
+
             if (gameManager.getCurrentGameState() == GameState.Menu
                     || gameManager.getCurrentGameState() == GameState.Option
                     || gameManager.getCurrentGameState() == GameState.Setting
-                    || gameManager.getCurrentGameState() == GameState.SoundSetting) { // Đang ở bên trong 1 trong 3 cái.
+                    || gameManager.getCurrentGameState() == GameState.SoundSetting
+                    || gameManager.getCurrentGameState() == GameState.LevelComplete)  { // Đang ở bên trong 1 trong 3 cái.
                 switch (e.getCode()) {
                     case UP: // Di chuyển lên trên
                         menu.navigateUp();
@@ -174,7 +184,29 @@ public class InputHandler {
         try {
             String selecString = menu.getSelectedItem().getText(); // Lấy text của mục được chọn
 
-            if (gameManager.getCurrentGameState() == GameState.SoundSetting) {
+            if (gameManager.getCurrentGameState() == GameState.LevelComplete) {
+                switch (selecString) {
+                    case "NEXT LEVEL":
+                        gameManager.proceedToNextLevel();
+                        break;
+                    case "BACK TO MENU":
+                        gameManager.initGame();
+                        menu.switchToMainMenu();
+                        break;
+                }
+            }
+
+            if (gameManager.getCurrentGameState() == GameState.LevelComplete) {
+                switch (selecString) {
+                    case "NEXT LEVEL":
+                        gameManager.proceedToNextLevel(); // Chuyển sang level tiếp theo
+                        break;
+                    case "BACK TO MENU":
+                        gameManager.initGame(); // Reset game
+                        menu.switchToMainMenu();
+                        break;
+                }
+            } else if (gameManager.getCurrentGameState() == GameState.SoundSetting) {
 
                 gameManager.handleMenuSelection(selecString); // Xử lý lựa chọn trong Sound Setting
 

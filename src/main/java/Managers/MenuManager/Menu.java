@@ -8,7 +8,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class Menu {
     private List<MenuItem> settingsMenu; // danh sách mục menu cài đặt
     private List<MenuItem> levelsMenu; // danh sách map
     private List<MenuItem> soundSettingsMenu; // danh sách cài đặt âm thanh
+    private List<MenuItem> levelCompleteMenu; // danh sách menu hoàn thành level
 
     private int selectedItemIndex; // mục menu được chọn hiện tại
     private int selectedLevel = 1; // map được chọn hiện tại
@@ -73,13 +73,14 @@ public class Menu {
         mainMenu.add(new MenuItem("OPTIONS", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING))); // thêm mục "OPTIONS" vào menu chính
         mainMenu.add(new MenuItem("EXIT", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 2))); //  thêm mục "EXIT" vào menu chính
 
-        // tạo các menu phụ ////////////////////////////////////////////////
+        // TẠO CÁC MENU PHỤ //////////////////////////////////////////////////////////
         createPauseMenu(); // tạo menu tạm dừng
         createSettingMenu(); // tạo menu cài đặt
         createSoundSettingsMenu(); // tạo menu cài đặt âm thanh
         createLevelsMenu(); // tạo menu map
+        createLevelCompleteMenu(); // tạo menu hoàn thành level
 
-        ////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
         menuItems = mainMenu; // khởi đầu với menu chính
 
@@ -91,7 +92,14 @@ public class Menu {
         }
     }
 
-    private void createLevelsMenu() {
+    // CREATE MENUS PHỤ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void createLevelCompleteMenu() { // tạo menu hoàn thành level
+        levelCompleteMenu = new ArrayList<>();
+        levelCompleteMenu.add(new MenuItem("NEXT LEVEL", (int) MENU_START_X, (int) (MENU_START_Y)));
+        levelCompleteMenu.add(new MenuItem("BACK TO MENU", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING)));
+    }
+
+    private void createLevelsMenu() { // tạo menu map
         levelsMenu = new ArrayList<>();
         int startY = (int) (MENU_START_Y - 50);
         for (int i = 1; i <= 7; i++) {
@@ -124,20 +132,12 @@ public class Menu {
         soundSettingsMenu.add(new MenuItem("SFX VOL", (int) MENU_START_X, (int) (startY + MENU_ITEM_SPACING * 3))); // điều chỉnh âm lượng hiệu ứng âm thanh
     }
 
-    public void updateSoundSettingsMenuItemsText() {
-        String musicStatus = SoundManager.isMusicEnabled() ? "ON" : "OFF"; // trạng thái nhạc nền
-        soundSettingsMenu.get(0).setText("MUSIC: " + musicStatus); // cập nhật text mục nhạc nền
-
-        int musicVolPercent = (int) (SoundManager.getMusicVolume() * 100); // phần trăm âm lượng
-        soundSettingsMenu.get(1).setText("MUSIC VOL: < " + musicVolPercent + " >"); // cập nhật text mục âm lượng nhạc nền
-
-        String sfxStatus = SoundManager.isSfxEnabled() ? "ON" : "OFF"; // trạng thái hiệu ứng âm thanh
-        soundSettingsMenu.get(2).setText("SFX: " + sfxStatus); // cập nhật text mục hiệu ứng âm thanh
-
-        int sfxVolPercent = (int) (SoundManager.getSfxVolume() * 100); // phần trăm âm lượng
-        soundSettingsMenu.get(3).setText("SFX VOL: < " + sfxVolPercent + " >"); // cập nhật text mục âm lượng hiệu ứng âm thanh
-
-        soundSettingsMenu.add(new MenuItem("BACK", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 5))); // thêm mục quay lại
+    // SWITCH MENU ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void switchToLevelCompleteMenu() { // chuyển sang menu hoàn thành level
+        menuItems = levelCompleteMenu;
+        selectedItemIndex = 0;
+        updateTargetY();
+        selectorCurrentY = selectorTargetY;
     }
 
     public void switchToSoundSettingsMenu() { // chuyển sang menu cài đặt âm thanh
@@ -175,6 +175,23 @@ public class Menu {
         selectorCurrentY = selectorTargetY;
     }
 
+    // UPDATE METHODS /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void updateSoundSettingsMenuItemsText() { // cập nhật text trong menu cài đặt âm thanh
+        String musicStatus = SoundManager.isMusicEnabled() ? "ON" : "OFF"; // trạng thái nhạc nền
+        soundSettingsMenu.get(0).setText("MUSIC: " + musicStatus); // cập nhật text mục nhạc nền
+
+        int musicVolPercent = (int) (SoundManager.getMusicVolume() * 100); // phần trăm âm lượng
+        soundSettingsMenu.get(1).setText("MUSIC VOL: < " + musicVolPercent + " >"); // cập nhật text mục âm lượng nhạc nền
+
+        String sfxStatus = SoundManager.isSfxEnabled() ? "ON" : "OFF"; // trạng thái hiệu ứng âm thanh
+        soundSettingsMenu.get(2).setText("SFX: " + sfxStatus); // cập nhật text mục hiệu ứng âm thanh
+
+        int sfxVolPercent = (int) (SoundManager.getSfxVolume() * 100); // phần trăm âm lượng
+        soundSettingsMenu.get(3).setText("SFX VOL: < " + sfxVolPercent + " >"); // cập nhật text mục âm lượng hiệu ứng âm thanh
+
+        soundSettingsMenu.add(new MenuItem("BACK", (int) MENU_START_X, (int) (MENU_START_Y + MENU_ITEM_SPACING * 5))); // thêm mục quay lại
+    }
+
     public void updateTargetY() { // cập nhật vị trí Y của con trỏ dựa trên mục được chọn
         if (!menuItems.isEmpty()) {
             MenuItem selectedItem = menuItems.get(selectedItemIndex); // lấy mục được chọn hiện tại
@@ -186,6 +203,7 @@ public class Menu {
         selectorCurrentY += (selectorTargetY - selectorCurrentY) * LERP_SPEED;
     }
 
+    // GETTERS AND SETTERS /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MenuItem getSelectedItem() {
         return menuItems.get(selectedItemIndex); // trả về mục menu được chọn hiện tại
     }
@@ -258,5 +276,9 @@ public class Menu {
 
     public void setSelectedLevel(int level) {
         selectedLevel = level;
+    }
+
+    public List<MenuItem> getLevelCompleteMenu() {
+        return levelCompleteMenu;
     }
 }
