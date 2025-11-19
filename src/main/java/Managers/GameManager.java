@@ -179,6 +179,7 @@ public class GameManager {
             balls.clear();
             if (lives <= 0) {
                 playerWin = false;
+                updateHighScore();
                 currentGameState = GameState.GameOver;
                 SoundManager.play("game-over");
             } else {
@@ -187,6 +188,7 @@ public class GameManager {
         }
         // --- Kiểm tra thắng game ---
         if (mapBrick.getMapBricks().isEmpty() && !levelCompleted) {
+            updateHighScore();
             try {
                 handleLevelComplete(); // xử lý qua level
             } catch (Exception e) {
@@ -197,8 +199,11 @@ public class GameManager {
 
     public void updateHighScore() {
         if (score >= listHighScore[currentLevel][0]) {
+            listHighScore[currentLevel][2] = listHighScore[currentLevel][1];
+            listHighScore[currentLevel][1] = listHighScore[currentLevel][0];
             listHighScore[currentLevel][0] = score;
         } else if (score >= listHighScore[currentLevel][1]) {
+            listHighScore[currentLevel][2] = listHighScore[currentLevel][1];
             listHighScore[currentLevel][1] = score;
         } else if (score >= listHighScore[currentLevel][2]) {
             listHighScore[currentLevel][2] = score;

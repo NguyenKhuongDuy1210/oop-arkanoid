@@ -70,6 +70,7 @@ public class Renderer {
                 renderGame(gc, gameManager); // Vẽ game phía sau
                 renderOptionOverlay(gc); // Vẽ nền mờ
                 renderGameOver(gc, gameManager); // Vẽ màn hình Game Over
+
             }
         }
     }
@@ -93,7 +94,7 @@ public class Renderer {
 
         gc.setFont(new Font("Arial", 50));
         gc.fillText("" + gameManager.getScore(), GameConfig.SCREEN_X + 290, 295);
-        gameManager.updateHighScore();
+
         gc.setFont(new Font("Arial", 40));
         gc.fillText("" + topScore[0], GameConfig.SCREEN_X + 325, 445);
         gc.fillText("" + topScore[1], GameConfig.SCREEN_X + 325, 515);
@@ -210,7 +211,7 @@ public class Renderer {
             gc.setFont(new Font("Arial", 60));
             gc.fillText("" + gameManager.getScore(), GameConfig.SCREEN_X + 290, 315);
             gc.setFont(new Font("Arial", 45));
-            gameManager.updateHighScore();
+
             gc.fillText("" + topScore[0], GameConfig.SCREEN_X + 325, 465);
             gc.fillText("" + topScore[1], GameConfig.SCREEN_X + 325, 535);
             gc.fillText("" + topScore[2], GameConfig.SCREEN_X + 325, 605);
@@ -225,7 +226,7 @@ public class Renderer {
             gc.setFont(new Font("Arial", 60));
             gc.fillText("" + gameManager.getScore(), GameConfig.SCREEN_X + 290, 330);
             gc.setFont(new Font("Arial", 45));
-            gameManager.updateHighScore();
+
             gc.fillText("" + topScore[0], GameConfig.SCREEN_X + 325, 465);
             gc.fillText("" + topScore[1], GameConfig.SCREEN_X + 325, 535);
             gc.fillText("" + topScore[2], GameConfig.SCREEN_X + 325, 605);

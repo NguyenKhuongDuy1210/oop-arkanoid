@@ -32,46 +32,7 @@ Một phiên bản đơn giản của game Arkanoid được phát triển bằn
 - Tạo nhiều màn chơi với độ khó tăng dần
 
 ## 📂 Cấu trúc dự án
-Arkanoid/
-├── .idea/                      # Cấu hình IntelliJ
-├── assets/                    # Tài nguyên: hình ảnh, âm thanh
-│   ├── images/
-│   └── sounds/
-├── map/                       # Dữ liệu bản đồ màn chơi
-│   └── level1.map
-├── src/
-│   └── main/
-│       └── java/
-│           ├── base/          # Các lớp cơ sở
-│           │   └── GameObject.java
-│           ├── items/        # Các đối tượng trong game
-│           │   ├── Ball.java
-│           │   ├── Paddle.java
-│           │   ├── PowerUp.java
-│           │   └── brick/
-│           │       ├── NormalBrick.java
-│           │       ├── StrongBrick.java
-│           │       ├── MovingBrick.java
-│           │       └── UltraBrick.java
-│           ├── effects/      # Animation, hiệu ứng
-│           │   └── Animation.java
-│           ├── managers/     # Quản lý cấu hình, bản đồ, menu
-│           │   ├── GameConfig.java
-│           │   ├── MapManager.java
-│           │   └── menu/
-│           │       ├── MenuManager.java
-│           │       ├── GameState.java
-│           │       └── Menu.java
-│           └── Main.java     # Điểm khởi chạy game
-├── src/
-│   └── test/
-│       └── java/
-│           └── CollisionTest.java
-├── target/                    # Thư mục build (tự động tạo)
-├── pom.xml                    # Cấu hình Maven
-├── .gitignore                 # Bỏ qua file không cần push
-└── README.md                  # Giới thiệu dự án
-
+![img.png](img.png)
 ## 👤 Tác giả
 
 - Nhóm 14:
@@ -80,4 +41,7 @@ Arkanoid/
 - Lê Trí Anh
 - Đào Vũ Đức Hoàng
 
+## 📽️ DEMO GAME
 
+🎮 Xem video demo tại:
+https://drive.google.com/file/d/1ry5pcl5hVSWnOOEvDZszis9pboWRT5-c/view?usp=sharing
